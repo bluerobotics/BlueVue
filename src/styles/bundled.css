@@ -1,0 +1,9 @@
+/* Source for the ready-made dist/style.css, for apps that do not run Tailwind themselves.
+   Theme and utilities only: Preflight is deliberately left out, because a component library
+   has no business resetting the base styles of the app that imports it. */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@source "../components";
+
+@import "./bluevue.css";
