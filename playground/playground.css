@@ -1,0 +1,14 @@
+/* The playground compiles Tailwind itself, the way a consuming app on Tailwind would, and
+   scans the components for the utilities they use. */
+@import "tailwindcss";
+
+@source "../src/components";
+
+@import "../src/styles/bluevue.css";
+
+html,
+body,
+#app {
+  margin: 0;
+  min-height: 100%;
+}

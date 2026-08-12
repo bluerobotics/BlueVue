@@ -1,0 +1,124 @@
+/* Tokens and component classes: everything the controls need that is not a Tailwind utility.
+   Import this on its own when your app compiles the utilities itself (see the README), or get
+   it folded into dist/style.css when it does not. */
+
+:root {
+  --bluevue-primary: #0B5087;
+  --bluevue-error: #CF6679;
+  --bluevue-surface: #363636;
+  --bluevue-accent: #6699CC;
+  --bluevue-panel-bg: rgba(30, 30, 30, 0.96);
+  --bluevue-hairline: rgba(255, 255, 255, 0.08);
+  /* Material's three-part shadow, at the two depths the controls use: a resting control, and
+     one raised above its neighbours (a selected segment, an open menu). */
+  --bluevue-elevation-1: 0 2px 1px -1px #0003, 0 1px 1px 0 #00000024, 0 1px 3px 0 #0000001f;
+  --bluevue-elevation-5: 0 3px 5px -1px #0003, 0 5px 8px 0 #00000024, 0 1px 14px 0 #0000001f;
+  /* The opposite of an elevation: a well cut into the surface, for somewhere a value is typed
+     rather than somewhere that is pressed. The light line along the bottom edge is what sells
+     the depth, by reading as the lit far wall of the recess. */
+  --bluevue-inset-1: inset 0 1px 2px #00000056, inset 0 0.5px 0.5px #0000003a, inset 0 -0.5px 0 #ffffff0b;
+}
+
+.bluevue-elevation-1 {
+  box-shadow: var(--bluevue-elevation-1);
+}
+
+.bluevue-elevation-5 {
+  box-shadow: var(--bluevue-elevation-5);
+}
+
+.bluevue-inset-1 {
+  box-shadow: var(--bluevue-inset-1);
+}
+
+/* The surface the dialogs are built on: a frosted near-black card with a hairline edge. */
+.bluevue-panel {
+  background-color: var(--bluevue-panel-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--bluevue-hairline);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2), 0 8px 12px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* A modal <dialog> carries the browser's own centring, borders and padding. Strip them so the
+   panel inside is the whole of what shows, and dim the page behind it. */
+.bluevue-dialog {
+  margin: auto;
+  border: none;
+  padding: 0;
+  background: transparent;
+  max-width: min(92vw, 624px);
+  max-height: 92vh;
+  overflow: visible;
+}
+
+/* showModal() moves focus into the dialog, and with nothing focusable inside it the dialog
+   itself takes it and the browser rings the whole panel. The ring belongs on controls, not on
+   the surface holding them, and the controls inside keep their own. */
+.bluevue-dialog:focus,
+.bluevue-dialog:focus-visible,
+.bluevue-popover:focus,
+.bluevue-popover:focus-visible {
+  outline: none;
+}
+
+.bluevue-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* A popover is promoted to the top layer, so it needs no z-index and is not clipped by the
+   panel it opens from. Only the browser's default centring and chrome have to go, since
+   floating-ui writes the real position. */
+.bluevue-popover {
+  position: fixed;
+  margin: 0;
+  border: none;
+  padding: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+/* BlueExpansiblePanel's open and close. */
+.bluevue-expand-enter-active,
+.bluevue-expand-leave-active {
+  transition: max-height 0.3s ease;
+  overflow: hidden;
+}
+
+.bluevue-expand-enter-from,
+.bluevue-expand-leave-to {
+  max-height: 0;
+}
+
+.bluevue-expand-enter-to,
+.bluevue-expand-leave-from {
+  max-height: 500px;
+}
+
+/* BlueLoadingDialog's mark is a propeller, so it turns like one: a creep of 80 degrees over two
+   seconds, then the balance of four turns over the next two, carrying it round to where it
+   started. */
+.bluevue-loading__icon {
+  animation: bluevue-prop 4s infinite;
+}
+
+@keyframes bluevue-prop {
+  /* Each segment carries its own easing, which is what gives the blade its weight: it takes a
+     moment to get moving, settles at the end of the creep, then winds up into the spins and
+     bleeds the speed off again rather than stopping dead. The cycle ends on a whole turn, so
+     the loop restarts from the orientation it began at and the seam is invisible. */
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  }
+  /* 80deg at the halfway mark, leaving the other two seconds for the 1360deg that follow. */
+  50% {
+    transform: rotate(80deg);
+    animation-timing-function: cubic-bezier(0.35, 0, 0.45, 1);
+  }
+  100% {
+    transform: rotate(1440deg);
+  }
+}
