@@ -10,14 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      # Lets npm record where the package was built from.
+      # Mints the token npm checks against the trusted publisher, and signs provenance with.
       id-token: write
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          # For the npm it bundles: trusted publishing needs 11.5.1 or newer, and an older one
+          # falls back to looking for a token rather than saying what it wanted.
+          node-version: 24
           registry-url: https://registry.npmjs.org
 
       # npm refuses a version it already has, so a tag that says something else can only be a
@@ -37,6 +39,6 @@ jobs:
 
       - run: npm run build
 
+      # No token anywhere: npm trades the run's OIDC token for publish rights, and a
+      # NODE_AUTH_TOKEN in the environment would send it down the token path instead.
       - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
