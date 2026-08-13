@@ -2,9 +2,12 @@ import type { Component } from 'vue'
 
 import BlueButtonDemo from './demos/BlueButtonDemo.vue'
 import BlueButtonGroupDemo from './demos/BlueButtonGroupDemo.vue'
+import BlueConfirmDialogDemo from './demos/BlueConfirmDialogDemo.vue'
+import BlueDialogDemo from './demos/BlueDialogDemo.vue'
 import BlueExpansiblePanelDemo from './demos/BlueExpansiblePanelDemo.vue'
 import BlueIconDemo from './demos/BlueIconDemo.vue'
 import BlueInputDemo from './demos/BlueInputDemo.vue'
+import BlueJobDialogDemo from './demos/BlueJobDialogDemo.vue'
 import BlueLoadingDialogDemo from './demos/BlueLoadingDialogDemo.vue'
 import BlueMenuDemo from './demos/BlueMenuDemo.vue'
 import BlueProgressBarDemo from './demos/BlueProgressBarDemo.vue'
@@ -380,6 +383,116 @@ export const catalog: ComponentDoc[] = [
   <BlueButton variant="icon" icon="mdi-refresh" />
 </BlueTooltip>`,
     demo: BlueTooltipDemo,
+  },
+  {
+    name: 'BlueDialog',
+    slug: 'blue-dialog',
+    group: 'Overlays',
+    blurb: 'The surface every other dialog is built on.',
+    about:
+      'A frosted panel in the browser\'s top layer, with an optional header, a body and an optional footer. Being a native modal it dims the page itself, keeps focus inside, and closes on Escape and on the backdrop. Made persistent it does none of those and offers no way out, which is what an operation that must not be interrupted needs.',
+    when: [
+      'Reach for it for a dialog the kit does not already have: an editor, a picker, a report.',
+      'Use BlueConfirmDialog, BluePromptDialog or BlueJobDialog when one of them already says what you mean.',
+      'Keep the footer to two actions: the way out on the left, the committing one on the right.',
+    ],
+    props: [
+      { name: 'modelValue', type: 'boolean', description: 'Whether the dialog is up, through v-model.' },
+      { name: 'title', type: 'string', description: 'The heading. Without one the dialog is only its body.' },
+      { name: 'subtitle', type: 'string', description: 'A line under the title, for what the dialog acts on.' },
+      { name: 'icon / iconColor', type: 'string', default: "'#42A5F5'", description: 'An mdi name beside the title, and its colour.' },
+      { name: 'persistent', type: 'boolean', description: 'Takes away Escape, the backdrop and the close button.' },
+      { name: 'width', type: 'string', default: "'624px'", description: 'Panel width. It never exceeds the viewport.' },
+      { name: 'bodyClass', type: 'string', default: "'px-5 py-4'", description: "Replaces the body's own inset." },
+    ],
+    events: [{ name: 'update:modelValue', type: '(value: boolean)', description: 'Closed, however it was closed.' }],
+    slots: [
+      { name: 'default', type: '', description: 'The body.' },
+      { name: 'header', type: '', description: 'Replaces the icon, title and subtitle.' },
+      { name: 'footer', type: '', description: 'Laid out with space between, so a hint and the actions sit at opposite ends.' },
+    ],
+    snippet: `<BlueDialog v-model="open" title="Endpoint" icon="mdi-lan-connect">
+  <BlueInput v-model="port" name="port" label="UDP port" type="number" theme="dark" />
+
+  <template #footer>
+    <BlueButton variant="text" density="compact" @click="open = false">Cancel</BlueButton>
+    <BlueButton variant="filled" density="compact" @click="save">Save</BlueButton>
+  </template>
+</BlueDialog>`,
+    demo: BlueDialogDemo,
+  },
+  {
+    name: 'BlueConfirmDialog',
+    slug: 'blue-confirm-dialog',
+    group: 'Overlays',
+    blurb: 'Asks before something that cannot be taken back.',
+    about:
+      'The question is the title, what it will cost is the message, and the committing button names the action rather than agreeing with the question. Marked as dangerous it takes the error colour and the warning icon.',
+    when: [
+      'Reach for it before deleting, overwriting, or restarting something.',
+      'Do not reach for it for an action the reader can simply undo.',
+    ],
+    props: [
+      { name: 'modelValue', type: 'boolean', description: 'Whether the dialog is up, through v-model.' },
+      { name: 'title', type: 'string', description: 'The question.' },
+      { name: 'message', type: 'string', description: 'What confirming will do, and to what.' },
+      { name: 'confirmLabel', type: 'string', default: "'Confirm'", description: "Names the action: 'Delete', 'Restart', 'Overwrite'." },
+      { name: 'cancelLabel', type: 'string', default: "'Cancel'", description: 'The way out.' },
+      { name: 'danger', type: 'boolean', description: 'Colours the committing button as a warning.' },
+      { name: 'icon', type: 'string', description: 'Overrides the icon the danger flag picks.' },
+    ],
+    events: [{ name: 'confirm', type: '()', description: 'The committing button was pressed.' }],
+    slots: [{ name: 'default', type: '', description: 'Anything more the reader needs, under the message.' }],
+    snippet: `<BlueConfirmDialog
+  v-model="open"
+  title="Delete “Sydney Harbour”?"
+  message="The preset cannot be recovered once it is gone."
+  confirm-label="Delete"
+  danger
+  @confirm="remove"
+/>`,
+    demo: BlueConfirmDialogDemo,
+  },
+  {
+    name: 'BlueJobDialog',
+    slug: 'blue-job-dialog',
+    group: 'Overlays',
+    blurb: 'Work with stages to it, reported as it goes.',
+    about:
+      'The pattern behind installing firmware, writing parameters and waiting for a restart: a row of stages, a bar for the one in flight, and a log of what has happened. It holds the page while the job is running and lets go the moment it is not, so a job that ends in a failure can be read, retried or skipped from the footer. The log follows its own tail, unless the reader has scrolled up, in which case it leaves them where they are.',
+    when: [
+      'Reach for it for anything long enough that the reader would otherwise wonder whether it is still going.',
+      'Use a BlueLoadingDialog instead when the work has no stages worth showing.',
+    ],
+    props: [
+      { name: 'modelValue', type: 'boolean', description: 'Whether the dialog is up, through v-model.' },
+      { name: 'title', type: 'string', description: 'What the job is.' },
+      { name: 'subtitle', type: 'string', description: 'What it is doing right now.' },
+      { name: 'state', type: "'running' | 'failed' | 'done'", description: 'Running holds the page; the other two release it.' },
+      { name: 'steps', type: 'BlueJobStep[]', description: 'key, title, state, and optionally detail.' },
+      { name: 'progress', type: 'number', description: 'Percentage of the stage in flight, when it can count itself.' },
+      { name: 'indeterminate', type: 'boolean', description: 'For a stage that can only say it is waiting.' },
+      { name: 'progressLabel', type: 'string', description: 'The line above the bar.' },
+    ],
+    events: [{ name: 'update:modelValue', type: '(value: boolean)', description: 'Closed.' }],
+    slots: [
+      { name: 'log', type: '', description: 'Monospace records, in a box that follows its own tail.' },
+      { name: 'badges', type: '', description: 'Counts at the right of the progress line.' },
+      { name: 'footer', type: '', description: 'A hint on the left, the actions on the right.' },
+    ],
+    snippet: `<BlueJobDialog
+  v-model="open"
+  title="Applying BlueBoat"
+  :state="job.state"
+  :steps="job.steps"
+  :progress="job.done / job.total * 100"
+  :progress-label="\`\${job.done}/\${job.total} parameters processed\`"
+>
+  <template #log>
+    <div v-for="record in job.records" :key="record.name">{{ record.name }}</div>
+  </template>
+</BlueJobDialog>`,
+    demo: BlueJobDialogDemo,
   },
   {
     name: 'BluePromptDialog',

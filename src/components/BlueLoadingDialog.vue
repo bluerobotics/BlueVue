@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
-
 import logo from '../assets/br-logo-white.svg'
+import BlueDialog from './BlueDialog.vue'
 
 /**
  * A blocking overlay for an operation that is under way, such as a vehicle restarting. It is up
  * for exactly as long as `modelValue` says it is, and unless it is dismissible there is no way
  * out of it.
  */
-const props = defineProps<{
+defineProps<{
   modelValue: boolean
   /** What the operation is, shown under the propeller. */
   message?: string
@@ -19,58 +18,28 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: 'update:modelValue', value: boolean): void
 }>()
-
-const dialogRef = ref<HTMLDialogElement | null>(null)
-
-const sync = (show: boolean): void => {
-  const el = dialogRef.value
-  if (!el) return
-  if (show && !el.open) el.showModal()
-  if (!show && el.open) el.close()
-}
-
-const close = (): void => emit('update:modelValue', false)
-
-// Escape closes a dismissible overlay through the same path as the button, so the caller's
-// state follows the dialog instead of thinking it is still up.
-const onCancel = (event: Event): void => {
-  event.preventDefault()
-  if (props.dismissible) close()
-}
-
-onMounted(() => sync(props.modelValue))
-watch(() => props.modelValue, sync)
 </script>
 
 <template>
-  <!-- Escape is swallowed unless the wait is dismissible: an operation the user cannot
-       interrupt must not end up running under a live page. -->
-  <dialog
-    ref="dialogRef"
-    class="bluevue-dialog"
-    @cancel="onCancel"
+  <!-- Persistent unless the wait is dismissible: an operation the user cannot interrupt must not
+       end up running under a live page. -->
+  <BlueDialog
+    :model-value="modelValue"
+    :persistent="!dismissible"
+    width="320px"
+    body-class="flex flex-col items-center justify-center px-6 pt-7 pb-5"
+    @update:model-value="emit('update:modelValue', $event)"
   >
-    <div class="bluevue-panel relative flex w-[320px] flex-col items-center justify-center rounded-lg px-6 pt-7 pb-5">
-      <button
-        v-if="dismissible"
-        type="button"
-        class="absolute right-3 top-3 cursor-pointer text-[#ffffffaa] transition-colors hover:text-white"
-        title="Close"
-        @click="close"
-      >
-        <span class="mdi mdi-close text-[20px] leading-none" />
-      </button>
-      <img
-        :src="logo"
-        alt=""
-        class="bluevue-loading__icon mb-6 h-[100px] w-[100px]"
-      >
-      <span
-        v-if="message"
-        class="mt-[15px] text-center text-base text-white"
-      >
-        {{ message }}
-      </span>
-    </div>
-  </dialog>
+    <img
+      :src="logo"
+      alt=""
+      class="bluevue-loading__icon mb-6 h-[100px] w-[100px]"
+    >
+    <span
+      v-if="message"
+      class="mt-[15px] text-center text-base text-white"
+    >
+      {{ message }}
+    </span>
+  </BlueDialog>
 </template>
