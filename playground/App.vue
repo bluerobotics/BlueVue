@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { BlueSnackbar } from '../src'
 import logo from '../src/assets/br-logo-white.svg'
 import { catalog } from './catalog'
 import { currentSlug } from './route'
@@ -50,5 +51,7 @@ const entry = computed(() => catalog.find((component) => component.slug === curr
       />
       <GalleryView v-else />
     </main>
+
+    <BlueSnackbar />
   </div>
 </template>

@@ -17,6 +17,9 @@
      rather than somewhere that is pressed. The light line along the bottom edge is what sells
      the depth, by reading as the lit far wall of the recess. */
   --bluevue-inset-1: inset 0 1px 2px #00000056, inset 0 0.5px 0.5px #0000003a, inset 0 -0.5px 0 #ffffff0b;
+  /* The elevation the buttons rest at, with each of its three shadows at half the alpha: a note is
+     raised off the surface less than something meant to be pressed. */
+  --bluevue-elevation-1-soft: 0 2px 1px -1px #0000001a, 0 1px 1px 0 #00000012, 0 1px 3px 0 #0000000f;
 }
 
 .bluevue-elevation-1 {
@@ -29,6 +32,10 @@
 
 .bluevue-inset-1 {
   box-shadow: var(--bluevue-inset-1);
+}
+
+.bluevue-elevation-1-soft {
+  box-shadow: var(--bluevue-elevation-1-soft);
 }
 
 /* The surface the dialogs are built on: a frosted near-black card with a hairline edge. */
@@ -135,6 +142,75 @@
   .bluevue-progress__sweep {
     animation-duration: 3s;
   }
+}
+
+/* A banner's metrics live here, not in utility classes: Tailwind's utilities sit in a cascade layer
+   and a host application's reset does not, so a rule as broad as Vuetify's `* { padding: 0 }` beats
+   them whatever their selectors say, and the shut banner is left without the padding that makes it
+   a square. */
+.bluevue-banner {
+  box-sizing: border-box;
+  height: 26px;
+  padding: 4px;
+  font-size: 12px;
+  line-height: 16px;
+  /* Squeezed by the row it shares in a group, it loses the tail of its message rather than painting
+     it outside its own rounded box. */
+  overflow: hidden;
+}
+
+/* A box the size of the em, not of however wide the glyph happens to advance, so the shut banner is
+   26 x 26 whichever icon it carries. */
+.bluevue-banner__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+/* The message's gutter rides inside the window that opens, so the shut square keeps the even four
+   pixels around its icon. */
+.bluevue-banner__text {
+  padding: 0 8px;
+}
+
+/* Width is the whole of the animation: the row is as tall as its icon whether it is shut or open,
+   so nothing above or below the message moves and the banner only ever grows to the right. */
+.bluevue-banner__reveal {
+  transition: width 260ms ease-in-out;
+}
+
+/* Measuring lays the message out by its content and puts it back; no frame is painted in between,
+   but the geometry it reads would otherwise be somewhere for an animation to start from. */
+.bluevue-banner--measuring .bluevue-banner__reveal {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bluevue-banner__reveal {
+    transition: none;
+  }
+}
+
+/* A notice arrives from the edge it stacks against and leaves the same way, and the ones left
+   behind slide up into the gap rather than jumping. */
+.bluevue-notice-enter-active,
+.bluevue-notice-leave-active,
+.bluevue-notice-move {
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.bluevue-notice-enter-from,
+.bluevue-notice-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.bluevue-notice-leave-active {
+  position: absolute;
 }
 
 /* BlueExpansiblePanel's open and close. */

@@ -106,5 +106,11 @@ async function copySnippet(): Promise<void> {
       title="Slots"
       :rows="entry.slots ?? []"
     />
+    <ApiTable
+      v-for="extra in entry.extraApi ?? []"
+      :key="extra.title"
+      :title="extra.title"
+      :rows="extra.rows"
+    />
   </article>
 </template>

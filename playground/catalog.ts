@@ -1,5 +1,7 @@
 import type { Component } from 'vue'
 
+import BlueBannerDemo from './demos/BlueBannerDemo.vue'
+import BlueBannerGroupDemo from './demos/BlueBannerGroupDemo.vue'
 import BlueButtonDemo from './demos/BlueButtonDemo.vue'
 import BlueButtonGroupDemo from './demos/BlueButtonGroupDemo.vue'
 import BlueConfirmDialogDemo from './demos/BlueConfirmDialogDemo.vue'
@@ -14,6 +16,7 @@ import BlueProgressBarDemo from './demos/BlueProgressBarDemo.vue'
 import BluePromptDialogDemo from './demos/BluePromptDialogDemo.vue'
 import BlueSelectDemo from './demos/BlueSelectDemo.vue'
 import BlueSliderDemo from './demos/BlueSliderDemo.vue'
+import BlueSnackbarDemo from './demos/BlueSnackbarDemo.vue'
 import BlueSpinnerDemo from './demos/BlueSpinnerDemo.vue'
 import BlueSwitchDemo from './demos/BlueSwitchDemo.vue'
 import BlueTooltipDemo from './demos/BlueTooltipDemo.vue'
@@ -43,6 +46,8 @@ export interface ComponentDoc {
   props?: ApiRow[]
   events?: ApiRow[]
   slots?: ApiRow[]
+  /** Anything else worth a table, such as the composable a component is driven by. */
+  extraApi?: { title: string; rows: ApiRow[] }[]
   /** Enough of a template to paste into a panel and have it work. */
   snippet: string
   demo: Component
@@ -550,6 +555,91 @@ export const catalog: ComponentDoc[] = [
   dismissible
 />`,
     demo: BlueLoadingDialogDemo,
+  },
+  {
+    name: 'BlueSnackbar',
+    slug: 'blue-snackbar',
+    group: 'Feedback',
+    blurb: 'What just happened, in the corner of the page.',
+    about:
+      'Mount it once, at the root, and raise notices from wherever they happen through useBlueSnackbar. Anything that failed waits to be dismissed, since a failure is worth acting on; everything else passes after five seconds. The same message arriving again counts up rather than stacking, so a retry loop reads as one thing that keeps happening.',
+    when: [
+      'Reach for it to confirm something that worked, or to report something that did not.',
+      'Use a BlueBanner instead for a condition that stays true, such as a frame that ignores wind.',
+      'Use a BlueConfirmDialog instead when the reader has to answer rather than be told.',
+    ],
+    props: [
+      {
+        name: 'position',
+        type: "'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'",
+        default: "'bottom-right'",
+        description: 'Which corner the notices gather in.',
+      },
+    ],
+    extraApi: [
+      {
+        title: 'useBlueSnackbar()',
+        rows: [
+          { name: 'notify', type: '(text, { severity, timeout })', description: "Says something happened. Severity is 'info' unless it is given." },
+          { name: 'notifyError', type: '(error, fallback?)', description: "Reports a failure in the server's own words when it sent any, and never times out." },
+          { name: 'dismiss', type: '(id: number)', description: 'Takes a notice down early.' },
+          { name: 'notices', type: 'Readonly<Ref<BlueNotice[]>>', description: 'The queue, for anything wanting to read it.' },
+        ],
+      },
+    ],
+    snippet: `// anywhere
+const { notify, notifyError } = useBlueSnackbar()
+notify('Configuration applied', { severity: 'success' })
+
+// at the root, once (BlueApp does this for you)
+<BlueSnackbar />`,
+    demo: BlueSnackbarDemo,
+  },
+  {
+    name: 'BlueBanner',
+    slug: 'blue-banner',
+    group: 'Display',
+    blurb: 'A note that keeps to a square until it is asked for.',
+    about:
+      'Shut, a banner is its icon and nothing else; open, it is one line of message. Only its width moves between the two, so a row of them keeps its height and nothing around it is pushed about. A message too long for the room keeps its line and loses its tail to the edge, since the pointer is where the whole of it is read either way.',
+    when: [
+      'Reach for it for a condition that stays true while the page is open: a frame that ignores wind, a profile that cancels what is beside it.',
+      'Use a BlueSnackbar instead for something that just happened.',
+      'Use several of them through a BlueBannerGroup rather than stacking them by hand.',
+    ],
+    props: [
+      { name: 'text', type: 'string', description: 'The message, which the banner is only as wide as while it is open.' },
+      { name: 'severity', type: "'error' | 'warning' | 'info' | 'success'", default: "'info'", description: 'Which of the standard looks to take.' },
+      { name: 'expanded', type: 'boolean', default: 'true', description: 'Whether it starts open.' },
+      { name: 'icon', type: 'string', description: "An mdi name, in place of the severity's icon." },
+      { name: 'color / background / border', type: 'string', description: "Each part of the look, in place of the severity's." },
+    ],
+    events: [{ name: 'update:expanded', type: '(value: boolean)', description: 'Opened or shut by a click.' }],
+    snippet: `<BlueBanner
+  text="The BlueBoat frame ignores wind: it never leaves the surface."
+  severity="warning"
+  :expanded="false"
+/>`,
+    demo: BlueBannerDemo,
+  },
+  {
+    name: 'BlueBannerGroup',
+    slug: 'blue-banner-group',
+    group: 'Display',
+    blurb: 'A row of banners that opens one at a time.',
+    about:
+      'The banners sit side by side as squares. Opening one shuts the others and gives it the room they leave, and the ones already read gather at the end of the row. The row is ordered through CSS rather than reordered, so each banner stays where it is and none of them loses the animation it is in the middle of.',
+    when: [
+      'Reach for it wherever a section can raise more than one note, which is most of them.',
+    ],
+    props: [
+      { name: 'banners', type: 'BannerContent[]', description: 'Message and look for each. The message identifies it, so make them distinct.' },
+    ],
+    snippet: `<BlueBannerGroup
+  v-if="notes.length"
+  :banners="notes"
+/>`,
+    demo: BlueBannerGroupDemo,
   },
   {
     name: 'BlueProgressBar',
