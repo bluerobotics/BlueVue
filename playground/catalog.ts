@@ -1,9 +1,11 @@
 import type { Component } from 'vue'
 
+import BlueAppDemo from './demos/BlueAppDemo.vue'
 import BlueBannerDemo from './demos/BlueBannerDemo.vue'
 import BlueBannerGroupDemo from './demos/BlueBannerGroupDemo.vue'
 import BlueButtonDemo from './demos/BlueButtonDemo.vue'
 import BlueButtonGroupDemo from './demos/BlueButtonGroupDemo.vue'
+import BlueCardDemo from './demos/BlueCardDemo.vue'
 import BlueConfirmDialogDemo from './demos/BlueConfirmDialogDemo.vue'
 import BlueDialogDemo from './demos/BlueDialogDemo.vue'
 import BlueExpansiblePanelDemo from './demos/BlueExpansiblePanelDemo.vue'
@@ -14,10 +16,12 @@ import BlueLoadingDialogDemo from './demos/BlueLoadingDialogDemo.vue'
 import BlueMenuDemo from './demos/BlueMenuDemo.vue'
 import BlueProgressBarDemo from './demos/BlueProgressBarDemo.vue'
 import BluePromptDialogDemo from './demos/BluePromptDialogDemo.vue'
+import BlueSectionDemo from './demos/BlueSectionDemo.vue'
 import BlueSelectDemo from './demos/BlueSelectDemo.vue'
 import BlueSliderDemo from './demos/BlueSliderDemo.vue'
 import BlueSnackbarDemo from './demos/BlueSnackbarDemo.vue'
 import BlueSpinnerDemo from './demos/BlueSpinnerDemo.vue'
+import BlueStatDemo from './demos/BlueStatDemo.vue'
 import BlueSwitchDemo from './demos/BlueSwitchDemo.vue'
 import BlueTooltipDemo from './demos/BlueTooltipDemo.vue'
 
@@ -64,6 +68,124 @@ const THEME_ROW: ApiRow = {
 }
 
 export const catalog: ComponentDoc[] = [
+  {
+    name: 'BlueApp',
+    slug: 'blue-app',
+    group: 'Layout',
+    blurb: "An extension's whole page, feedback included.",
+    about:
+      "BlueOS's backdrop, one card in the middle of it, and the two pieces of feedback every extension needs mounted once. Wrap your panels in it and the notices raised through useBlueSnackbar and the waits raised through useBlueLoading appear by themselves, from wherever in the application they were raised.",
+    when: [
+      'Reach for it as the root of an extension, around everything else.',
+      'Use BlueCard directly instead when a page needs more than one sheet, or when the extension is not the whole page.',
+    ],
+    props: [
+      { name: 'title', type: 'string', description: 'The name in the bar, which is the extension\'s own.' },
+      { name: 'logo', type: 'string', description: 'An image beside the title, such as the extension\'s mark.' },
+      { name: 'icon', type: 'string', description: 'An mdi name beside the title, for an extension with no mark.' },
+      { name: 'width', type: 'string', default: "'615px'", description: 'How wide the card is allowed to get.' },
+      {
+        name: 'backdrop',
+        type: 'string',
+        default: "'#0C577B'",
+        description: "What is painted behind the card. An extension's iframe has an opaque canvas, so a transparent page shows black rather than BlueOS.",
+      },
+    ],
+    slots: [
+      { name: 'default', type: '', description: 'The page.' },
+      { name: 'actions', type: '', description: 'Buttons at the right of the title bar.' },
+      { name: 'footer', type: '', description: 'A strip under the body.' },
+    ],
+    snippet: `<BlueApp title="SITL Manager" :logo="logo">
+  <template #actions>
+    <BlueButton variant="icon" icon="mdi-refresh" tooltip="Refresh" @click="reload" />
+  </template>
+
+  <StatusPanel />
+  <BlueExpansiblePanel title="Vehicle & frame" theme="dark" :expanded="true">
+    <VehiclePanel />
+  </BlueExpansiblePanel>
+</BlueApp>`,
+    demo: BlueAppDemo,
+  },
+  {
+    name: 'BlueCard',
+    slug: 'blue-card',
+    group: 'Layout',
+    blurb: 'The sheet a page is laid out on.',
+    about:
+      'A titled bar over a body, raised off the backdrop, with an optional strip along the bottom. The bar carries the mark and the actions that belong to the whole sheet; anything narrower in scope belongs to the section it acts on.',
+    when: [
+      'Reach for it when a page needs a second sheet beside the one BlueApp already draws.',
+      'Keep the actions in the bar to the ones that act on everything below it.',
+    ],
+    props: [
+      { name: 'title', type: 'string', description: 'The heading in the bar.' },
+      { name: 'logo / icon', type: 'string', description: 'An image or an mdi name before the title.' },
+      { name: 'width', type: 'string', default: "'615px'", description: 'How wide the card is allowed to get.' },
+      { name: 'bodyClass', type: 'string', default: "'px-5 py-4'", description: "Replaces the body's own inset." },
+    ],
+    slots: [
+      { name: 'default', type: '', description: 'The body.' },
+      { name: 'header', type: '', description: 'Replaces the mark and the title.' },
+      { name: 'actions', type: '', description: 'Buttons at the right of the bar.' },
+      { name: 'footer', type: '', description: 'A strip under the body, laid out with space between.' },
+    ],
+    snippet: `<BlueCard title="Vehicle" icon="mdi-ferry">
+  <BlueStat label="Board" :value="status.board" />
+</BlueCard>`,
+    demo: BlueCardDemo,
+  },
+  {
+    name: 'BlueSection',
+    slug: 'blue-section',
+    group: 'Layout',
+    blurb: 'A subject inside a panel.',
+    about:
+      'A quiet heading over a stack of rows, evenly spaced. Smaller than a BlueExpansiblePanel, which is a section of the page rather than a part of one, and not foldable. Notes about the subject sit on the heading line, where they are read before the rows they qualify.',
+    when: [
+      'Reach for it to group the fields inside a panel by what they are about: wind, then waves.',
+      'Use a BlueExpansiblePanel instead when the group is large enough to be worth hiding.',
+    ],
+    props: [
+      { name: 'title', type: 'string', description: 'The heading.' },
+      { name: 'gap', type: 'number', default: '12', description: 'Space between the rows, in pixels.' },
+    ],
+    slots: [
+      { name: 'default', type: '', description: 'The rows.' },
+      { name: 'notes', type: '', description: 'Beside the heading, for a BlueBannerGroup qualifying the subject.' },
+    ],
+    snippet: `<BlueSection title="Wind">
+  <template #notes>
+    <BlueBannerGroup :banners="windNotes" />
+  </template>
+
+  <BlueSlider v-model="speed" name="wind-speed" label="Speed" theme="dark" :min="0" :max="60" />
+</BlueSection>`,
+    demo: BlueSectionDemo,
+  },
+  {
+    name: 'BlueStat',
+    slug: 'blue-stat',
+    group: 'Display',
+    blurb: 'One read-only fact, in a row of them.',
+    about:
+      'A quiet label over its value, in a box that takes an equal share of the row and wraps to the next line when there is no room. A value that has not arrived yet reads as an em dash rather than as an empty box, and a value too long for its box keeps the whole of itself in the hover text.',
+    when: [
+      'Reach for a row of them to say what the vehicle currently is: board, firmware, frame.',
+      'Use a BlueInput instead the moment the reader is meant to change it.',
+    ],
+    props: [
+      { name: 'label', type: 'string', description: 'What the fact is.' },
+      { name: 'value', type: 'string | number | null', description: 'The fact. Null, undefined and empty all read as absent.' },
+      { name: 'placeholder', type: 'string', default: "'—'", description: 'What to show while there is no value.' },
+    ],
+    snippet: `<div class="flex flex-wrap gap-2">
+  <BlueStat label="Board" :value="status?.board" />
+  <BlueStat label="Firmware" :value="status?.firmware_version" />
+</div>`,
+    demo: BlueStatDemo,
+  },
   {
     name: 'BlueExpansiblePanel',
     slug: 'blue-expansible-panel',
