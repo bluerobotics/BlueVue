@@ -31,10 +31,20 @@ export { default as BlueTextarea } from './components/BlueTextarea.vue'
 export { default as BlueTooltip } from './components/BlueTooltip.vue'
 
 export { type BlueLoadingState, useBlueLoading } from './composables/useBlueLoading'
+export { type BlueOsHost, useBlueOs, useBlueOsSetting } from './composables/useBlueOs'
 export { useBluePopover } from './composables/useBluePopover'
 export { type BlueNotice, type BlueNoticeSeverity, useBlueSnackbar } from './composables/useBlueSnackbar'
 
 export type { BannerContent, BannerSeverity } from './types/banner'
+
+export {
+  BlueOsError,
+  type BlueOsService,
+  blueOsService,
+  type BlueOsServiceOptions,
+  isBlueOsExtension,
+  setBlueOsHost,
+} from './services/blueos'
 
 export { downloadJson, pickJsonFile } from './utils/files'
 export { applyBlueTheme, type BlueTheme } from './utils/theme'

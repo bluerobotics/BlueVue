@@ -17,6 +17,7 @@ import BlueInputDemo from './demos/BlueInputDemo.vue'
 import BlueJobDialogDemo from './demos/BlueJobDialogDemo.vue'
 import BlueLoadingDialogDemo from './demos/BlueLoadingDialogDemo.vue'
 import BlueMenuDemo from './demos/BlueMenuDemo.vue'
+import BlueOsDemo from './demos/BlueOsDemo.vue'
 import BlueProgressBarDemo from './demos/BlueProgressBarDemo.vue'
 import BluePromptDialogDemo from './demos/BluePromptDialogDemo.vue'
 import BlueRadioGroupDemo from './demos/BlueRadioGroupDemo.vue'
@@ -40,7 +41,7 @@ export interface ApiRow {
   description: string
 }
 
-export type DocGroup = 'Layout' | 'Controls' | 'Overlays' | 'Feedback' | 'Display'
+export type DocGroup = 'Layout' | 'Controls' | 'Overlays' | 'Feedback' | 'Display' | 'BlueOS'
 
 export interface ComponentDoc {
   /** The name it is imported and written as. */
@@ -65,7 +66,7 @@ export interface ComponentDoc {
 }
 
 /** The order the gallery lays the groups out in: the page first, then what goes on it. */
-export const GROUPS: DocGroup[] = ['Layout', 'Controls', 'Display', 'Overlays', 'Feedback']
+export const GROUPS: DocGroup[] = ['Layout', 'Controls', 'Display', 'Overlays', 'Feedback', 'BlueOS']
 
 const THEME_ROW: ApiRow = {
   name: 'theme',
@@ -1031,5 +1032,62 @@ notify('Configuration applied', { severity: 'success' })
     ],
     snippet: '<BlueSpinner :size="16" label="Reading the vehicle" />',
     demo: BlueSpinnerDemo,
+  },
+  {
+    name: 'useBlueOs',
+    slug: 'use-blue-os',
+    group: 'BlueOS',
+    blurb: 'What the vehicle running the extension says about itself.',
+    about:
+      "An extension is served from BlueOS's own origin, so its services answer a plain relative path and nothing has to be configured to reach them. This reads the three things a page usually wants in its title bar, and useBlueOsSetting keeps a value on the vehicle instead of in this browser, so an extension is configured once and found configured from every machine that opens it. For anything else, blueOsService wraps a service by name.",
+    when: [
+      'Reach for it to name the vehicle in your own interface, or to store a setting that belongs to the vehicle rather than to the person looking at it.',
+      'Call setBlueOsHost while developing off the vehicle, since a development server has no BlueOS behind it.',
+    ],
+    extraApi: [
+      {
+        title: 'useBlueOs()',
+        rows: [
+          { name: 'vehicleName', type: 'Ref<string | null>', description: 'What the vehicle is called.' },
+          { name: 'hostname', type: 'Ref<string | null>', description: 'The address it answers to, without .local.' },
+          { name: 'version', type: 'Ref<string | null>', description: 'The BlueOS image running, as its docker tag.' },
+          { name: 'embedded', type: 'boolean', description: 'Whether BlueOS is serving this page.' },
+          { name: 'error', type: 'Ref<BlueOsError | null>', description: 'Why the last read failed, or null.' },
+          { name: 'refresh()', type: '() => Promise<void>', description: 'Reads all three again.' },
+        ],
+      },
+      {
+        title: 'useBlueOsSetting(path, fallback)',
+        rows: [
+          { name: 'path', type: 'string', description: "Where it is kept, as 'extension-name/setting'. Slashes nest." },
+          { name: 'fallback', type: 'T', description: 'What it reads as until the stored value arrives.' },
+          { name: 'returns', type: 'Ref<T>', description: 'Written back on assignment, at most twice a second, and flushed if the page closes first.' },
+        ],
+      },
+      {
+        title: 'blueOsService(name, options)',
+        rows: [
+          { name: 'name', type: 'string', description: "The service as nginx exposes it: 'beacon', 'bag', 'kraken', 'ardupilot-manager'." },
+          { name: 'options.version', type: 'string | null', default: "'v1.0'", description: 'The API version to address.' },
+          { name: 'options.timeout', type: 'number', default: '5000', description: 'How long a call may take before it is given up on.' },
+          { name: 'get / post / delete', type: '<T>(path, ...) => Promise<T>', description: 'Parse JSON, and raise BlueOsError on anything else.' },
+          { name: 'url(path)', type: '(path: string) => string', description: 'The absolute path, for a request these verbs do not cover.' },
+        ],
+      },
+      {
+        title: 'Also exported',
+        rows: [
+          { name: 'setBlueOsHost(url)', type: '(url: string) => void', description: "Points the services at a vehicle that is not this origin, such as 'http://blueos.local'." },
+          { name: 'isBlueOsExtension()', type: '() => boolean', description: 'Whether this page is being served under /extensionv2/.' },
+          { name: 'BlueOsError', type: 'class', description: 'Carries the url and the status, which is 0 when the vehicle could not be reached at all.' },
+        ],
+      },
+    ],
+    snippet: `const { vehicleName, version } = useBlueOs()
+const speed = useBlueOsSetting('my-extension/sim-speed', 1)
+
+const kraken = blueOsService('kraken')
+const extensions = await kraken.get<Extension[]>('extension')`,
+    demo: BlueOsDemo,
   },
 ]
