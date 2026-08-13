@@ -179,3 +179,13 @@ npm run dev         # the gallery on http://localhost:8090
 npm run build       # dist/bluevue.js, dist/index.d.ts and dist/style.css
 npm run docs:build  # the gallery as a static site, in docs-dist
 ```
+
+## Start an extension
+
+```bash
+npx @bluerobotics/bluevue my-extension
+```
+
+That copies a Vite + Vue frontend already wired to this package, a FastAPI backend that answers
+`/register_service` with `works_in_relative_paths`, a Dockerfile carrying the labels BlueOS
+installs from, and a GitHub workflow that builds the image.

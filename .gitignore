@@ -2,4 +2,5 @@ node_modules
 dist
 docs-dist
 *.local
+*.tgz
 .DS_Store

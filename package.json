@@ -21,8 +21,13 @@
   ],
   "files": [
     "dist",
-    "src"
+    "src",
+    "bin",
+    "templates"
   ],
+  "bin": {
+    "create-blueos-extension": "./bin/create-blueos-extension.mjs"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
