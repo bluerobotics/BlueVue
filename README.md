@@ -116,6 +116,7 @@ through `applyBlueTheme({ primary: '#0B5087' })`:
 | `BlueCheckbox` | A plain yes or no, indeterminate included |
 | `BlueFileDrop` | A place to drop a file on, or press to choose one |
 | `BlueInput` | Text or number field, with a suffix, bounds and validation messages |
+| `BlueWindRose` | A heading, typed or pointed on a compass rose |
 | `BlueRadioGroup` | One choice out of a few, each spelled out |
 | `BlueSelect` | Single or multiple selection from a list |
 | `BlueSlider` | Range with a value pill, editable on double-click |
@@ -139,7 +140,7 @@ through `applyBlueTheme({ primary: '#0B5087' })`:
 | --- | --- |
 | `BlueDialog` | The base every dialog is built on, over the native `<dialog>` |
 | `BlueConfirmDialog` | Asks before something irreversible |
-| `BlueJobDialog` | Reports a job of several steps, with its log |
+| `BlueStepsDialog` | Reports work of several steps, with its log |
 | `BlueMenu` | Action dropdown, anchored to an activator or to a pointer position |
 | `BluePromptDialog` | Asks for a name, and optionally a note |
 | `BlueTooltip` | A hint on hover or focus |
@@ -159,7 +160,7 @@ through `applyBlueTheme({ primary: '#0B5087' })`:
 | --- | --- |
 | `useBlueSnackbar` | Raises a notice, or reports a failed call, from anywhere |
 | `useBlueLoading` | Blocks the page while something is running |
-| `useBlueOs` | What the vehicle calls itself, its address and its version |
+| `useBlueOs` | What the vehicle calls itself, its version, and its look |
 | `useBlueOsSetting` | A value kept on the vehicle rather than in this browser |
 | `blueOsService` | Any BlueOS service by name, with JSON and errors handled |
 | `useBluePopover` | The top-layer placement the menus and tooltips are built on |

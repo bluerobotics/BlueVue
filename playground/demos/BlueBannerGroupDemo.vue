@@ -9,11 +9,11 @@ const notes: BannerContent[] = [
 </script>
 
 <template>
-  <div class="max-w-[420px]">
+  <div class="w-full">
     <BlueBannerGroup :banners="notes" />
     <p class="mt-4 text-xs text-[#ffffff66]">
-      The row is narrower than any of the messages, so the opened note takes the room the others
-      leave.
+      The opened note takes the room the others leave. A message longer than that room loses its
+      tail to an ellipsis.
     </p>
   </div>
 </template>

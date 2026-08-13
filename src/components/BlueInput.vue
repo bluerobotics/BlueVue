@@ -55,6 +55,12 @@
       >
         <!-- Always a text input, even for numbers: a native number input reports a half-typed
              value ('-', '-27.') as an empty string, which would wipe the model mid-keystroke. -->
+        <div
+          v-if="$slots.prepend"
+          class="flex shrink-0 items-center pl-2"
+        >
+          <slot name="prepend" />
+        </div>
         <input
           :id="name"
           ref="inputRef"
@@ -65,8 +71,9 @@
           :disabled="disabled"
           :autofocus="autofocus"
           :inputmode="type === 'number' ? 'decimal' : undefined"
-          class="w-full min-w-0 bg-transparent pl-4 text-sm font-medium outline-none"
+          class="w-full min-w-0 bg-transparent text-sm font-medium outline-none"
           :class="[
+            $slots.prepend ? 'pl-1' : 'pl-4',
             suffix ? 'pr-1' : 'pr-4',
             theme === 'dark' ? 'text-white placeholder:text-[#ffffff44]' : 'text-black placeholder:text-[#00000055]',
           ]"

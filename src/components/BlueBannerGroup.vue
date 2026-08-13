@@ -33,13 +33,13 @@ function onToggle(text: string, open: boolean): void {
 </script>
 
 <template>
-  <div class="flex min-w-0 items-center gap-2">
+  <div class="flex w-full min-w-0 items-center gap-2">
     <BlueBanner
       v-for="banner in props.banners"
       :key="banner.text"
       v-bind="banner"
       :expanded="opened === banner.text"
-      :class="opened === banner.text ? 'min-w-0 shrink' : 'shrink-0'"
+      :class="opened === banner.text ? 'min-w-0 flex-1 !w-auto' : 'shrink-0'"
       :style="{ order: orderOf(banner) }"
       @update:expanded="onToggle(banner.text, $event)"
     />

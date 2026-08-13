@@ -19,11 +19,12 @@ function refresh(): void {
   <div>
     <!-- The page fills whatever it is given, so the preview gives it a window rather than the
          whole of the documentation page. -->
-    <div class="h-[420px] overflow-hidden rounded-[8px] border border-[#ffffff14]">
+    <div class="overflow-hidden rounded-[8px] border border-[#ffffff14]">
       <BlueApp
+        class="!min-h-full"
         title="SITL Manager"
         icon="mdi-ferry"
-        width="520px"
+        width="100%"
       >
         <template #actions>
           <BlueButton

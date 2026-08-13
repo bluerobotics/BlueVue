@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
 
-import { BlueButton, type BlueJobStep, BlueJobDialog } from '../../src'
+import { BlueButton, type BlueStep, BlueStepsDialog } from '../../src'
 
 const open = ref(false)
 const written = ref(0)
@@ -11,7 +11,7 @@ let timer: number | undefined
 
 const STAGES = ['Firmware', 'Parameters', 'Restart', 'Read back']
 
-const steps = computed<BlueJobStep[]>(() =>
+const steps = computed<BlueStep[]>(() =>
   STAGES.map((title, index) => ({
     key: title,
     title,
@@ -75,7 +75,7 @@ onBeforeUnmount(stop)
       Apply and restart
     </BlueButton>
 
-    <BlueJobDialog
+    <BlueStepsDialog
       v-model="open"
       title="Applying BlueBoat"
       :subtitle="failed ? 'The autopilot did not come back' : 'Working…'"
@@ -122,6 +122,6 @@ onBeforeUnmount(stop)
           </BlueButton>
         </div>
       </template>
-    </BlueJobDialog>
+    </BlueStepsDialog>
   </div>
 </template>

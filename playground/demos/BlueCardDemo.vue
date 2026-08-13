@@ -6,7 +6,7 @@ import { BlueButton, BlueCard, BlueStat } from '../../src'
   <BlueCard
     title="Vehicle"
     icon="mdi-ferry"
-    width="460px"
+    width="100%"
   >
     <template #actions>
       <BlueButton

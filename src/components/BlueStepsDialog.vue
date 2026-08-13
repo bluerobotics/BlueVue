@@ -5,8 +5,8 @@ import BlueDialog from './BlueDialog.vue'
 import BlueIcon from './BlueIcon.vue'
 import BlueProgressBar from './BlueProgressBar.vue'
 
-/** One stage of the job, in the order it runs. */
-export interface BlueJobStep {
+/** One stage of the work, in the order it runs. */
+export interface BlueStep {
   key: string
   title: string
   state: 'pending' | 'running' | 'done' | 'failed' | 'skipped'
@@ -16,17 +16,17 @@ export interface BlueJobStep {
 
 /**
  * Reports on work with stages to it: installing firmware, writing parameters, restarting. The
- * dialog holds the page while the job is running and lets go the moment it is not, so a job that
+ * dialog holds the page while the work is running and lets go the moment it is not, so a run that
  * ends in a failure can be read, retried or skipped from the footer.
  */
 const props = defineProps<{
   modelValue: boolean
   title: string
-  /** What the job is doing right now, under the title. */
+  /** What the current stage is doing, under the title. */
   subtitle?: string
   /** Running holds the page; the other two release it. */
   state: 'running' | 'failed' | 'done'
-  steps: BlueJobStep[]
+  steps: BlueStep[]
   /** The line above the bar, naming what is being worked through. */
   progressLabel?: string
   /** Percentage of the current stage, when the stage can count itself. */

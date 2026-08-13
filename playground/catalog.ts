@@ -14,7 +14,7 @@ import BlueExpansiblePanelDemo from './demos/BlueExpansiblePanelDemo.vue'
 import BlueFileDropDemo from './demos/BlueFileDropDemo.vue'
 import BlueIconDemo from './demos/BlueIconDemo.vue'
 import BlueInputDemo from './demos/BlueInputDemo.vue'
-import BlueJobDialogDemo from './demos/BlueJobDialogDemo.vue'
+import BlueStepsDialogDemo from './demos/BlueStepsDialogDemo.vue'
 import BlueLoadingDialogDemo from './demos/BlueLoadingDialogDemo.vue'
 import BlueMenuDemo from './demos/BlueMenuDemo.vue'
 import BlueOsDemo from './demos/BlueOsDemo.vue'
@@ -32,6 +32,7 @@ import BlueTableDemo from './demos/BlueTableDemo.vue'
 import BlueTabsDemo from './demos/BlueTabsDemo.vue'
 import BlueTextareaDemo from './demos/BlueTextareaDemo.vue'
 import BlueTooltipDemo from './demos/BlueTooltipDemo.vue'
+import BlueWindRoseDemo from './demos/BlueWindRoseDemo.vue'
 
 /** One row of a component's API: a prop, an event or a slot. */
 export interface ApiRow {
@@ -97,6 +98,11 @@ export const catalog: ComponentDoc[] = [
         type: 'string',
         default: "'#0C577B'",
         description: "What is painted behind the card. An extension's iframe has an opaque canvas, so a transparent page shows black rather than BlueOS.",
+      },
+      {
+        name: 'ignoreHostTheme',
+        type: 'boolean',
+        description: "Keeps the kit's own primary instead of the vehicle's.",
       },
     ],
     slots: [
@@ -334,7 +340,10 @@ export const catalog: ComponentDoc[] = [
       THEME_ROW,
     ],
     events: [{ name: 'update:modelValue', type: '(value: string | number)', description: 'A new value was typed.' }],
-    slots: [{ name: 'insetElement', type: '', description: 'Something to sit between the label and the field.' }],
+    slots: [
+      { name: 'insetElement', type: '', description: 'Something to sit between the label and the field.' },
+      { name: 'prepend', type: '', description: 'A control inside the field, before the value.' },
+    ],
     snippet: `<BlueInput
   v-model="latitude"
   name="latitude"
@@ -345,6 +354,39 @@ export const catalog: ComponentDoc[] = [
   :step="0.001"
 />`,
     demo: BlueInputDemo,
+  },
+  {
+    name: 'BlueWindRose',
+    slug: 'blue-wind-rose',
+    group: 'Controls',
+    blurb: 'A heading, typed or pointed on a rose.',
+    about:
+      'A number field for a direction around a circle, 0° to 360° by default, wrapping at the ends so 360 and 0 are the same heading. The compass beside the value opens a rose: click or drag the needle to set it, and the field stays there to type an exact figure. min and max remap the same circle onto another range, such as −180° to 180°.',
+    when: [
+      'Reach for it for a heading, a course, or any other value that lives on a circle.',
+      'Use a BlueSlider instead when the value is a magnitude rather than a direction.',
+    ],
+    props: [
+      { name: 'modelValue', type: 'number | null', description: 'The heading, through v-model.' },
+      { name: 'min / max', type: 'number', default: '0 / 360', description: 'The circle the value wraps around.' },
+      { name: 'step', type: 'number', default: '1', description: 'How far the rose snaps, and the field\'s arrow keys.' },
+      { name: 'suffix', type: 'string', default: "'°'", description: 'Unit shown inside the field.' },
+      { name: 'label', type: 'string', description: 'Label on the left of the row.' },
+      { name: 'name', type: 'string', description: 'Name and id, tying the label to the field.' },
+      { name: 'errorMessages', type: 'string[]', description: 'Validation messages, which also outline the field.' },
+      { name: 'infoTooltip', type: 'string', description: 'A hint behind an info icon beside the field.' },
+      { name: 'disabled', type: 'boolean', description: 'Fades and takes the field and rose out of reach.' },
+      { name: 'width / height', type: 'string', default: "height '30px'", description: 'Size of the field itself, not of the row.' },
+      THEME_ROW,
+    ],
+    events: [{ name: 'update:modelValue', type: '(value: number)', description: 'A new heading was typed or pointed.' }],
+    snippet: `<BlueWindRose
+  v-model="heading"
+  name="heading"
+  label="Heading"
+  theme="dark"
+/>`,
+    demo: BlueWindRoseDemo,
   },
   {
     name: 'BlueSelect',
@@ -748,7 +790,7 @@ export const catalog: ComponentDoc[] = [
       'A frosted panel in the browser\'s top layer, with an optional header, a body and an optional footer. Being a native modal it dims the page itself, keeps focus inside, and closes on Escape and on the backdrop. Made persistent it does none of those and offers no way out, which is what an operation that must not be interrupted needs.',
     when: [
       'Reach for it for a dialog the kit does not already have: an editor, a picker, a report.',
-      'Use BlueConfirmDialog, BluePromptDialog or BlueJobDialog when one of them already says what you mean.',
+      'Use BlueConfirmDialog, BluePromptDialog or BlueStepsDialog when one of them already says what you mean.',
       'Keep the footer to two actions: the way out on the left, the committing one on the right.',
     ],
     props: [
@@ -809,22 +851,22 @@ export const catalog: ComponentDoc[] = [
     demo: BlueConfirmDialogDemo,
   },
   {
-    name: 'BlueJobDialog',
-    slug: 'blue-job-dialog',
+    name: 'BlueStepsDialog',
+    slug: 'blue-steps-dialog',
     group: 'Overlays',
     blurb: 'Work with stages to it, reported as it goes.',
     about:
-      'The pattern behind installing firmware, writing parameters and waiting for a restart: a row of stages, a bar for the one in flight, and a log of what has happened. It holds the page while the job is running and lets go the moment it is not, so a job that ends in a failure can be read, retried or skipped from the footer. The log follows its own tail, unless the reader has scrolled up, in which case it leaves them where they are.',
+      'The pattern behind installing firmware, writing parameters and waiting for a restart: a row of stages, a bar for the one in flight, and a log of what has happened. It holds the page while the work is running and lets go the moment it is not, so a run that ends in a failure can be read, retried or skipped from the footer. The log follows its own tail, unless the reader has scrolled up, in which case it leaves them where they are.',
     when: [
       'Reach for it for anything long enough that the reader would otherwise wonder whether it is still going.',
       'Use a BlueLoadingDialog instead when the work has no stages worth showing.',
     ],
     props: [
       { name: 'modelValue', type: 'boolean', description: 'Whether the dialog is up, through v-model.' },
-      { name: 'title', type: 'string', description: 'What the job is.' },
+      { name: 'title', type: 'string', description: 'What the work is.' },
       { name: 'subtitle', type: 'string', description: 'What it is doing right now.' },
       { name: 'state', type: "'running' | 'failed' | 'done'", description: 'Running holds the page; the other two release it.' },
-      { name: 'steps', type: 'BlueJobStep[]', description: 'key, title, state, and optionally detail.' },
+      { name: 'steps', type: 'BlueStep[]', description: 'key, title, state, and optionally detail.' },
       { name: 'progress', type: 'number', description: 'Percentage of the stage in flight, when it can count itself.' },
       { name: 'indeterminate', type: 'boolean', description: 'For a stage that can only say it is waiting.' },
       { name: 'progressLabel', type: 'string', description: 'The line above the bar.' },
@@ -835,19 +877,19 @@ export const catalog: ComponentDoc[] = [
       { name: 'badges', type: '', description: 'Counts at the right of the progress line.' },
       { name: 'footer', type: '', description: 'A hint on the left, the actions on the right.' },
     ],
-    snippet: `<BlueJobDialog
+    snippet: `<BlueStepsDialog
   v-model="open"
   title="Applying BlueBoat"
-  :state="job.state"
-  :steps="job.steps"
-  :progress="job.done / job.total * 100"
-  :progress-label="\`\${job.done}/\${job.total} parameters processed\`"
+  :state="run.state"
+  :steps="run.steps"
+  :progress="run.done / run.total * 100"
+  :progress-label="\`\${run.done}/\${run.total} parameters processed\`"
 >
   <template #log>
-    <div v-for="record in job.records" :key="record.name">{{ record.name }}</div>
+    <div v-for="record in run.records" :key="record.name">{{ record.name }}</div>
   </template>
-</BlueJobDialog>`,
-    demo: BlueJobDialogDemo,
+</BlueStepsDialog>`,
+    demo: BlueStepsDialogDemo,
   },
   {
     name: 'BluePromptDialog',
@@ -1039,7 +1081,7 @@ notify('Configuration applied', { severity: 'success' })
     group: 'BlueOS',
     blurb: 'What the vehicle running the extension says about itself.',
     about:
-      "An extension is served from BlueOS's own origin, so its services answer a plain relative path and nothing has to be configured to reach them. This reads the three things a page usually wants in its title bar, and useBlueOsSetting keeps a value on the vehicle instead of in this browser, so an extension is configured once and found configured from every machine that opens it. For anything else, blueOsService wraps a service by name.",
+      "An extension is served from BlueOS's own origin, so its services answer a plain relative path and nothing has to be configured to reach them. This reads the vehicle's name, address, version and look. Each field stays at its default when that particular call fails, so a page opened off the vehicle still renders. useBlueOsSetting keeps a value on the vehicle instead of in this browser. For anything else, blueOsService wraps a service by name.",
     when: [
       'Reach for it to name the vehicle in your own interface, or to store a setting that belongs to the vehicle rather than to the person looking at it.',
       'Call setBlueOsHost while developing off the vehicle, since a development server has no BlueOS behind it.',
@@ -1051,9 +1093,12 @@ notify('Configuration applied', { severity: 'success' })
           { name: 'vehicleName', type: 'Ref<string | null>', description: 'What the vehicle is called.' },
           { name: 'hostname', type: 'Ref<string | null>', description: 'The address it answers to, without .local.' },
           { name: 'version', type: 'Ref<string | null>', description: 'The BlueOS image running, as its docker tag.' },
+          { name: 'primaryColor', type: 'Ref<string | null>', description: 'The vehicle\'s primary colour, as #RRGGBB.' },
+          { name: 'isDarkTheme', type: 'Ref<boolean>', description: 'Whether BlueOS itself is in dark mode.' },
+          { name: 'isPirateMode', type: 'Ref<boolean>', description: 'Whether BlueOS is in pirate mode.' },
           { name: 'embedded', type: 'boolean', description: 'Whether BlueOS is serving this page.' },
-          { name: 'error', type: 'Ref<BlueOsError | null>', description: 'Why the last read failed, or null.' },
-          { name: 'refresh()', type: '() => Promise<void>', description: 'Reads all three again.' },
+          { name: 'error', type: 'Ref<BlueOsError | null>', description: 'Why the identity read failed, or null.' },
+          { name: 'refresh()', type: '() => Promise<void>', description: 'Reads everything again.' },
         ],
       },
       {

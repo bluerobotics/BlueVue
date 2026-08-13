@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { watch } from 'vue'
+
 import { useBlueLoading } from '../composables/useBlueLoading'
+import { useBlueOs } from '../composables/useBlueOs'
+import { applyBlueTheme } from '../utils/theme'
 import BlueCard from './BlueCard.vue'
 import BlueLoadingDialog from './BlueLoadingDialog.vue'
 import BlueSnackbar from './BlueSnackbar.vue'
@@ -9,7 +13,7 @@ import BlueSnackbar from './BlueSnackbar.vue'
  * pieces of feedback every extension needs mounted once. Wrap your panels in it and the notices
  * raised through useBlueSnackbar and the waits raised through useBlueLoading appear by themselves.
  */
-defineProps<{
+const props = defineProps<{
   title: string
   /** An image beside the title, such as the extension's own mark. */
   logo?: string
@@ -23,9 +27,20 @@ defineProps<{
    * page behind it.
    */
   backdrop?: string
+  /** Keep the kit's own primary instead of the vehicle's. */
+  ignoreHostTheme?: boolean
 }>()
 
 const { loading, hideLoading } = useBlueLoading()
+const { primaryColor } = useBlueOs()
+
+watch(
+  primaryColor,
+  (color) => {
+    if (!props.ignoreHostTheme && color) applyBlueTheme({ primary: color })
+  },
+  { immediate: true }
+)
 </script>
 
 <template>

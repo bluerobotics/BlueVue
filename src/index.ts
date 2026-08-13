@@ -12,7 +12,7 @@ export { default as BlueExpansiblePanel } from './components/BlueExpansiblePanel
 export { default as BlueFileDrop } from './components/BlueFileDrop.vue'
 export { default as BlueIcon } from './components/BlueIcon.vue'
 export { default as BlueInput } from './components/BlueInput.vue'
-export { default as BlueJobDialog, type BlueJobStep } from './components/BlueJobDialog.vue'
+export { default as BlueStepsDialog, type BlueStep } from './components/BlueStepsDialog.vue'
 export { default as BlueLoadingDialog } from './components/BlueLoadingDialog.vue'
 export { default as BlueMenu, type BlueMenuItem } from './components/BlueMenu.vue'
 export { default as BlueProgressBar } from './components/BlueProgressBar.vue'
@@ -29,6 +29,7 @@ export { default as BlueTable, type BlueColumn } from './components/BlueTable.vu
 export { default as BlueTabs, type BlueTab } from './components/BlueTabs.vue'
 export { default as BlueTextarea } from './components/BlueTextarea.vue'
 export { default as BlueTooltip } from './components/BlueTooltip.vue'
+export { default as BlueWindRose } from './components/BlueWindRose.vue'
 
 export { type BlueLoadingState, useBlueLoading } from './composables/useBlueLoading'
 export { type BlueOsHost, useBlueOs, useBlueOsSetting } from './composables/useBlueOs'

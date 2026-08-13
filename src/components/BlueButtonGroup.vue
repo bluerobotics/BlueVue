@@ -246,9 +246,9 @@ let longPressFired = false
 // The inset each density gives a button name, paired with the total width it costs so the
 // measurements below can reason about the group without reading it back from the DOM.
 const DENSITY_PADDING = {
-  compact: { class: 'px-2', total: 16 },
-  regular: { class: 'px-3', total: 24 },
-  comfortable: { class: 'px-4', total: 32 },
+  compact: { class: 'px-[11px]', total: 22 },
+  regular: { class: 'px-[15px]', total: 30 },
+  comfortable: { class: 'px-[19px]', total: 38 },
 } as const
 
 // Once the buttons' natural width would exceed this, cap each label so long names

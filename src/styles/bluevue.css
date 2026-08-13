@@ -175,6 +175,9 @@
    pixels around its icon. */
 .bluevue-banner__text {
   padding: 0 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Width is the whole of the animation: the row is as tall as its icon whether it is shut or open,

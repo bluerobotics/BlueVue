@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import { type BannerContent, BlueBannerGroup, BlueSection, BlueSlider, BlueSwitch } from '../../src'
 
 const speed = ref(12)
+const waveHeight = ref(2)
 const gusts = ref(false)
 
 const notes: BannerContent[] = [
@@ -36,7 +37,7 @@ const notes: BannerContent[] = [
 
     <BlueSection title="Waves & current">
       <BlueSlider
-        v-model="speed"
+        v-model="waveHeight"
         name="wave-height"
         label="Wave height"
         theme="dark"

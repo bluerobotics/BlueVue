@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { BlueBanner, BlueButton, BlueStat, BlueSwitch, useBlueOs, useBlueOsSetting } from '../../src'
 
-const { vehicleName, hostname, version, embedded, error, refresh } = useBlueOs()
+const { vehicleName, hostname, version, primaryColor, isDarkTheme, isPirateMode, embedded, error, refresh } = useBlueOs()
 
 const verbose = useBlueOsSetting('bluevue-docs/verbose', false)
 </script>
 
 <template>
-  <div class="flex w-[460px] flex-col gap-3">
+  <div class="flex w-full flex-col gap-3">
     <BlueBanner
       v-if="error"
       severity="info"
@@ -26,6 +26,18 @@ const verbose = useBlueOsSetting('bluevue-docs/verbose', false)
       <BlueStat
         label="BlueOS"
         :value="version"
+      />
+      <BlueStat
+        label="Primary"
+        :value="primaryColor"
+      />
+      <BlueStat
+        label="Dark theme"
+        :value="isDarkTheme ? 'yes' : 'no'"
+      />
+      <BlueStat
+        label="Pirate mode"
+        :value="isPirateMode ? 'on' : 'off'"
       />
     </div>
 

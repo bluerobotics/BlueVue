@@ -45,16 +45,16 @@
             backgroundColor: modelValue ? color || 'var(--bluevue-primary)' : '#777777',
           }"
         />
-        <!-- 6px, of which the knob's 2px inset takes the first two: what is left is the 4px the
+        <!-- 9px, of which the knob's 2px inset takes the first two: what is left is the 7px the
              label keeps from the knob's edge. -->
         <span
-          class="relative flex items-center justify-center px-[6px] text-[14px] whitespace-nowrap pointer-events-none transition-opacity duration-300"
+          class="relative flex items-center justify-center px-[9px] text-[14px] whitespace-nowrap pointer-events-none transition-opacity duration-300"
           :class="labelClass(!modelValue)"
         >
           {{ labelOff || 'Off' }}
         </span>
         <span
-          class="relative flex items-center justify-center px-[6px] text-[14px] whitespace-nowrap pointer-events-none transition-opacity duration-300"
+          class="relative flex items-center justify-center px-[9px] text-[14px] whitespace-nowrap pointer-events-none transition-opacity duration-300"
           :class="labelClass(modelValue)"
         >
           {{ labelOn || 'On' }}

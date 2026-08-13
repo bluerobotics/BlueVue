@@ -52,13 +52,12 @@ const stacked = computed(() => (props.position?.startsWith('top') ? [...notices.
       <div
         v-for="notice in stacked"
         :key="notice.id"
-        class="bluevue-panel pointer-events-auto flex items-start gap-3 rounded-[6px] py-2 pl-3 pr-2 text-white"
+        class="bluevue-panel pointer-events-auto flex items-center gap-3 rounded-[6px] py-2 pl-3 pr-2 text-white"
       >
         <BlueIcon
           :name="LOOK[notice.severity].icon"
           :size="18"
           :color="LOOK[notice.severity].color"
-          class="mt-[1px]"
         />
         <span class="min-w-0 flex-1 text-[13px] leading-snug">
           {{ notice.text }}
