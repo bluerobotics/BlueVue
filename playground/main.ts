@@ -3,6 +3,6 @@ import './playground.css'
 
 import { createApp } from 'vue'
 
-import Playground from './Playground.vue'
+import App from './App.vue'
 
-createApp(Playground).mount('#app')
+createApp(App).mount('#app')
