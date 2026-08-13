@@ -22,20 +22,20 @@
     <!-- Shrinks far more eagerly than the label, so a tight row ellipsizes the button names
          before it starts eating into the label. -->
     <div class="flex items-center min-w-0 shrink-[1000]">
-      <div
+      <BlueTooltip
         v-if="infoTooltip"
-        class="relative group inline-flex items-center shrink-0 mr-2"
+        :text="infoTooltip"
+        :theme="theme"
+        class="items-center shrink-0 mr-2"
       >
-        <span
-          class="mdi mdi-information-outline text-[16px] opacity-60 cursor-help"
+        <BlueIcon
+          name="mdi-information-outline"
+          :size="16"
+          :label="infoTooltip"
+          class="opacity-60 cursor-help"
           :class="theme === 'dark' ? 'text-white' : 'text-black'"
         />
-        <div
-          class="absolute bottom-full mb-1 right-0 hidden group-hover:block w-max max-w-[280px] px-2 py-1 text-xs rounded bg-gray-700 text-white z-[1000]"
-        >
-          {{ infoTooltip }}
-        </div>
-      </div>
+      </BlueTooltip>
       <div
         ref="trackRef"
         class="relative flex min-w-0 justify-end overflow-hidden rounded-[6px] bluevue-elevation-1 z-[666]"
@@ -76,21 +76,21 @@
             @pointerleave="cancelLongPress"
             @pointercancel="cancelLongPress"
           >
-            <div class="relative group inline-block min-w-0">
-              <p
+            <BlueTooltip
+              :text="btn.tooltip || ''"
+              :theme="theme"
+              class="min-w-0"
+            >
+              <!-- A span rather than a paragraph: this is one line inside a button, and a
+                   paragraph brings margins of its own wherever the host page has no reset. -->
+              <span
                 data-bbg-label
-                class="truncate"
+                class="block truncate"
                 :class="[density === 'compact' ? 'text-[10px]' : 'text-xs', isWide ? 'max-w-[150px]' : '']"
               >
                 {{ btn.name }}
-              </p>
-              <div
-                v-if="btn.tooltip"
-                class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:block whitespace-no-wrap px-2 py-1 text-xs rounded bg-gray-700 text-white"
-              >
-                {{ btn.tooltip }}
-              </div>
-            </div>
+              </span>
+            </BlueTooltip>
           </button>
           <div
             v-if="idx < buttonItems.length - 1"
@@ -156,6 +156,8 @@
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import { useBluePopover } from '../composables/useBluePopover'
+import BlueIcon from './BlueIcon.vue'
+import BlueTooltip from './BlueTooltip.vue'
 
 /**
  * One button in the group

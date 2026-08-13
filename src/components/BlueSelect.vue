@@ -18,20 +18,20 @@
     <div v-else />
     <slot name="insetElement" />
 
-    <div
+    <BlueTooltip
       v-if="infoTooltip"
-      class="relative group inline-flex items-center shrink-0 mr-2 ml-auto"
+      :text="infoTooltip"
+      :theme="theme"
+      class="items-center shrink-0 mr-2 ml-auto"
     >
-      <span
-        class="mdi mdi-information-outline text-[16px] opacity-60 cursor-help"
+      <BlueIcon
+        name="mdi-information-outline"
+        :size="16"
+        :label="infoTooltip"
+        class="opacity-60 cursor-help"
         :class="theme === 'dark' ? 'text-white' : 'text-black'"
       />
-      <div
-        class="absolute bottom-full mb-1 right-0 hidden group-hover:block w-max max-w-[280px] px-2 py-1 text-xs rounded bg-gray-700 text-white z-[1000]"
-      >
-        {{ infoTooltip }}
-      </div>
-    </div>
+    </BlueTooltip>
 
     <div class="flex flex-col items-end min-w-0 shrink-[1000]">
       <button
@@ -112,6 +112,8 @@
 import { computed, ref, watch } from 'vue'
 
 import { useBluePopover } from '../composables/useBluePopover'
+import BlueIcon from './BlueIcon.vue'
+import BlueTooltip from './BlueTooltip.vue'
 
 /**
  * Option in the select

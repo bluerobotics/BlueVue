@@ -14,20 +14,20 @@
       >{{ label }}</label>
     </div>
     <div class="flex items-center min-w-0 shrink-[1000]">
-      <div
+      <BlueTooltip
         v-if="infoTooltip"
-        class="relative group inline-flex items-center shrink-0 mr-2"
+        :text="infoTooltip"
+        :theme="theme"
+        class="items-center shrink-0 mr-2"
       >
-        <span
-          class="mdi mdi-information-outline text-[16px] opacity-60 cursor-help"
+        <BlueIcon
+          name="mdi-information-outline"
+          :size="16"
+          :label="infoTooltip"
+          class="opacity-60 cursor-help"
           :class="theme === 'dark' ? 'text-white' : 'text-black'"
         />
-        <div
-          class="absolute bottom-full mb-1 right-0 hidden group-hover:block w-max max-w-[280px] px-2 py-1 text-xs rounded bg-gray-700 text-white z-[1000]"
-        >
-          {{ infoTooltip }}
-        </div>
-      </div>
+      </BlueTooltip>
       <!-- Both labels are laid out rather than drawn over: two equal columns take their width
            from the longer of the two, so the track grows to whatever it has to say and the knob
            covering either side has the same room. -->
@@ -66,6 +66,9 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+
+import BlueIcon from './BlueIcon.vue'
+import BlueTooltip from './BlueTooltip.vue'
 
 const props = defineProps<{
   /** Color of the switch's knob when it is on. */
