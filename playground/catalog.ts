@@ -6,9 +6,12 @@ import BlueBannerGroupDemo from './demos/BlueBannerGroupDemo.vue'
 import BlueButtonDemo from './demos/BlueButtonDemo.vue'
 import BlueButtonGroupDemo from './demos/BlueButtonGroupDemo.vue'
 import BlueCardDemo from './demos/BlueCardDemo.vue'
+import BlueCheckboxDemo from './demos/BlueCheckboxDemo.vue'
+import BlueChipDemo from './demos/BlueChipDemo.vue'
 import BlueConfirmDialogDemo from './demos/BlueConfirmDialogDemo.vue'
 import BlueDialogDemo from './demos/BlueDialogDemo.vue'
 import BlueExpansiblePanelDemo from './demos/BlueExpansiblePanelDemo.vue'
+import BlueFileDropDemo from './demos/BlueFileDropDemo.vue'
 import BlueIconDemo from './demos/BlueIconDemo.vue'
 import BlueInputDemo from './demos/BlueInputDemo.vue'
 import BlueJobDialogDemo from './demos/BlueJobDialogDemo.vue'
@@ -16,6 +19,7 @@ import BlueLoadingDialogDemo from './demos/BlueLoadingDialogDemo.vue'
 import BlueMenuDemo from './demos/BlueMenuDemo.vue'
 import BlueProgressBarDemo from './demos/BlueProgressBarDemo.vue'
 import BluePromptDialogDemo from './demos/BluePromptDialogDemo.vue'
+import BlueRadioGroupDemo from './demos/BlueRadioGroupDemo.vue'
 import BlueSectionDemo from './demos/BlueSectionDemo.vue'
 import BlueSelectDemo from './demos/BlueSelectDemo.vue'
 import BlueSliderDemo from './demos/BlueSliderDemo.vue'
@@ -23,6 +27,9 @@ import BlueSnackbarDemo from './demos/BlueSnackbarDemo.vue'
 import BlueSpinnerDemo from './demos/BlueSpinnerDemo.vue'
 import BlueStatDemo from './demos/BlueStatDemo.vue'
 import BlueSwitchDemo from './demos/BlueSwitchDemo.vue'
+import BlueTableDemo from './demos/BlueTableDemo.vue'
+import BlueTabsDemo from './demos/BlueTabsDemo.vue'
+import BlueTextareaDemo from './demos/BlueTextareaDemo.vue'
 import BlueTooltipDemo from './demos/BlueTooltipDemo.vue'
 
 /** One row of a component's API: a prop, an event or a slot. */
@@ -437,6 +444,226 @@ export const catalog: ComponentDoc[] = [
   theme="dark"
 />`,
     demo: BlueSwitchDemo,
+  },
+  {
+    name: 'BlueCheckbox',
+    slug: 'blue-checkbox',
+    group: 'Controls',
+    blurb: 'A plain yes or no in a list of settings.',
+    about:
+      'Laid out as every other control is, with what it is on the left and the box on the right, so a column of them lines up with the inputs and switches around it. A native checkbox underneath does the work, which is what makes it reachable by tab and toggled by space. A box standing for several things that disagree is shown as indeterminate, and answering it says yes to all of them.',
+    when: [
+      'Reach for it for an option whose two states need no names beyond the label itself.',
+      'Use a BlueSwitch instead when both states are worth spelling out, as Armed and Safe are.',
+    ],
+    props: [
+      { name: 'modelValue', type: 'boolean | null', description: 'The state, through v-model.' },
+      { name: 'name', type: 'string', description: 'Name and id, tying the label to the box.' },
+      { name: 'label', type: 'string', description: 'Label on the left of the row.' },
+      { name: 'indeterminate', type: 'boolean', description: 'Neither on nor off, for a box answering for several things.' },
+      { name: 'color', type: 'string', description: 'The fill when it is on.' },
+      { name: 'infoTooltip', type: 'string', description: 'A hint behind an info icon beside the box.' },
+      { name: 'disabled', type: 'boolean', description: 'Fades and takes the box out of reach.' },
+      THEME_ROW,
+    ],
+    events: [{ name: 'update:modelValue', type: '(value: boolean)', description: 'Toggled.' }],
+    snippet: `<BlueCheckbox
+  v-model="recordVideo"
+  name="record-video"
+  label="Video"
+  theme="dark"
+/>`,
+    demo: BlueCheckboxDemo,
+  },
+  {
+    name: 'BlueRadioGroup',
+    slug: 'blue-radio-group',
+    group: 'Controls',
+    blurb: 'One choice out of a few, each spelled out.',
+    about:
+      'Every option gets a line of its own, a dot, and room for a hint saying what it means or why it is out of reach. The dot is drawn rather than left to the platform, which paints a radio in its own light colours whatever surface it is on.',
+    when: [
+      'Reach for it when the options need explaining, or when there are more than three.',
+      'Use a BlueButtonGroup instead for two or three short options that fit in a track.',
+    ],
+    props: [
+      { name: 'modelValue', type: 'string | number | null', description: 'The chosen value, through v-model.' },
+      { name: 'items', type: 'BlueRadioItem[]', description: 'Each with a label, a value, and optionally a hint or disabled.' },
+      { name: 'name', type: 'string', description: 'Name of the group, which is what makes the choices exclusive.' },
+      { name: 'label', type: 'string', description: 'Heading above the choices.' },
+      { name: 'inline', type: 'boolean', description: 'Lays them along a row instead of down a column.' },
+      { name: 'disabled', type: 'boolean', description: 'Fades and takes the whole group out of reach.' },
+      THEME_ROW,
+    ],
+    events: [{ name: 'update:modelValue', type: '(value: string | number)', description: 'A choice was made.' }],
+    snippet: `<BlueRadioGroup
+  v-model="source"
+  name="firmware-source"
+  label="Firmware source"
+  :items="[
+    { label: 'Official firmware', value: 'official', hint: 'The stable build ArduPilot publishes.' },
+    { label: 'Custom file', value: 'custom' },
+  ]"
+  theme="dark"
+/>`,
+    demo: BlueRadioGroupDemo,
+  },
+  {
+    name: 'BlueTextarea',
+    slug: 'blue-textarea',
+    group: 'Controls',
+    blurb: 'A BlueInput with room for several lines.',
+    about:
+      'The same well cut into the panel as the single-line field, with its label above it rather than beside it, since a label next to a tall field has nothing to line up with. Set to grow and it is as tall as what has been written, up to a cap, past which it scrolls rather than pushing the rest of the panel off the page.',
+    when: [
+      'Reach for it for a note, a description, or a block of parameters pasted in.',
+      'Use a BlueInput instead for anything that is one value.',
+    ],
+    props: [
+      { name: 'modelValue', type: 'string | null', description: 'The text, through v-model.' },
+      { name: 'label', type: 'string', description: 'Label above the field.' },
+      { name: 'name', type: 'string', description: 'Name and id, tying the label to the field.' },
+      { name: 'rows', type: 'number', default: '4', description: 'Lines of room it starts with.' },
+      { name: 'autoGrow', type: 'boolean', description: 'Grows with its content instead of scrolling.' },
+      { name: 'maxRows', type: 'number', default: '12', description: 'How far it grows before it scrolls.' },
+      { name: 'errorMessages', type: 'string[]', description: 'Validation messages, which also outline the field.' },
+      { name: 'infoTooltip', type: 'string', description: 'A hint behind an info icon beside the label.' },
+      { name: 'placeholder / width / disabled', type: 'string | boolean', description: 'As on BlueInput.' },
+      THEME_ROW,
+    ],
+    events: [{ name: 'update:modelValue', type: '(value: string)', description: 'Typed in.' }],
+    snippet: `<BlueTextarea
+  v-model="notes"
+  name="notes"
+  label="Notes"
+  auto-grow
+  theme="dark"
+/>`,
+    demo: BlueTextareaDemo,
+  },
+  {
+    name: 'BlueTabs',
+    slug: 'blue-tabs',
+    group: 'Controls',
+    blurb: 'The strip that switches between the pages of a view.',
+    about:
+      'It reports which tab is current and nothing else. What each one shows stays with the consumer, which is what lets a page render only the tab being looked at and leave the others doing no work at all. The underline sits on the strip\'s own border, so the current tab reads as continuous with what it opens onto.',
+    when: [
+      'Reach for it when a view has several pages that are looked at one at a time.',
+      'Use BlueExpansiblePanel instead when the reader may want two of them open at once.',
+    ],
+    props: [
+      { name: 'modelValue', type: 'string | number', description: 'The current tab, through v-model.' },
+      { name: 'tabs', type: 'BlueTab[]', description: 'Each with a value, a label, and optionally an icon, a badge or disabled.' },
+      { name: 'stretch', type: 'boolean', description: 'Fills the width it is given, each tab taking an equal share.' },
+      THEME_ROW,
+    ],
+    events: [{ name: 'update:modelValue', type: '(value: string | number)', description: 'A tab was chosen.' }],
+    snippet: `<BlueTabs
+  v-model="tab"
+  :tabs="[
+    { value: 'vehicle', label: 'Vehicle', icon: 'mdi-ferry' },
+    { value: 'logs', label: 'Logs', badge: runs.length },
+  ]"
+  theme="dark"
+/>
+
+<VehiclePanel v-if="tab === 'vehicle'" />
+<LogsPanel v-else-if="tab === 'logs'" />`,
+    demo: BlueTabsDemo,
+  },
+  {
+    name: 'BlueTable',
+    slug: 'blue-table',
+    group: 'Display',
+    blurb: 'Rows of records under a header that stays put.',
+    about:
+      'Hand it columns and a list and it orders itself: a sortable header is pressed to order by that column, numbers compare as numbers so 9 does not land above 10, and rows missing the field sink to the bottom. Each column has a cell slot named after its key, which is where a state becomes a BlueChip or a count becomes a unit.',
+    when: [
+      'Reach for it for a list of records the reader compares across: runs, logs, vehicles.',
+      'Use a row of BlueStat instead for the several facts about one thing.',
+    ],
+    props: [
+      { name: 'columns', type: 'BlueColumn[]', description: 'Each with a key, a title, and optionally a width, an alignment or sortable.' },
+      { name: 'rows', type: 'Record<string, unknown>[]', description: 'The records, read by column key.' },
+      { name: 'rowKey', type: 'string', description: "The field identifying a row. Falls back to the row's place in the list." },
+      { name: 'sortBy', type: 'string', description: 'Column to order by before anyone presses a header.' },
+      { name: 'maxHeight', type: 'string', description: 'How tall the body may get before it scrolls under its header.' },
+      { name: 'dense', type: 'boolean', description: 'Tighter rows, for a table of many short ones.' },
+      { name: 'emptyText', type: 'string', default: "'Nothing here yet.'", description: 'What to say instead of an empty body.' },
+      THEME_ROW,
+    ],
+    events: [{ name: 'row-click', type: '(row: Record<string, unknown>)', description: 'A row was pressed.' }],
+    slots: [
+      { name: 'cell-<key>', type: '{ row, value }', description: 'Replaces that column\'s cells.' },
+      { name: 'empty', type: '', description: 'Replaces the empty message.' },
+    ],
+    snippet: `<BlueTable
+  :columns="[
+    { key: 'name', title: 'Vehicle', sortable: true },
+    { key: 'state', title: 'State', align: 'end' },
+  ]"
+  :rows="vehicles"
+  row-key="id"
+  theme="dark"
+>
+  <template #cell-state="{ value }">
+    <BlueChip size="small" :label="String(value)" />
+  </template>
+</BlueTable>`,
+    demo: BlueTableDemo,
+  },
+  {
+    name: 'BlueChip',
+    slug: 'blue-chip',
+    group: 'Display',
+    blurb: 'A small standing label: a state, a tag, a count.',
+    about:
+      'It says what something is rather than doing anything. The colour may be one of the standard meanings or any CSS colour of your own, and the tonal fill is mixed from it rather than assumed, so a variable works as well as a hex does.',
+    when: [
+      'Reach for it for a state in a table cell, a tag in a list, or a count beside a tab.',
+      'Use a BlueButton instead the moment pressing it is meant to do something beyond removing the chip.',
+    ],
+    props: [
+      { name: 'label', type: 'string', description: 'The text. The default slot takes its place when given.' },
+      { name: 'variant', type: "'tonal' | 'filled' | 'outlined'", default: "'tonal'", description: 'How much of the colour is shown.' },
+      { name: 'color', type: "'success' | 'error' | 'warning' | 'info' | 'neutral' | string", default: "'neutral'", description: 'A standard meaning, or any CSS colour.' },
+      { name: 'icon', type: 'string', description: 'An mdi name before the text.' },
+      { name: 'closable', type: 'boolean', description: 'Offers a cross that emits close.' },
+      { name: 'size', type: "'small' | 'regular'", default: "'regular'", description: 'Small is for chips inside another control.' },
+    ],
+    events: [{ name: 'close', type: '()', description: 'The cross was pressed. Removing the chip is the consumer\'s.' }],
+    slots: [{ name: 'default', type: '', description: 'Replaces the label.' }],
+    snippet: `<BlueChip color="success" icon="mdi-check-circle" label="Running" />`,
+    demo: BlueChipDemo,
+  },
+  {
+    name: 'BlueFileDrop',
+    slug: 'blue-file-drop',
+    group: 'Controls',
+    blurb: 'A place to drop a file on, or press to choose one.',
+    about:
+      'It hands the files over and keeps none of them, so what is done with one, and whether it is any good, stays with the consumer. Dragging over the things inside the zone does not make it flicker, and choosing the same file twice in a row is still an event the second time.',
+    when: [
+      'Reach for it to take a profile, a parameter file or a firmware build from the reader.',
+      'Use pickJsonFile instead when a button already exists and no drop target is wanted.',
+    ],
+    props: [
+      { name: 'accept', type: 'string', description: "What the picker offers, as the accept attribute takes it (e.g. '.json,.param')." },
+      { name: 'multiple', type: 'boolean', description: 'Takes more than one file at a time.' },
+      { name: 'label', type: 'string', default: "'Drop a file here, or press to choose one'", description: 'The invitation.' },
+      { name: 'hint', type: 'string', description: 'The line under it, usually naming the formats understood.' },
+      { name: 'disabled', type: 'boolean', description: 'Fades and takes the zone out of reach.' },
+      THEME_ROW,
+    ],
+    events: [{ name: 'files', type: '(files: File[])', description: 'Files were dropped or chosen.' }],
+    snippet: `<BlueFileDrop
+  accept=".json"
+  hint="Profiles saved from this page"
+  theme="dark"
+  @files="loadProfile($event[0])"
+/>`,
+    demo: BlueFileDropDemo,
   },
   {
     name: 'BlueIcon',
