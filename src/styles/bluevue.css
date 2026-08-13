@@ -80,6 +80,63 @@
   overflow: visible;
 }
 
+/* An icon is a box the size of its em, not of however wide its glyph advances, so a row of them
+   lines up. Written against .mdi as well, since the icon font's own rules say otherwise and a
+   consumer is free to load the two stylesheets in either order. */
+.mdi.bluevue-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.bluevue-icon--spin {
+  animation: bluevue-spin 1.2s linear infinite;
+}
+
+/* The ring is a circle with one lit quarter, turning. */
+.bluevue-spinner {
+  display: inline-block;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border-style: solid;
+  border-color: #ffffff2e;
+  border-top-color: var(--bluevue-accent);
+  animation: bluevue-spin 0.8s linear infinite;
+}
+
+@keyframes bluevue-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Progress with no measure to it: a short bar crossing the track, rather than a fill that would
+   have to claim a position it does not know. */
+.bluevue-progress__sweep {
+  width: 40%;
+  animation: bluevue-progress-sweep 1.4s ease-in-out infinite;
+}
+
+@keyframes bluevue-progress-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bluevue-icon--spin,
+  .bluevue-spinner,
+  .bluevue-progress__sweep {
+    animation-duration: 3s;
+  }
+}
+
 /* BlueExpansiblePanel's open and close. */
 .bluevue-expand-enter-active,
 .bluevue-expand-leave-active {
