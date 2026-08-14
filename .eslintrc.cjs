@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   // The declaration files the build emits are generated, not authored.
-  ignorePatterns: ['dist', 'node_modules'],
+  ignorePatterns: ['dist', 'docs-dist', 'node_modules', 'templates'],
   env: {
     browser: true,
     es2022: true,

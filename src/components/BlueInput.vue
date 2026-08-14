@@ -19,20 +19,20 @@
     <div v-else />
     <slot name="insetElement" />
 
-    <div
+    <BlueTooltip
       v-if="infoTooltip"
-      class="relative group inline-flex items-center shrink-0 mr-2 ml-auto"
+      :text="infoTooltip"
+      :theme="theme"
+      class="items-center shrink-0 mr-2 ml-auto"
     >
-      <span
-        class="mdi mdi-information-outline text-[16px] opacity-60 cursor-help"
+      <BlueIcon
+        name="mdi-information-outline"
+        :size="16"
+        :label="infoTooltip"
+        class="opacity-60 cursor-help"
         :class="theme === 'dark' ? 'text-white' : 'text-black'"
       />
-      <div
-        class="absolute bottom-full mb-1 right-0 hidden group-hover:block w-max max-w-[280px] px-2 py-1 text-xs rounded bg-gray-700 text-white z-[1000]"
-      >
-        {{ infoTooltip }}
-      </div>
-    </div>
+    </BlueTooltip>
 
     <div class="flex flex-col items-end min-w-0 shrink-[1000]">
       <!-- The inset shadow darkens a band along the top edge, which the eye takes for the rim of
@@ -55,6 +55,12 @@
       >
         <!-- Always a text input, even for numbers: a native number input reports a half-typed
              value ('-', '-27.') as an empty string, which would wipe the model mid-keystroke. -->
+        <div
+          v-if="$slots.prepend"
+          class="flex shrink-0 items-center pl-2"
+        >
+          <slot name="prepend" />
+        </div>
         <input
           :id="name"
           ref="inputRef"
@@ -65,8 +71,9 @@
           :disabled="disabled"
           :autofocus="autofocus"
           :inputmode="type === 'number' ? 'decimal' : undefined"
-          class="w-full min-w-0 bg-transparent pl-4 text-sm font-medium outline-none"
+          class="w-full min-w-0 bg-transparent text-sm font-medium outline-none"
           :class="[
+            $slots.prepend ? 'pl-1' : 'pl-4',
             suffix ? 'pr-1' : 'pr-4',
             theme === 'dark' ? 'text-white placeholder:text-[#ffffff44]' : 'text-black placeholder:text-[#00000055]',
           ]"
@@ -107,6 +114,9 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
+
+import BlueIcon from './BlueIcon.vue'
+import BlueTooltip from './BlueTooltip.vue'
 
 const props = defineProps<{
   /**

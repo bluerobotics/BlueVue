@@ -1,0 +1,23 @@
+name: Deploy BlueOS Extension Image
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  deploy-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy BlueOS Extension
+        uses: BlueOS-community/Deploy-BlueOS-Extension@v1
+        with:
+          docker-username: ${{ secrets.DOCKER_USERNAME }}
+          docker-password: ${{ secrets.DOCKER_PASSWORD }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          image-name: '__SLUG__'
+          image-prefix: 'blueos-'
+          author: ${{ vars.MY_NAME }}
+          author-email: ${{ vars.MY_EMAIL }}
+          maintainer: ${{ vars.ORG_NAME }}
+          maintainer-email: ${{ vars.ORG_EMAIL }}
+          build-platforms: linux/arm64,linux/amd64,linux/arm/v7

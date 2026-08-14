@@ -13,9 +13,7 @@
         :class="[theme === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
       >{{ label }}</label>
     </div>
-    <!-- Shrinks far more eagerly than the label, so a tight row narrows the track first and
-         only ellipsizes the label once the track is down to its floor. -->
-    <div class="flex justify-between items-center min-w-0 shrink-[1000]">
+    <div class="flex w-1/2 min-w-0 items-center justify-between">
       <div
         name="slider-track"
         class="relative overflow-visible rounded-[6px] bluevue-elevation-1 min-w-[140px] max-w-full"
