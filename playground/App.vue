@@ -27,7 +27,7 @@ const entry = computed(() => catalog.find((component) => component.slug === curr
           <span class="text-lg font-medium text-white">BlueVue</span>
         </a>
         <span class="hidden text-[13px] text-[#ffffff88] sm:inline">
-          The Blue Robotics look, for BlueOS extensions
+          The Blue Robotics look, for BlueOS ecosystem
         </span>
         <a
           href="https://github.com/bluerobotics/BlueVue"
