@@ -6,11 +6,9 @@ on:
       - master
   workflow_dispatch:
 
-# What deploy-pages needs to mint its own credential; nothing here reads or writes the repository.
+# The token must be able to force-push the orphan gh-pages branch.
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 # One deployment at a time, and a push that lands mid-run wins: the site should end up matching
 # master rather than whichever run happened to finish last.
@@ -32,18 +30,9 @@ jobs:
 
       - run: npm run docs:build
 
-      - uses: actions/configure-pages@v5
-
-      - uses: actions/upload-pages-artifact@v3
+      - uses: peaceiris/actions-gh-pages@v4
         with:
-          path: docs-dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - id: deploy
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs-dist
+          publish_branch: gh-pages
+          force_orphan: true
