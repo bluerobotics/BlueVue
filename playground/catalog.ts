@@ -361,7 +361,7 @@ export const catalog: ComponentDoc[] = [
     group: 'Controls',
     blurb: 'A heading, typed or pointed on a rose.',
     about:
-      'A number field for a direction around a circle, 0° to 360° by default, wrapping at the ends so 360 and 0 are the same heading. The compass beside the value opens a rose: click or drag the needle to set it, and the field stays there to type an exact figure. min and max remap the same circle onto another range, such as −180° to 180°.',
+      'A number field for a direction around a circle, 0° to 360° by default, wrapping at the ends so 360 and 0 are the same heading. The compass beside the value opens a round rose over a dimmed page: click or drag the needle to set it, and the field stays there to type an exact figure. min and max remap the same circle onto another range, such as −180° to 180°.',
     when: [
       'Reach for it for a heading, a course, or any other value that lives on a circle.',
       'Use a BlueSlider instead when the value is a magnitude rather than a direction.',

@@ -169,12 +169,14 @@ function tickPoint(deg: number, radius: number): { x: number; y: number } {
       :id="popoverId"
       ref="popoverRef"
       popover
-      class="bluevue-popover"
+      class="bluevue-popover bluevue-popover--dimmed"
       :style="floatingStyles"
       @toggle="onToggle"
     >
+      <!-- No padding of its own: the rose is drawn 6px inside its own box, which is the margin the
+           round card keeps outside the compass ring. -->
       <div
-        class="bluevue-elevation-5 rounded-[8px] p-3"
+        class="bluevue-elevation-5 rounded-full"
         :class="[
           isDark ? 'bg-[var(--bluevue-surface)] text-white' : 'bg-white text-black',
           isPositioned ? 'opacity-100' : 'opacity-0',
