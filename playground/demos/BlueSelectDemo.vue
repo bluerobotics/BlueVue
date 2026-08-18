@@ -25,5 +25,14 @@ const streams = ref<string[]>(['Camera 1'])
       multi-select
       :items="[{ name: 'Camera 1' }, { name: 'Camera 2' }, { name: 'Screen' }]"
     />
+    <BlueSelect
+      v-model="vehicle"
+      label="Out of reach"
+      theme="dark"
+      width="240px"
+      :items="[{ name: 'BlueBoat' }]"
+      info-tooltip="Only available on a SITL board."
+      disabled
+    />
   </div>
 </template>

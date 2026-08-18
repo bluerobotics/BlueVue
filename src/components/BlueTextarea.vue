@@ -69,7 +69,8 @@ const rows = computed(() => {
           name="mdi-information-outline"
           :size="16"
           :label="infoTooltip"
-          class="opacity-60 cursor-help"
+          class="cursor-help"
+          :class="disabled ? 'opacity-30' : 'opacity-60'"
         />
       </BlueTooltip>
     </div>

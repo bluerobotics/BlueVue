@@ -10,7 +10,7 @@
       <label
         class="block truncate text-start mr-6"
         :title="label"
-        :class="theme === 'dark' ? 'text-white' : 'text-black'"
+        :class="[theme === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
       >{{ label }}</label>
     </div>
     <div class="flex items-center min-w-0 shrink-[1000]">
@@ -24,8 +24,8 @@
           name="mdi-information-outline"
           :size="16"
           :label="infoTooltip"
-          class="opacity-60 cursor-help"
-          :class="theme === 'dark' ? 'text-white' : 'text-black'"
+          class="cursor-help"
+          :class="[disabled ? 'opacity-30' : 'opacity-60', theme === 'dark' ? 'text-white' : 'text-black']"
         />
       </BlueTooltip>
       <!-- Both labels are laid out rather than drawn over: two equal columns take their width

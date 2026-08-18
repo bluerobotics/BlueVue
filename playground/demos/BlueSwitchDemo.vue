@@ -24,5 +24,13 @@ const telemetry = ref(false)
       theme="dark"
       info-tooltip="Streams the vehicle's state to the ground station."
     />
+    <BlueSwitch
+      :model-value="false"
+      name="out-of-reach"
+      label="Out of reach"
+      theme="dark"
+      info-tooltip="Needs a companion computer on the vehicle."
+      disabled
+    />
   </div>
 </template>

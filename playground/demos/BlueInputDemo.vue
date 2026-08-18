@@ -34,6 +34,7 @@ const latitude = ref(-27.563)
       label="Out of reach"
       theme="dark"
       width="240px"
+      info-tooltip="The hint stays readable while the row is faded, since it is often where the reason lives."
       disabled
     />
   </div>

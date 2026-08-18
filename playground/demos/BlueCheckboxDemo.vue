@@ -49,6 +49,7 @@ const setAll = (on: boolean): void => {
         :model-value="false"
         name="record-sonar"
         label="Sonar"
+        info-tooltip="No sonar is connected."
         disabled
         theme="dark"
       />
