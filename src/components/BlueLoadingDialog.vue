@@ -37,7 +37,7 @@ const emit = defineEmits<{
     >
     <span
       v-if="message"
-      class="mt-[15px] text-center text-base text-white"
+      class="mt-[5px] text-center text-base text-white"
     >
       {{ message }}
     </span>
