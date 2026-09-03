@@ -380,13 +380,14 @@ export const catalog: ComponentDoc[] = [
     group: 'Controls',
     blurb: 'A heading, typed or pointed on a rose.',
     about:
-      'A number field for a direction around a circle, 0° to 360° by default, wrapping at the ends so 360 and 0 are the same heading. The compass beside the value opens a round rose over a dimmed page: click or drag the needle to set it, and the field stays there to type an exact figure. min and max remap the same circle onto another range, such as −180° to 180°.',
+      'A number field for a direction around a circle, 0° to 360° by default, wrapping at the ends so 360 and 0 are the same heading. The compass beside the value opens a round rose over a dimmed page: click or drag the needle to set it, and the field stays there to type an exact figure. min and max remap the same circle onto another range, such as −180° to 180°. A wind is named for where it comes from, so the arrow flies inward from the heading on the rim towards the centre; pass angle for a plain bar where the value is an angle rather than a wind.',
     when: [
       'Reach for it for a heading, a course, or any other value that lives on a circle.',
       'Use a BlueSlider instead when the value is a magnitude rather than a direction.',
     ],
     props: [
       { name: 'modelValue', type: 'number | null', description: 'The heading, through v-model.' },
+      { name: 'angle', type: 'boolean', description: 'Marks the heading with a plain bar, for a value that is an angle rather than a wind.' },
       { name: 'min / max', type: 'number', default: '0 / 360', description: 'The circle the value wraps around.' },
       { name: 'step', type: 'number', default: '1', description: 'How far the rose snaps, and the field\'s arrow keys.' },
       { name: 'suffix', type: 'string', default: "'°'", description: 'Unit shown inside the field.' },

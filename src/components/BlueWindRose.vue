@@ -21,6 +21,8 @@ const CARDINALS: { label: string; deg: number }[] = [
  */
 const props = defineProps<{
   modelValue: number | null
+  /** Marks the heading with a plain bar, for a value that is an angle rather than a wind. */
+  angle?: boolean
   label?: string
   name?: string
   /** Start of the circle (default 0). */
@@ -125,6 +127,20 @@ function tickPoint(deg: number, radius: number): { x: number; y: number } {
   const rad = ((deg - 90) * Math.PI) / 180
   return { x: CENTER + Math.cos(rad) * radius, y: CENTER + Math.sin(rad) * radius }
 }
+
+// A wind is named for where it comes from, so the arrow flies inward: the tail sits on the rim at
+// the heading and the head reaches the centre. An angle comes from nowhere, so it loses the head
+// and the bar simply marks the direction it points in.
+const indicatorPath = computed(() => {
+  const rim = 18
+  const shaft = 2.2
+  if (props.angle) {
+    return `M ${CENTER - shaft} ${rim} L ${CENTER + shaft} ${rim} L ${CENTER + shaft} ${CENTER} L ${CENTER - shaft} ${CENTER} Z`
+  }
+  const barb = 7
+  const neck = CENTER - 18
+  return `M ${CENTER} ${CENTER} L ${CENTER + barb} ${neck} L ${CENTER + shaft} ${neck} L ${CENTER + shaft} ${rim} L ${CENTER - shaft} ${rim} L ${CENTER - shaft} ${neck} L ${CENTER - barb} ${neck} Z`
+})
 </script>
 
 <template>
@@ -252,7 +268,7 @@ function tickPoint(deg: number, radius: number): { x: number; y: number } {
             :filter="`url(#${popoverId}-arrow-shadow)`"
           >
             <path
-              :d="`M ${CENTER} 18 L ${CENTER + 7} 36 L ${CENTER + 2.2} 36 L ${CENTER + 2.2} ${CENTER} L ${CENTER - 2.2} ${CENTER} L ${CENTER - 2.2} 36 L ${CENTER - 7} 36 Z`"
+              :d="indicatorPath"
               fill="#F5C400"
             />
             <circle

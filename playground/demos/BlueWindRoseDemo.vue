@@ -3,6 +3,7 @@ import { ref } from 'vue'
 
 import { BlueWindRose } from '../../src'
 
+const wind = ref(315)
 const heading = ref(0)
 const relative = ref(-45)
 </script>
@@ -10,11 +11,21 @@ const relative = ref(-45)
 <template>
   <div class="flex flex-col gap-5">
     <BlueWindRose
+      v-model="wind"
+      name="wind"
+      label="Wind"
+      theme="dark"
+      width="160px"
+      info-tooltip="A wind is named for where it comes from, so the arrow flies in from the rim."
+    />
+    <BlueWindRose
       v-model="heading"
       name="heading"
       label="Heading"
       theme="dark"
       width="160px"
+      angle
+      info-tooltip="A heading is an angle rather than a wind, so the rose marks it with a bar."
     />
     <BlueWindRose
       v-model="relative"
@@ -22,6 +33,7 @@ const relative = ref(-45)
       label="Relative"
       theme="dark"
       width="160px"
+      angle
       :min="-180"
       :max="180"
       info-tooltip="The same rose, mapped onto −180° to 180°."
