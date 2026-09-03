@@ -807,7 +807,10 @@ export const catalog: ComponentDoc[] = [
       { name: 'icon / iconColor', type: 'string', default: "'#42A5F5'", description: 'An mdi name beside the title, and its colour.' },
       { name: 'persistent', type: 'boolean', description: 'Takes away Escape, the backdrop and the close button.' },
       { name: 'width', type: 'string', default: "'624px'", description: 'Panel width. It never exceeds the viewport.' },
+      { name: 'headerClass', type: 'string', default: "'px-5 pt-4 pb-3'", description: "Replaces the header's own inset, for a header holding a mark rather than a title row." },
       { name: 'bodyClass', type: 'string', default: "'px-5 py-4'", description: "Replaces the body's own inset." },
+      { name: 'footerClass', type: 'string', default: "'px-5 py-3'", description: "Replaces the footer's own inset." },
+      { name: 'headerDivider', type: 'boolean', default: 'true', description: 'The rule under the header. A header that reads as part of the body wants none.' },
     ],
     events: [{ name: 'update:modelValue', type: '(value: boolean)', description: 'Closed, however it was closed.' }],
     slots: [

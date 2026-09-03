@@ -74,9 +74,18 @@
   overflow: visible;
 }
 
-/* showModal() moves focus into the dialog, and with nothing focusable inside it the dialog
-   itself takes it and the browser rings the whole panel. The ring belongs on controls, not on
-   the surface holding them, and the controls inside keep their own. */
+/* The cap above has to reach the panel, or a tall dialog paints its footer past the viewport with
+   nothing able to scroll it back: an element in the top layer does not move with the page. A column
+   here hands the panel the dialog's own height, and the panel scrolls its body instead. Written
+   against [open] so the closed element keeps the display: none the UA gives it. */
+.bluevue-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+/* showModal() moves focus into the dialog, and the dialog itself is what takes it, so the browser
+   rings the whole panel. The ring belongs on controls, not on the surface holding them, and the
+   controls inside keep their own. */
 .bluevue-dialog:focus,
 .bluevue-dialog:focus-visible,
 .bluevue-popover:focus,
