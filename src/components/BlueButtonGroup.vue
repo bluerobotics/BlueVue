@@ -38,9 +38,9 @@
       </BlueTooltip>
       <div
         ref="trackRef"
-        class="relative flex min-w-0 justify-end overflow-hidden rounded-[6px] bluevue-elevation-1 z-[666]"
+        class="relative isolate flex min-w-0 justify-end overflow-hidden rounded-[6px] bluevue-elevation-1"
         :class="[theme === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30 pointer-events-none' : '']"
-        :style="{ height: height || (density === 'compact' ? '24px' : '30px') }"
+        :style="{ height: height || (density === 'compact' ? '24px' : '30px'), width }"
       >
         <div
           id="border-releif"
@@ -53,7 +53,7 @@
           <button
             :disabled="disabled || btn.disabled"
             :title="btn.name"
-            class="flex min-w-0 items-center justify-center text-sm font-medium transition-colors duration-200"
+            class="flex min-w-0 items-center justify-center font-normal transition-colors duration-200"
             :class="[
               // A group with no room left falls back to the tightest inset whatever the
               // density asks for, since the alternative is cutting into the names.
@@ -61,6 +61,9 @@
               // The active choice is the one worth reading at a glance, so it keeps its full
               // name and the rest give up the room a crowded group needs.
               selected[idx] ? 'shrink-0' : '',
+              // A group given a width shares the surplus between its buttons rather than
+              // leaving it as dead track behind them.
+              width ? 'grow' : '',
               selected[idx] ? 'text-white' : theme === 'dark' ? 'text-[#ffffff99]' : 'text-[#00000066]',
               selected[idx] && type === 'switch' ? 'bluevue-elevation-5' : '',
               disabled || btn.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
@@ -86,7 +89,7 @@
               <span
                 data-bbg-label
                 class="block truncate"
-                :class="[density === 'compact' ? 'text-[10px]' : 'text-xs', isWide ? 'max-w-[150px]' : '']"
+                :class="[density === 'compact' ? 'text-[13px]' : 'text-base', isWide ? 'max-w-[150px]' : '']"
               >
                 {{ btn.name }}
               </span>
@@ -205,6 +208,12 @@ const props = defineProps<{
   type: 'switch' | 'toggle'
   /** Height of the button group container */
   height?: string
+  /**
+   * Width of the button group container. The buttons share whatever it grants beyond their
+   * natural size, so the selected one still reaches the group's edge. It is a starting width
+   * rather than a fixed one, so a narrow row can still shrink the group.
+   */
+  width?: string
   /** Label text on the left side of the button group */
   label?: string
   /** Optional info tooltip shown via an info icon next to the control. */
@@ -246,9 +255,9 @@ let longPressFired = false
 // The inset each density gives a button name, paired with the total width it costs so the
 // measurements below can reason about the group without reading it back from the DOM.
 const DENSITY_PADDING = {
-  compact: { class: 'px-[11px]', total: 22 },
-  regular: { class: 'px-[15px]', total: 30 },
-  comfortable: { class: 'px-[19px]', total: 38 },
+  compact: { class: 'px-[8px]', total: 16 },
+  regular: { class: 'px-[12px]', total: 24 },
+  comfortable: { class: 'px-[16px]', total: 32 },
 } as const
 
 // Once the buttons' natural width would exceed this, cap each label so long names

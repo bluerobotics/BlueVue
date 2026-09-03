@@ -299,6 +299,7 @@ export const catalog: ComponentDoc[] = [
       { name: 'infoTooltip', type: 'string', description: 'A hint behind an info icon beside the group.' },
       { name: 'disabled', type: 'boolean', description: 'Fades and takes the whole group out of reach.' },
       { name: 'height', type: 'string', description: 'Overrides the height the density asks for.' },
+      { name: 'width', type: 'string', description: 'Starting width, shared out between the buttons.' },
       THEME_ROW,
     ],
     events: [
