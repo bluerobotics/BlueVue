@@ -248,21 +248,12 @@
   position: absolute;
 }
 
-/* BlueExpansiblePanel's open and close. */
+/* BlueExpansiblePanel's open and close. The two ends are set from the panel's measured height by
+   the component, so only the transition itself lives here. */
 .bluevue-expand-enter-active,
 .bluevue-expand-leave-active {
   transition: max-height 0.3s ease;
   overflow: hidden;
-}
-
-.bluevue-expand-enter-from,
-.bluevue-expand-leave-to {
-  max-height: 0;
-}
-
-.bluevue-expand-enter-to,
-.bluevue-expand-leave-from {
-  max-height: 500px;
 }
 
 /* BlueLoadingDialog's mark is a propeller, so it turns like one: a creep of 80 degrees over two

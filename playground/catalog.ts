@@ -214,6 +214,18 @@ export const catalog: ComponentDoc[] = [
     props: [
       { name: 'title', type: 'string', description: 'The heading on the bar.' },
       { name: 'expanded', type: 'boolean', default: 'false', description: 'Whether it starts open.' },
+      {
+        name: 'headerAlign',
+        type: "'full' | 'end'",
+        default: "'full'",
+        description: 'Rules the title off across the panel, or tucks it against the right edge.',
+      },
+      {
+        name: 'bodyClass',
+        type: 'string',
+        default: "'px-13 pt-4 pb-8'",
+        description: "Replaces the body's own inset. Use padding, not margin, so the fold follows it.",
+      },
       THEME_ROW,
     ],
     events: [{ name: 'update:expanded', type: '(value: boolean)', description: 'Opened or shut, so the state can be kept.' }],
