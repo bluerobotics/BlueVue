@@ -9,9 +9,12 @@
   --bluevue-accent: #6699CC;
   --bluevue-panel-bg: rgba(30, 30, 30, 0.96);
   --bluevue-hairline: rgba(255, 255, 255, 0.08);
-  /* Material's three-part shadow, at the two depths the controls use: a resting control, and
-     one raised above its neighbours (a selected segment, an open menu). */
+  /* Material's three-part shadow, across the five depths a control can rest at: 1 sits a hair off
+     the surface, 5 floats above its neighbours (a selected segment, an open menu). */
   --bluevue-elevation-1: 0 2px 1px -1px #0003, 0 1px 1px 0 #00000024, 0 1px 3px 0 #0000001f;
+  --bluevue-elevation-2: 0 3px 1px -2px #0003, 0 2px 2px 0 #00000024, 0 1px 5px 0 #0000001f;
+  --bluevue-elevation-3: 0 3px 3px -2px #0003, 0 3px 4px 0 #00000024, 0 1px 8px 0 #0000001f;
+  --bluevue-elevation-4: 0 2px 4px -1px #0003, 0 4px 5px 0 #00000024, 0 1px 10px 0 #0000001f;
   --bluevue-elevation-5: 0 3px 5px -1px #0003, 0 5px 8px 0 #00000024, 0 1px 14px 0 #0000001f;
   /* The opposite of an elevation: a well cut into the surface, for somewhere a value is typed
      rather than somewhere that is pressed. The light line along the bottom edge is what sells
@@ -24,6 +27,18 @@
 
 .bluevue-elevation-1 {
   box-shadow: var(--bluevue-elevation-1);
+}
+
+.bluevue-elevation-2 {
+  box-shadow: var(--bluevue-elevation-2);
+}
+
+.bluevue-elevation-3 {
+  box-shadow: var(--bluevue-elevation-3);
+}
+
+.bluevue-elevation-4 {
+  box-shadow: var(--bluevue-elevation-4);
 }
 
 .bluevue-elevation-5 {

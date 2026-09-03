@@ -258,6 +258,12 @@ export const catalog: ComponentDoc[] = [
       { name: 'loading', type: 'boolean', description: 'Swaps the icon for a spinner and takes the button out of reach.' },
       { name: 'disabled', type: 'boolean', description: 'Out of reach, with a reason worth stating nearby.' },
       { name: 'block', type: 'boolean', description: 'Takes the whole width it is given.' },
+      {
+        name: 'elevation',
+        type: '1 | 2 | 3 | 4 | 5',
+        default: '1 on a chip, none on text and icon',
+        description: 'Shadow depth. A disabled button is never raised.',
+      },
       { name: 'tooltip', type: 'string', description: 'Hover text, and the accessible name of an icon button.' },
       THEME_ROW,
     ],
