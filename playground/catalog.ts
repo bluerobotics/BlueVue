@@ -461,7 +461,7 @@ export const catalog: ComponentDoc[] = [
     group: 'Controls',
     blurb: 'One thing on or off, with both states named.',
     about:
-      'Both labels are laid out rather than drawn over, so the track takes its width from the longer of the two and the knob covering either side has the same room. The label under the knob is white; the far one stays as a dim reminder of what the other position says.',
+      'The knob carries the name of the state it is in and slides over a track that says only what the other position would be, so the control reads as one word rather than two competing ones. The track measures the longer of the two words and takes its width from that, leaving 5px around the knob\'s text whichever way it is thrown, so a long word is never squeezed and a short pair is never stretched. The label beside it keeps its full text until the track is down to its own minimum. The track answers to Enter and Space as well as to a click, and reports itself to a screen reader as a switch.',
     when: [
       'Reach for it when the two states have names worth reading, such as Armed and Safe.',
       'Use a BlueCheckbox instead for a plain yes or no in a list of settings.',
@@ -474,7 +474,7 @@ export const catalog: ComponentDoc[] = [
       { name: 'color', type: 'string', description: 'The knob when it is on.' },
       { name: 'infoTooltip', type: 'string', description: 'A hint behind an info icon beside the control.' },
       { name: 'disabled', type: 'boolean', description: 'Fades and takes the switch out of reach.' },
-      { name: 'width / height', type: 'string', default: "height '30px'", description: 'Size of the track.' },
+      { name: 'height', type: 'string', default: "'30px'", description: 'Height of the track. The width is the labels\' own, so there is nothing to set.' },
       THEME_ROW,
     ],
     events: [{ name: 'update:modelValue', type: '(value: boolean)', description: 'Flipped.' }],
