@@ -783,13 +783,13 @@ export const catalog: ComponentDoc[] = [
     group: 'Overlays',
     blurb: 'A label for whatever it wraps.',
     about:
-      'Appears on hover and on keyboard focus, after a rest long enough that a pointer crossing a row of controls does not trail tooltips behind it. It opens in the top layer, so a panel that clips its own overflow cannot cut it off.',
+      'Appears on hover and on keyboard focus, after a rest long enough that a pointer crossing a row of controls does not trail tooltips behind it. It opens in the top layer, so a panel that clips its own overflow cannot cut it off. The text is laid out as written: a newline breaks the line and a tab holds a column against a tab stop, which is enough for a heading over a few readings without any markup, while ordinary prose still wraps at the cap.',
     when: [
       'Reach for it to name an icon button or to explain a control whose label has no room for the explanation.',
       'Do not put anything in one that the reader must have: a tooltip is unreachable on a touch screen.',
     ],
     props: [
-      { name: 'text', type: 'string', description: 'The label. An empty one shows nothing.' },
+      { name: 'text', type: 'string', description: 'The label, with its newlines and tabs kept. An empty one shows nothing.' },
       { name: 'placement', type: 'Placement', default: "'top'", description: 'Which side it hangs off, flipped when there is no room.' },
       { name: 'openDelay', type: 'number', default: '300', description: 'How long the pointer rests before it appears, in ms.' },
       { name: 'disabled', type: 'boolean', description: 'Wraps its content and shows nothing.' },
