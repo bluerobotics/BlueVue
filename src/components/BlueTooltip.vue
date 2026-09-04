@@ -73,9 +73,11 @@ onBeforeUnmount(cancelOpen)
       :style="floatingStyles"
       @toggle="onToggle"
     >
+      <!-- pre-wrap so a caller can break the hint into lines, and hold a column of figures on a
+           tab stop, with one string and no markup. Long prose still wraps at the cap. -->
       <div
         role="tooltip"
-        class="bluevue-elevation-5 max-w-[280px] rounded-[4px] px-2 py-1 text-xs leading-snug transition-opacity duration-150"
+        class="bluevue-elevation-5 max-w-[280px] whitespace-pre-wrap rounded-[4px] px-2 py-1 text-xs leading-snug transition-opacity duration-150"
         :class="[
           theme === 'light' ? 'bg-white text-black' : 'bg-[#333333f2] text-white',
           isPositioned ? 'opacity-100' : 'opacity-0',

@@ -15,10 +15,11 @@
         :class="[theme === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
       >{{ label }}</label>
     </div>
-    <!-- Half the row, so a column of sliders reads as one block against the panel's midline. The
-         floor is what gives way first when the host narrows: the track keeps a usable length and
-         takes more than half the row rather than collapsing with it. -->
-    <div class="flex w-1/2 min-w-[140px] items-center justify-start">
+    <!-- Half the row, so a column of sliders reads as one block against the panel's midline, until
+         half of it is less than a track can be aimed at. Whichever is larger then takes over and
+         the track runs to the right edge, and past even that floor it shrinks rather than
+         overflowing, down to the 140px below. -->
+    <div class="flex basis-[max(50%,320px)] min-w-[140px] items-center justify-start">
       <!-- isolate keeps the pill and the min/max labels stacked against the track alone: without
            it their z-index is resolved against the page, and they paint over whatever chrome the
            host has floating above the row. -->

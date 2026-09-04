@@ -2,6 +2,44 @@
 
 One entry per release, newest first.
 
+## 0.2.3: the frosting comes back, and two things the 4K Cam Manager had to work around
+
+Three fixes found while the 4K Cam Manager was being built on 0.2.2. All are behaviour changes
+rather than new API; nothing was added or taken away.
+
+---
+
+### Every frosted surface had lost its blur
+
+`.bluevue-panel`, the dialog backdrop and the dimmed popover backdrop each declared
+`backdrop-filter` and then `-webkit-backdrop-filter`. Minification keeps only the last of such a
+pair, so the published `dist/style.css` shipped the prefixed spelling alone, and Chromium has since
+dropped that alias: `CSS.supports('-webkit-backdrop-filter', 'blur(8px)')` is now `false`. The
+declaration was thrown away at parse time and every dialog, panel and dimmed popover in the kit
+rendered flat.
+
+The two lines are simply the other way round now, so the unprefixed property is the one that
+survives. Both spellings reach `dist/style.css`.
+
+### BlueTooltip could not be broken into lines
+
+The tooltip takes one string and had no way to lay it out, so a caller with a heading and a few
+figures under it had to run them together with separators. It now renders that string as
+`pre-wrap`: a `\n` breaks the line and a `\t` holds a column against a tab stop, which is enough for
+a small table of readings without any markup. Long prose still wraps at the same 280px cap, and a
+hint with neither character in it looks exactly as it did.
+
+### BlueSlider's track was half a row even when half a row was unusable
+
+The track took `w-1/2` with a 140px floor, which reads well on a wide panel and leaves nothing to
+aim at on a narrow one: inside a Cockpit widget the half came out around 200px, most of it spent on
+the value pill. The basis is `max(50%, 320px)` now, so a row wide enough for it keeps the half it
+always had, a narrower one gives the track more than half and runs it to the right edge, and a row
+too narrow even for that shrinks the track rather than overflowing, down to the same 140px floor as
+before. A label sharing a tight row will truncate sooner than it used to.
+
+---
+
 ## 0.2.2: what came back from the 4K Cam Manager
 
 The 4K Cam Manager extension has carried forked copies of `BlueSlider`, `BlueSelect`, `BlueSwitch`,

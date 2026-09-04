@@ -445,7 +445,7 @@ export const catalog: ComponentDoc[] = [
     group: 'Controls',
     blurb: 'A magnitude, dragged rather than typed.',
     about:
-      'The pill shows the value it is at, and the ends of the track say where the range stops. A scale function pair lets the track be linear while the value is not, for something like a wind speed that wants more room at its low end than at its high one.',
+      'The pill shows the value it is at, and the ends of the track say where the range stops. A scale function pair lets the track be linear while the value is not, for something like a wind speed that wants more room at its low end than at its high one. The track takes half the row where half is enough to aim at, and on a narrower host it takes more than half and runs to the right edge instead, which will truncate a long label sooner.',
     when: [
       'Reach for it for a bounded magnitude whose exact number matters less than its size.',
       'Pair it with a BlueInput when the number does have to be exact.',
@@ -783,13 +783,13 @@ export const catalog: ComponentDoc[] = [
     group: 'Overlays',
     blurb: 'A label for whatever it wraps.',
     about:
-      'Appears on hover and on keyboard focus, after a rest long enough that a pointer crossing a row of controls does not trail tooltips behind it. It opens in the top layer, so a panel that clips its own overflow cannot cut it off.',
+      'Appears on hover and on keyboard focus, after a rest long enough that a pointer crossing a row of controls does not trail tooltips behind it. It opens in the top layer, so a panel that clips its own overflow cannot cut it off. The text is laid out as written: a newline breaks the line and a tab holds a column against a tab stop, which is enough for a heading over a few readings without any markup, while ordinary prose still wraps at the cap.',
     when: [
       'Reach for it to name an icon button or to explain a control whose label has no room for the explanation.',
       'Do not put anything in one that the reader must have: a tooltip is unreachable on a touch screen.',
     ],
     props: [
-      { name: 'text', type: 'string', description: 'The label. An empty one shows nothing.' },
+      { name: 'text', type: 'string', description: 'The label, with its newlines and tabs kept. An empty one shows nothing.' },
       { name: 'placement', type: 'Placement', default: "'top'", description: 'Which side it hangs off, flipped when there is no room.' },
       { name: 'openDelay', type: 'number', default: '300', description: 'How long the pointer rests before it appears, in ms.' },
       { name: 'disabled', type: 'boolean', description: 'Wraps its content and shows nothing.' },

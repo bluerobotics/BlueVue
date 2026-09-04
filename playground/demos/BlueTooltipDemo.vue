@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { BlueButton, BlueTooltip } from '../../src'
+
+const readings = 'Connected since 4:43 PM\n2 clients connected\nThis\t↑ 0.2 ↓ 17 kbps\nAll\t↑ 0.8 ↓ 63 kbps'
 </script>
 
 <template>
@@ -26,6 +28,12 @@ import { BlueButton, BlueTooltip } from '../../src'
     >
       <span class="cursor-help text-sm text-[#ffffff99] underline decoration-dotted">
         no delay
+      </span>
+    </BlueTooltip>
+
+    <BlueTooltip :text="readings">
+      <span class="cursor-help text-sm text-[#ffffff99] underline decoration-dotted">
+        lines and columns
       </span>
     </BlueTooltip>
   </div>
