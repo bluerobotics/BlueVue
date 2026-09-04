@@ -28,6 +28,11 @@ const props = defineProps<{
   disabled?: boolean
   /** Takes the whole width it is given, for a button ending a narrow panel. */
   block?: boolean
+  /**
+   * Shadow depth, 1 (a hair off the surface) to 5. Chips default to 1; text and icon buttons have
+   * no chip to lift, so they default to none. A disabled button is never raised.
+   */
+  elevation?: 1 | 2 | 3 | 4 | 5
   /** Hover text, and the name assistive technology reads on an icon button. */
   tooltip?: string
   theme?: 'light' | 'dark'
@@ -57,7 +62,7 @@ const look = computed(() => {
   }
   switch (variant.value) {
     case 'filled':
-      return 'bluevue-elevation-1 cursor-pointer text-white hover:brightness-125'
+      return 'cursor-pointer text-white hover:brightness-125'
     case 'text':
       return isDark.value
         ? 'cursor-pointer text-[#ffffffcc] hover:bg-[#ffffff11] hover:text-white'
@@ -74,6 +79,21 @@ const look = computed(() => {
 })
 
 const fill = computed(() => (variant.value === 'filled' && !props.disabled ? props.color || 'var(--bluevue-primary)' : undefined))
+
+const ELEVATION = {
+  1: 'bluevue-elevation-1',
+  2: 'bluevue-elevation-2',
+  3: 'bluevue-elevation-3',
+  4: 'bluevue-elevation-4',
+  5: 'bluevue-elevation-5',
+} as const
+
+const elevationClass = computed(() => {
+  if (props.disabled) return ''
+  const hasChip = variant.value === 'filled' || variant.value === 'tonal'
+  const level = props.elevation ?? (hasChip ? 1 : 0)
+  return level ? ELEVATION[level] : ''
+})
 
 // The glyph of a text or icon button follows the colour it was given; a filled one draws its
 // contents in white over the fill, and a tonal one in the theme's own text colour.
@@ -95,6 +115,7 @@ const glyphColor = computed(() =>
       variant === 'icon' ? 'rounded-[6px]' : 'rounded-[4px]',
       variant === 'icon' ? '' : PADDING[density],
       block ? 'w-full' : '',
+      elevationClass,
       // A button waiting on its own result stays where it is and reads as busy rather than
       // inviting a second press.
       loading ? 'pointer-events-none' : '',

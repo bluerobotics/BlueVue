@@ -28,8 +28,8 @@
         name="mdi-information-outline"
         :size="16"
         :label="infoTooltip"
-        class="opacity-60 cursor-help"
-        :class="theme === 'dark' ? 'text-white' : 'text-black'"
+        class="cursor-help"
+        :class="[disabled ? 'opacity-30' : 'opacity-60', theme === 'dark' ? 'text-white' : 'text-black']"
       />
     </BlueTooltip>
 

@@ -6,19 +6,27 @@
     <div
       v-if="label"
       class="min-w-0 max-w-[45%] shrink-0"
+      :style="labelWidth ? { minWidth: labelWidth } : undefined"
     >
       <label
+        :for="sliderId"
         class="block truncate text-start mr-6"
         :title="label"
         :class="[theme === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
       >{{ label }}</label>
     </div>
-    <div class="flex w-1/2 min-w-0 items-center justify-between">
+    <!-- Half the row, so a column of sliders reads as one block against the panel's midline. The
+         floor is what gives way first when the host narrows: the track keeps a usable length and
+         takes more than half the row rather than collapsing with it. -->
+    <div class="flex w-1/2 min-w-[140px] items-center justify-start">
+      <!-- isolate keeps the pill and the min/max labels stacked against the track alone: without
+           it their z-index is resolved against the page, and they paint over whatever chrome the
+           host has floating above the row. -->
       <div
         name="slider-track"
-        class="relative overflow-visible rounded-[6px] bluevue-elevation-1 min-w-[140px] max-w-full"
+        class="relative isolate w-full overflow-visible rounded-[6px] bluevue-elevation-1 min-w-[140px]"
         :class="[theme === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30' : '']"
-        :style="{ width: width || '100%', height: height || '30px', cursor: disabled ? 'not-allowed' : 'pointer' }"
+        :style="{ maxWidth: width || '100%', height: height || '30px', cursor: disabled ? 'not-allowed' : 'pointer' }"
       >
         <div class="absolute inset-x-[18%] top-1/2 -translate-y-1/2 flex justify-between pointer-events-none">
           <div
@@ -42,7 +50,8 @@
         >
           <div v-if="!isEditingCurrentSliderValue">
             <p
-              class="font-bold leading-none select-none"
+              class="leading-none select-none"
+              :class="valueWeight === 'regular' ? 'font-normal' : 'font-bold'"
               draggable="false"
             >
               {{ formatDisplay ? formatDisplay(scaledValue) : scaledValue.toFixed(defaultDecimals) }}
@@ -53,6 +62,7 @@
               ref="editInput"
               v-model.number="editedDisplayValue"
               type="number"
+              :aria-label="label"
               :min="displayMin"
               :max="displayMax"
               :step="displayStep"
@@ -60,11 +70,12 @@
               class="bg-white border border-gray-300 rounded px-1 py-0.5"
               @input="clampEditedValue"
               @keydown="handleValueChange"
-              @blur="isEditingCurrentSliderValue = false"
+              @blur="onEditBlur"
             >
           </div>
         </div>
         <input
+          :id="sliderId"
           v-model.number="currentSliderValue"
           type="range"
           class="absolute inset-0 w-full h-full opacity-0"
@@ -107,6 +118,8 @@
 <script setup lang="ts">
 import { ref, watch, onBeforeUnmount, computed } from 'vue'
 
+import { nextElementId } from '../utils/id'
+
 const props = defineProps<{
   /** Pill color override. */
   color?: string
@@ -116,6 +129,8 @@ const props = defineProps<{
   height?: string
   /** Main Label text on the left. */
   label?: string
+  /** Floor for the label column, so a column of sliders starts its tracks at one place. */
+  labelWidth?: string
   /** Custom text for the max label. */
   labelMax?: string
   /** Custom text for the min label. */
@@ -132,7 +147,9 @@ const props = defineProps<{
   keyboardStepMultiplierLimit?: number
   /** 'light' or 'dark' theme. (default 'light')*/
   theme?: 'light' | 'dark' | 'transparent'
-  /** Container width (default '100%'). */
+  /** Weight of the value in the pill (default 'bold'). */
+  valueWeight?: 'regular' | 'bold'
+  /** How wide the track may get before the row stops giving it room (default '100%'). */
   width?: string
   /** Model value for v-model */
   modelValue: number | null
@@ -147,6 +164,9 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:modelValue', value: number | null): void
 }>()
+
+const editInput = ref<HTMLInputElement | null>(null)
+const sliderId = nextElementId('slider')
 
 const decimalsFromStep = (step: number): number => {
   if (!Number.isFinite(step) || step <= 0) return 0
@@ -257,8 +277,10 @@ const approxEqual = (a: number, b: number): boolean => {
 
 // Pill position logic
 const fillWidth = computed(() => {
+  const span = props.max - props.min
+  if (!(span > 0)) return 0
   const val = currentSliderValue.value
-  return ((val - props.min) / (props.max - props.min)) * 100
+  return ((val - props.min) / span) * 100
 })
 const staticFillWidth = ref<number>(0)
 
@@ -269,8 +291,13 @@ const pillLeft = computed(() =>
       : fillWidth.value) / 100})`
 )
 
+const skipEditCommit = ref(false)
+
+// A fraction of a step apart is the same value: an exact comparison lets float drift through as a
+// fresh commit.
 const sendValue = (val: number) => {
-  if (val === lastSentValue.value) return
+  const eps = Math.max(1e-6, rawStep.value * 0.25)
+  if (Math.abs(val - lastSentValue.value) <= eps) return
   lastSentValue.value = val
   emit('update:modelValue', val)
 }
@@ -289,7 +316,9 @@ const clearCommitLock = (): void => {
 }
 
 const setCommitLock = (val: number): void => {
-  const lockMs = 2000
+  // Long enough to swallow the echo of our own commit, short enough that a value the host drives
+  // on its own (a correlated axis, a preset being applied) is not held off the control.
+  const lockMs = 400
   commitLockValue.value = val
   commitLockUntilMs.value = Date.now() + lockMs
   if (commitLockTimeout) clearTimeout(commitLockTimeout)
@@ -313,6 +342,8 @@ const onSliderChange = (): void => {
 
 // Clamp during input
 const clampEditedValue = () => {
+  // An emptied number input reads as NaN, which must not be clamped into the value.
+  if (!Number.isFinite(editedDisplayValue.value)) return
   editedDisplayValue.value = Math.min(Math.max(editedDisplayValue.value, displayMin.value), displayMax.value)
 }
 
@@ -347,7 +378,12 @@ const flushPendingValue = (): void => {
   sendValue(toSend)
 }
 
+// Reached from the pointer, from the range input's blur and from its change event, so it has to
+// settle the interaction once however many of those arrive.
 const endInteracting = (): void => {
+  window.removeEventListener('pointerup', handlePointerUp)
+  window.removeEventListener('pointercancel', handlePointerCancel)
+  if (!isInteracting.value) return
   isInteracting.value = false
 
   const clamped = Math.min(Math.max(currentSliderValue.value, props.min), props.max)
@@ -363,10 +399,11 @@ const handlePointerCancel = (): void => endInteracting()
 
 const startInteracting = (): void => {
   if (props.disabled || isEditingCurrentSliderValue.value) return
+  if (isInteracting.value) return
   isInteracting.value = true
   clearCommitLock()
-  window.addEventListener('pointerup', handlePointerUp, { once: true })
-  window.addEventListener('pointercancel', handlePointerCancel, { once: true })
+  window.addEventListener('pointerup', handlePointerUp)
+  window.addEventListener('pointercancel', handlePointerCancel)
 }
 
 const isArrowKey = (key: string): boolean =>
@@ -412,15 +449,26 @@ const onRangeKeyup = (e: KeyboardEvent): void => {
   endInteracting()
 }
 
-// Keyboard handling
+// Keyboard handling for the edit input.
 const handleValueChange = (e: KeyboardEvent): void => {
   if (e.key === 'Escape') {
-    isEditingCurrentSliderValue.value = false
+    // Restore before leaving edit mode, so the watcher below has nothing to commit.
     editedDisplayValue.value = props.scaleFn ? props.scaleFn(lastSentValue.value) : lastSentValue.value
     currentSliderValue.value = lastSentValue.value
+    skipEditCommit.value = true
+    isEditingCurrentSliderValue.value = false
   } else if (e.key === 'Enter') {
     isEditingCurrentSliderValue.value = false
   }
+}
+
+// A native number spinner blurs the input before it applies the step, so leaving edit mode waits
+// long enough for the value that click was for to arrive.
+const onEditBlur = (): void => {
+  window.setTimeout(() => {
+    if (document.activeElement === editInput.value) return
+    isEditingCurrentSliderValue.value = false
+  }, 150)
 }
 
 // Sync from parent
@@ -431,12 +479,15 @@ watch(
     if (isEditingCurrentSliderValue.value || isInteracting.value) return
     if (
       commitLockValue.value !== null &&
-      Date.now() < commitLockUntilMs.value &&
-      !approxEqual(next, commitLockValue.value)
+      Date.now() < commitLockUntilMs.value
     ) {
-      return
+      // The echo of our own commit is already on screen; anything else is the host speaking and
+      // outranks the lock.
+      if (approxEqual(next, commitLockValue.value)) return
+      clearCommitLock()
     }
     currentSliderValue.value = next
+    lastSentValue.value = next
   },
   { immediate: true }
 )
@@ -446,6 +497,13 @@ watch(isEditingCurrentSliderValue, (isEditing) => {
     editedDisplayValue.value = displayValue.value
     staticFillWidth.value = fillWidth.value
   } else {
+    if (skipEditCommit.value) {
+      skipEditCommit.value = false
+      return
+    }
+    if (!Number.isFinite(editedDisplayValue.value)) {
+      editedDisplayValue.value = displayValue.value
+    }
     const raw = props.unscaleFn ? props.unscaleFn(editedDisplayValue.value) : editedDisplayValue.value
     currentSliderValue.value = Math.min(Math.max(raw, props.min), props.max)
     sendValue(currentSliderValue.value)

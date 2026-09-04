@@ -34,5 +34,15 @@ const invalid = computed(() =>
       :rows="5"
       :error-messages="invalid.length > 0 ? [`${invalid.length} line(s) are not NAME,VALUE`] : []"
     />
+
+    <BlueTextarea
+      :model-value="'SIM_WIND_SPD,12'"
+      name="out-of-reach"
+      label="Out of reach"
+      info-tooltip="The hint fades with the field it explains."
+      theme="dark"
+      :rows="2"
+      disabled
+    />
   </div>
 </template>

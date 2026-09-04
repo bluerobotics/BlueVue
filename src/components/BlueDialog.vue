@@ -9,7 +9,7 @@ import BlueIcon from './BlueIcon.vue'
  * with an optional header, a body and an optional footer. Being a native modal, it dims the page
  * itself, traps focus, and closes on Escape and on the backdrop unless it is told not to.
  */
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   modelValue: boolean
   /** The heading. Without one, and without a header slot, the dialog is only its body. */
   title?: string
@@ -25,9 +25,30 @@ const props = defineProps<{
   persistent?: boolean
   /** Panel width (default '624px'). It never exceeds the viewport. */
   width?: string
+  /** Replaces the header's own inset, for a header holding a mark rather than a title row. */
+  headerClass?: string
   /** Replaces the body's own inset, for a dialog laying its contents out differently. */
   bodyClass?: string
-}>()
+  /** Replaces the footer's own inset. */
+  footerClass?: string
+  /**
+   * The rule under the header, on unless it is passed false. A header that reads as part of the
+   * body, such as a centred mark above a title, wants none.
+   */
+  headerDivider?: boolean
+}>(), {
+  // An absent boolean prop is `false` unless a default says otherwise, which would leave every
+  // header unruled.
+  title: undefined,
+  icon: undefined,
+  iconColor: undefined,
+  subtitle: undefined,
+  width: undefined,
+  headerClass: undefined,
+  bodyClass: undefined,
+  footerClass: undefined,
+  headerDivider: undefined,
+})
 
 const emit = defineEmits<{
   (event: 'update:modelValue', value: boolean): void
@@ -38,10 +59,18 @@ const dialogRef = ref<HTMLDialogElement | null>(null)
 
 const hasHeader = computed(() => Boolean(props.title || slots.header))
 
+const hasHeaderDivider = computed(() => hasHeader.value && (props.headerDivider ?? true))
+
 const sync = (show: boolean): void => {
   const el = dialogRef.value
   if (!el) return
-  if (show && !el.open) el.showModal()
+  if (show && !el.open) {
+    el.showModal()
+    // showModal() hands focus to the first control inside, which rings a button nobody asked for.
+    // Chromium ignores autofocus on the dialog itself, so the surface has to claim focus back:
+    // still inside the trap and still announced, with nothing preselected.
+    el.focus()
+  }
   if (!show && el.open) el.close()
 }
 
@@ -66,20 +95,23 @@ defineExpose({ close })
 </script>
 
 <template>
+  <!-- tabindex is what lets the surface hold the focus that sync() moves to it on open. -->
   <dialog
     ref="dialogRef"
+    tabindex="-1"
     class="bluevue-dialog"
     @close="emit('update:modelValue', false)"
     @cancel="onCancel"
     @click="onBackdropClick"
   >
     <div
-      class="bluevue-panel relative max-w-full rounded-lg text-white"
+      class="bluevue-panel relative flex min-h-0 max-w-full flex-col rounded-lg text-white"
       :style="{ width: width || '624px' }"
     >
       <header
         v-if="hasHeader"
-        class="flex items-start gap-3 px-5 pt-4 pb-3"
+        class="flex shrink-0 items-start gap-3"
+        :class="headerClass || 'px-5 pt-4 pb-3'"
       >
         <slot name="header">
           <BlueIcon
@@ -120,13 +152,20 @@ defineExpose({ close })
         @click="close"
       />
 
-      <div :class="[bodyClass || 'px-5 py-4', hasHeader ? 'border-t border-[#ffffff0d]' : '']">
+      <div
+        :class="[
+          'min-h-0 flex-1 overflow-y-auto',
+          bodyClass || 'px-5 py-4',
+          hasHeaderDivider ? 'border-t border-[var(--bluevue-hairline)]' : '',
+        ]"
+      >
         <slot />
       </div>
 
       <footer
         v-if="slots.footer"
-        class="flex items-center justify-between gap-3 border-t border-[#ffffff0d] px-5 py-3"
+        class="flex shrink-0 items-center justify-between gap-3 border-t border-[var(--bluevue-hairline)]"
+        :class="footerClass || 'px-5 py-3'"
       >
         <slot name="footer" />
       </footer>

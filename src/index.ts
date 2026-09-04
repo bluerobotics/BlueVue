@@ -10,6 +10,12 @@ export { default as BlueConfirmDialog } from './components/BlueConfirmDialog.vue
 export { default as BlueDialog } from './components/BlueDialog.vue'
 export { default as BlueExpansiblePanel } from './components/BlueExpansiblePanel.vue'
 export { default as BlueFileDrop } from './components/BlueFileDrop.vue'
+export { default as BlueHeader } from './components/BlueHeader.vue'
+export { default as BlueHeaderMenu } from './components/BlueHeaderMenu.vue'
+export {
+  default as BlueHeaderSelector,
+  type BlueHeaderSelectorItem,
+} from './components/BlueHeaderSelector.vue'
 export { default as BlueIcon } from './components/BlueIcon.vue'
 export { default as BlueInput } from './components/BlueInput.vue'
 export { default as BlueStepsDialog, type BlueStep } from './components/BlueStepsDialog.vue'

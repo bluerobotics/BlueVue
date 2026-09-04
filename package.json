@@ -1,6 +1,6 @@
 {
   "name": "@bluerobotics/bluevue",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Blue Robotics Vue components for common UI",
   "license": "MIT",
   "repository": {

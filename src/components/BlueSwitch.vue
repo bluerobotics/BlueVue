@@ -1,16 +1,16 @@
 <template>
   <div class="flex w-full justify-between items-center">
-    <!-- shrink-0 keeps the label at its natural width: letting flex shrink it by the fraction
-         of a pixel that rounding introduces is enough for Chromium to ellipsize a label that
-         fits. The cap is what makes an outsized label ellipsize instead of eating the row. -->
+    <!-- No cap: the control beside it yields a thousand times more readily, so the label keeps its
+         full text until the track is down to its own minimum, and only then does it ellipsize. -->
     <div
       v-if="label"
-      class="min-w-0 max-w-[45%] shrink-0"
+      class="min-w-0"
     >
       <label
+        :id="labelId"
         class="block truncate text-start mr-6"
         :title="label"
-        :class="theme === 'dark' ? 'text-white' : 'text-black'"
+        :class="[theme === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
       >{{ label }}</label>
     </div>
     <div class="flex items-center min-w-0 shrink-[1000]">
@@ -24,49 +24,64 @@
           name="mdi-information-outline"
           :size="16"
           :label="infoTooltip"
-          class="opacity-60 cursor-help"
-          :class="theme === 'dark' ? 'text-white' : 'text-black'"
+          class="cursor-help"
+          :class="[disabled ? 'opacity-30' : 'opacity-60', theme === 'dark' ? 'text-white' : 'text-black']"
         />
       </BlueTooltip>
-      <!-- Both labels are laid out rather than drawn over: two equal columns take their width
-           from the longer of the two, so the track grows to whatever it has to say and the knob
-           covering either side has the same room. -->
+      <!-- The knob carries the state's own name and slides over a track that only says what the
+           other position would be, so the switch reads as one word rather than two competing ones. -->
       <div
         name="switch-track"
-        class="relative grid grid-cols-2 rounded-[8px] bluevue-elevation-1 cursor-pointer overflow-hidden"
+        role="switch"
+        :aria-labelledby="label ? labelId : undefined"
+        :aria-label="label ? undefined : name"
+        :aria-checked="modelValue"
+        :aria-disabled="disabled === true"
+        :tabindex="disabled ? -1 : 0"
+        class="relative inline-grid shrink-0 grid-cols-[1fr_1fr] rounded-[8px] bluevue-elevation-1 cursor-pointer overflow-hidden"
         :class="[theme === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30 cursor-not-allowed' : '']"
-        :style="{ minWidth: width || '75px', height: height || '30px' }"
+        :style="{ height: height || '30px' }"
         @click="toggleSwitch"
+        @keydown="onSwitchKeydown"
       >
+        <!-- The knob has to clear its own word by 5px at either end of its travel, and an absolute
+             child cannot tell the track how wide that is. These two carry the knob's own type,
+             unseen, so the equal columns measure the longer word and the track is born to fit. -->
+        <span
+          aria-hidden="true"
+          class="invisible whitespace-nowrap px-[7px] text-[14px]"
+        >{{ labelOff || 'Off' }}</span>
+        <span
+          aria-hidden="true"
+          class="invisible whitespace-nowrap px-[7px] text-[14px]"
+        >{{ labelOn || 'On' }}</span>
+        <span
+          class="absolute left-[8px] top-1/2 -translate-y-1/2 text-[11px] pointer-events-none"
+          :class="trackLabelClass"
+        >{{ labelOff || '' }}</span>
+        <span
+          class="absolute right-[8px] top-1/2 -translate-y-1/2 text-[11px] pointer-events-none"
+          :class="trackLabelClass"
+        >{{ labelOn || '' }}</span>
         <div
-          class="absolute top-[4px] bottom-[4px] w-[calc(50%-4px)] rounded-[8px] bluevue-elevation-1 transition-all duration-300"
+          class="absolute top-[4px] bottom-[4px] left-[4px] flex items-center justify-center whitespace-nowrap rounded-[8px] px-[5px] text-[14px] text-white bluevue-elevation-1 transition-all duration-300 pointer-events-none"
           :style="{
-            left: modelValue ? 'calc(50% + 2px)' : '2px',
+            width: 'calc(50% - 4px)',
+            transform: modelValue ? 'translateX(100%)' : 'none',
             backgroundColor: modelValue ? color || 'var(--bluevue-primary)' : '#777777',
           }"
-        />
-        <!-- 9px, of which the knob's 2px inset takes the first two: what is left is the 7px the
-             label keeps from the knob's edge. -->
-        <span
-          class="relative flex items-center justify-center px-[9px] text-[14px] whitespace-nowrap pointer-events-none transition-opacity duration-300"
-          :class="labelClass(!modelValue)"
         >
-          {{ labelOff || 'Off' }}
-        </span>
-        <span
-          class="relative flex items-center justify-center px-[9px] text-[14px] whitespace-nowrap pointer-events-none transition-opacity duration-300"
-          :class="labelClass(modelValue)"
-        >
-          {{ labelOn || 'On' }}
-        </span>
+          {{ modelValue ? labelOn || 'On' : labelOff || 'Off' }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
+import { nextElementId } from '../utils/id'
 import BlueIcon from './BlueIcon.vue'
 import BlueTooltip from './BlueTooltip.vue'
 
@@ -91,8 +106,6 @@ const props = defineProps<{
   name: string
   /** Theme of the component. */
   theme?: 'light' | 'dark'
-  /** Minimum width of the container. */
-  width?: string
 }>()
 
 const emit = defineEmits<{
@@ -100,16 +113,24 @@ const emit = defineEmits<{
 }>()
 
 const modelValue = ref(props.modelValue || false)
+const labelId = nextElementId('switch-label')
 
-// The label the knob sits under is white against its fill; the other one stays as a dim
-// reminder of what the far position says.
-const labelClass = (active: boolean): string[] =>
-  active ? ['text-white'] : ['opacity-20', props.theme === 'dark' ? 'text-white' : 'text-black']
+const trackLabelClass = computed(() =>
+  props.theme === 'dark' ? 'text-[#ffffff44]' : 'text-[#00000066]'
+)
 
 const toggleSwitch = (): void => {
   if (props.disabled) return
   modelValue.value = !modelValue.value
   emit('update:modelValue', modelValue.value)
+}
+
+// The track is a div, so the keys a native checkbox would answer to have to be handled here.
+const onSwitchKeydown = (event: KeyboardEvent): void => {
+  if (props.disabled) return
+  if (event.key !== 'Enter' && event.key !== ' ') return
+  event.preventDefault()
+  toggleSwitch()
 }
 
 watch(

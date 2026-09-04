@@ -9,9 +9,12 @@
   --bluevue-accent: #6699CC;
   --bluevue-panel-bg: rgba(30, 30, 30, 0.96);
   --bluevue-hairline: rgba(255, 255, 255, 0.08);
-  /* Material's three-part shadow, at the two depths the controls use: a resting control, and
-     one raised above its neighbours (a selected segment, an open menu). */
+  /* Material's three-part shadow, across the five depths a control can rest at: 1 sits a hair off
+     the surface, 5 floats above its neighbours (a selected segment, an open menu). */
   --bluevue-elevation-1: 0 2px 1px -1px #0003, 0 1px 1px 0 #00000024, 0 1px 3px 0 #0000001f;
+  --bluevue-elevation-2: 0 3px 1px -2px #0003, 0 2px 2px 0 #00000024, 0 1px 5px 0 #0000001f;
+  --bluevue-elevation-3: 0 3px 3px -2px #0003, 0 3px 4px 0 #00000024, 0 1px 8px 0 #0000001f;
+  --bluevue-elevation-4: 0 2px 4px -1px #0003, 0 4px 5px 0 #00000024, 0 1px 10px 0 #0000001f;
   --bluevue-elevation-5: 0 3px 5px -1px #0003, 0 5px 8px 0 #00000024, 0 1px 14px 0 #0000001f;
   /* The opposite of an elevation: a well cut into the surface, for somewhere a value is typed
      rather than somewhere that is pressed. The light line along the bottom edge is what sells
@@ -24,6 +27,18 @@
 
 .bluevue-elevation-1 {
   box-shadow: var(--bluevue-elevation-1);
+}
+
+.bluevue-elevation-2 {
+  box-shadow: var(--bluevue-elevation-2);
+}
+
+.bluevue-elevation-3 {
+  box-shadow: var(--bluevue-elevation-3);
+}
+
+.bluevue-elevation-4 {
+  box-shadow: var(--bluevue-elevation-4);
 }
 
 .bluevue-elevation-5 {
@@ -59,9 +74,18 @@
   overflow: visible;
 }
 
-/* showModal() moves focus into the dialog, and with nothing focusable inside it the dialog
-   itself takes it and the browser rings the whole panel. The ring belongs on controls, not on
-   the surface holding them, and the controls inside keep their own. */
+/* The cap above has to reach the panel, or a tall dialog paints its footer past the viewport with
+   nothing able to scroll it back: an element in the top layer does not move with the page. A column
+   here hands the panel the dialog's own height, and the panel scrolls its body instead. Written
+   against [open] so the closed element keeps the display: none the UA gives it. */
+.bluevue-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+/* showModal() moves focus into the dialog, and the dialog itself is what takes it, so the browser
+   rings the whole panel. The ring belongs on controls, not on the surface holding them, and the
+   controls inside keep their own. */
 .bluevue-dialog:focus,
 .bluevue-dialog:focus-visible,
 .bluevue-popover:focus,
@@ -85,6 +109,14 @@
   padding: 0;
   background: transparent;
   overflow: visible;
+}
+
+/* For a popover that is aimed at rather than picked from, such as a wind rose: the dialog's
+   backdrop at half its weight, since the page under it stays live and clickable. */
+.bluevue-popover--dimmed::backdrop {
+  background: rgba(0, 0, 0, 0.44);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* An icon is a box the size of its em, not of however wide its glyph advances, so a row of them
@@ -216,21 +248,12 @@
   position: absolute;
 }
 
-/* BlueExpansiblePanel's open and close. */
+/* BlueExpansiblePanel's open and close. The two ends are set from the panel's measured height by
+   the component, so only the transition itself lives here. */
 .bluevue-expand-enter-active,
 .bluevue-expand-leave-active {
   transition: max-height 0.3s ease;
   overflow: hidden;
-}
-
-.bluevue-expand-enter-from,
-.bluevue-expand-leave-to {
-  max-height: 0;
-}
-
-.bluevue-expand-enter-to,
-.bluevue-expand-leave-from {
-  max-height: 500px;
 }
 
 /* BlueLoadingDialog's mark is a propeller, so it turns like one: a creep of 80 degrees over two

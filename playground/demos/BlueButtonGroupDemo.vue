@@ -45,6 +45,14 @@ function onContextMenu({ item, x, y }: { item: { name: string }; x: number; y: n
       type="toggle"
       :button-items="[{ name: 'Wind', preSelected: true }, { name: 'Waves' }, { name: 'Current', disabled: true }]"
     />
+    <BlueButtonGroup
+      label="Out of reach"
+      theme="dark"
+      type="switch"
+      info-tooltip="A whole group fades with its label and this icon."
+      disabled
+      :button-items="[{ name: 'Calm', preSelected: true }, { name: 'Chop' }, { name: 'Storm' }]"
+    />
 
     <BlueMenu
       v-model="menuOpen"

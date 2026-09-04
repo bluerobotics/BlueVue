@@ -5,6 +5,7 @@ import { BlueSwitch } from '../../src'
 
 const armed = ref(true)
 const telemetry = ref(false)
+const pack = ref(true)
 </script>
 
 <template>
@@ -23,6 +24,23 @@ const telemetry = ref(false)
       label="Telemetry"
       theme="dark"
       info-tooltip="Streams the vehicle's state to the ground station."
+    />
+    <BlueSwitch
+      v-model="pack"
+      name="simulated-pack"
+      label="Simulate the pack"
+      label-on="Simulated"
+      label-off="Passthrough"
+      theme="dark"
+      info-tooltip="The track takes its width from the longer word, so neither is squeezed."
+    />
+    <BlueSwitch
+      :model-value="false"
+      name="out-of-reach"
+      label="Out of reach"
+      theme="dark"
+      info-tooltip="Needs a companion computer on the vehicle."
+      disabled
     />
   </div>
 </template>

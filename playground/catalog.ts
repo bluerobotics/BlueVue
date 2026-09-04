@@ -214,6 +214,18 @@ export const catalog: ComponentDoc[] = [
     props: [
       { name: 'title', type: 'string', description: 'The heading on the bar.' },
       { name: 'expanded', type: 'boolean', default: 'false', description: 'Whether it starts open.' },
+      {
+        name: 'headerAlign',
+        type: "'full' | 'end'",
+        default: "'full'",
+        description: 'Rules the title off across the panel, or tucks it against the right edge.',
+      },
+      {
+        name: 'bodyClass',
+        type: 'string',
+        default: "'px-13 pt-4 pb-8'",
+        description: "Replaces the body's own inset. Use padding, not margin, so the fold follows it.",
+      },
       THEME_ROW,
     ],
     events: [{ name: 'update:expanded', type: '(value: boolean)', description: 'Opened or shut, so the state can be kept.' }],
@@ -258,6 +270,12 @@ export const catalog: ComponentDoc[] = [
       { name: 'loading', type: 'boolean', description: 'Swaps the icon for a spinner and takes the button out of reach.' },
       { name: 'disabled', type: 'boolean', description: 'Out of reach, with a reason worth stating nearby.' },
       { name: 'block', type: 'boolean', description: 'Takes the whole width it is given.' },
+      {
+        name: 'elevation',
+        type: '1 | 2 | 3 | 4 | 5',
+        default: '1 on a chip, none on text and icon',
+        description: 'Shadow depth. A disabled button is never raised.',
+      },
       { name: 'tooltip', type: 'string', description: 'Hover text, and the accessible name of an icon button.' },
       THEME_ROW,
     ],
@@ -293,6 +311,7 @@ export const catalog: ComponentDoc[] = [
       { name: 'infoTooltip', type: 'string', description: 'A hint behind an info icon beside the group.' },
       { name: 'disabled', type: 'boolean', description: 'Fades and takes the whole group out of reach.' },
       { name: 'height', type: 'string', description: 'Overrides the height the density asks for.' },
+      { name: 'width', type: 'string', description: 'Starting width, shared out between the buttons.' },
       THEME_ROW,
     ],
     events: [
@@ -361,13 +380,14 @@ export const catalog: ComponentDoc[] = [
     group: 'Controls',
     blurb: 'A heading, typed or pointed on a rose.',
     about:
-      'A number field for a direction around a circle, 0° to 360° by default, wrapping at the ends so 360 and 0 are the same heading. The compass beside the value opens a rose: click or drag the needle to set it, and the field stays there to type an exact figure. min and max remap the same circle onto another range, such as −180° to 180°.',
+      'A number field for a direction around a circle, 0° to 360° by default, wrapping at the ends so 360 and 0 are the same heading. The compass beside the value opens a round rose over a dimmed page: click or drag the needle to set it, and the field stays there to type an exact figure. min and max remap the same circle onto another range, such as −180° to 180°. A wind is named for where it comes from, so the arrow flies inward from the heading on the rim towards the centre; pass angle for a plain bar where the value is an angle rather than a wind.',
     when: [
       'Reach for it for a heading, a course, or any other value that lives on a circle.',
       'Use a BlueSlider instead when the value is a magnitude rather than a direction.',
     ],
     props: [
       { name: 'modelValue', type: 'number | null', description: 'The heading, through v-model.' },
+      { name: 'angle', type: 'boolean', description: 'Marks the heading with a plain bar, for a value that is an angle rather than a wind.' },
       { name: 'min / max', type: 'number', default: '0 / 360', description: 'The circle the value wraps around.' },
       { name: 'step', type: 'number', default: '1', description: 'How far the rose snaps, and the field\'s arrow keys.' },
       { name: 'suffix', type: 'string', default: "'°'", description: 'Unit shown inside the field.' },
@@ -461,7 +481,7 @@ export const catalog: ComponentDoc[] = [
     group: 'Controls',
     blurb: 'One thing on or off, with both states named.',
     about:
-      'Both labels are laid out rather than drawn over, so the track takes its width from the longer of the two and the knob covering either side has the same room. The label under the knob is white; the far one stays as a dim reminder of what the other position says.',
+      'The knob carries the name of the state it is in and slides over a track that says only what the other position would be, so the control reads as one word rather than two competing ones. The track measures the longer of the two words and takes its width from that, leaving 5px around the knob\'s text whichever way it is thrown, so a long word is never squeezed and a short pair is never stretched. The label beside it keeps its full text until the track is down to its own minimum. The track answers to Enter and Space as well as to a click, and reports itself to a screen reader as a switch.',
     when: [
       'Reach for it when the two states have names worth reading, such as Armed and Safe.',
       'Use a BlueCheckbox instead for a plain yes or no in a list of settings.',
@@ -474,7 +494,7 @@ export const catalog: ComponentDoc[] = [
       { name: 'color', type: 'string', description: 'The knob when it is on.' },
       { name: 'infoTooltip', type: 'string', description: 'A hint behind an info icon beside the control.' },
       { name: 'disabled', type: 'boolean', description: 'Fades and takes the switch out of reach.' },
-      { name: 'width / height', type: 'string', default: "height '30px'", description: 'Size of the track.' },
+      { name: 'height', type: 'string', default: "'30px'", description: 'Height of the track. The width is the labels\' own, so there is nothing to set.' },
       THEME_ROW,
     ],
     events: [{ name: 'update:modelValue', type: '(value: boolean)', description: 'Flipped.' }],
@@ -800,7 +820,10 @@ export const catalog: ComponentDoc[] = [
       { name: 'icon / iconColor', type: 'string', default: "'#42A5F5'", description: 'An mdi name beside the title, and its colour.' },
       { name: 'persistent', type: 'boolean', description: 'Takes away Escape, the backdrop and the close button.' },
       { name: 'width', type: 'string', default: "'624px'", description: 'Panel width. It never exceeds the viewport.' },
+      { name: 'headerClass', type: 'string', default: "'px-5 pt-4 pb-3'", description: "Replaces the header's own inset, for a header holding a mark rather than a title row." },
       { name: 'bodyClass', type: 'string', default: "'px-5 py-4'", description: "Replaces the body's own inset." },
+      { name: 'footerClass', type: 'string', default: "'px-5 py-3'", description: "Replaces the footer's own inset." },
+      { name: 'headerDivider', type: 'boolean', default: 'true', description: 'The rule under the header. A header that reads as part of the body wants none.' },
     ],
     events: [{ name: 'update:modelValue', type: '(value: boolean)', description: 'Closed, however it was closed.' }],
     slots: [
