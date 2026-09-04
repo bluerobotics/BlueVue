@@ -445,7 +445,7 @@ export const catalog: ComponentDoc[] = [
     group: 'Controls',
     blurb: 'A magnitude, dragged rather than typed.',
     about:
-      'The pill shows the value it is at, and the ends of the track say where the range stops. A scale function pair lets the track be linear while the value is not, for something like a wind speed that wants more room at its low end than at its high one.',
+      'The pill shows the value it is at, and the ends of the track say where the range stops. A scale function pair lets the track be linear while the value is not, for something like a wind speed that wants more room at its low end than at its high one. The track takes half the row where half is enough to aim at, and on a narrower host it takes more than half and runs to the right edge instead, which will truncate a long label sooner.',
     when: [
       'Reach for it for a bounded magnitude whose exact number matters less than its size.',
       'Pair it with a BlueInput when the number does have to be exact.',
