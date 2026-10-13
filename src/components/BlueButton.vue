@@ -61,7 +61,7 @@ const look = computed(() => {
   if (props.disabled) {
     return variant.value === 'text' || variant.value === 'icon'
       ? 'opacity-30 cursor-not-allowed'
-      : 'opacity-30 cursor-not-allowed bg-[#9e9e9e80] text-[#afafaf]'
+      : `opacity-30 cursor-not-allowed bg-[#9e9e9e80] ${isDark.value ? 'text-[#afafaf]' : 'text-[#626262]'}`
   }
   switch (variant.value) {
     case 'filled':
@@ -73,7 +73,7 @@ const look = computed(() => {
     case 'icon':
       return isDark.value
         ? 'cursor-pointer text-[#ffffffaa] hover:text-white'
-        : 'cursor-pointer text-[#00000099] hover:text-black'
+        : 'cursor-pointer text-[#000000cc] hover:text-black'
     default:
       return isDark.value
         ? 'cursor-pointer bg-[#ffffff11] text-white hover:bg-[#ffffff22]'

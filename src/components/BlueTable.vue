@@ -77,7 +77,7 @@ const alignment = (column: BlueColumn): string =>
 <template>
   <div
     class="w-full overflow-auto rounded-[6px]"
-    :class="mode === 'light' ? 'bg-[#00000006]' : 'bg-[#ffffff08]'"
+    :class="mode === 'light' ? 'bg-white' : 'bg-[#ffffff08]'"
     :style="{ maxHeight }"
   >
     <table class="w-full border-collapse text-[13px]">
@@ -92,7 +92,7 @@ const alignment = (column: BlueColumn): string =>
               alignment(column),
               column.sortable ? 'cursor-pointer select-none' : '',
               mode === 'light'
-                ? 'border-[#00000014] bg-[#f5f5f5cc] text-[#00000088]'
+                ? 'border-[#00000014] bg-[#e0e0e0] text-[#000000cc]'
                 : 'border-[#ffffff14] bg-[#0000004d] text-[#ffffff88]',
             ]"
             :style="{ width: column.width }"
@@ -144,7 +144,7 @@ const alignment = (column: BlueColumn): string =>
           <td
             :colspan="columns.length"
             class="px-3 py-6 text-center text-[13px]"
-            :class="mode === 'light' ? 'text-[#00000066]' : 'text-[#ffffff66]'"
+            :class="mode === 'light' ? 'text-[#000000b3]' : 'text-[#ffffff66]'"
           >
             <slot name="empty">
               {{ emptyText ?? 'Nothing here yet.' }}

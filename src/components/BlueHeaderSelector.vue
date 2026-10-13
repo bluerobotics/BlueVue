@@ -16,7 +16,7 @@
       <span
         v-if="label"
         class="block truncate text-[12px] leading-none"
-        :class="isDark ? 'text-[#ffffffb3]' : 'text-[#00000099]'"
+        :class="isDark ? 'text-[#ffffffb3]' : 'text-[#000000cc]'"
       >{{ label }}</span>
       <span
         class="mt-[6px] flex min-w-0 items-center gap-1 text-[16px] leading-none"
@@ -31,7 +31,7 @@
       </span>
       <span
         class="mdi mdi-menu-down absolute right-2 top-1/2 -translate-y-1/2 text-[24px] leading-none transition-transform"
-        :class="[isDark ? 'text-[#ffffffb3]' : 'text-[#00000099]', isOpen ? 'rotate-180' : '']"
+        :class="[isDark ? 'text-[#ffffffb3]' : 'text-[#000000cc]', isOpen ? 'rotate-180' : '']"
       />
     </button>
 
@@ -76,7 +76,7 @@
               <span
                 v-if="item.subtitle"
                 class="block truncate text-[11px]"
-                :class="isDark ? 'text-[#ffffff66]' : 'text-[#00000066]'"
+                :class="isDark ? 'text-[#ffffff66]' : 'text-[#000000b3]'"
               >{{ item.subtitle }}</span>
             </span>
           </button>

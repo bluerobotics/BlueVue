@@ -53,7 +53,7 @@ const emit = defineEmits<{
         tab.disabled ? 'cursor-not-allowed opacity-30' : 'cursor-pointer',
         modelValue === tab.value
           ? mode === 'light' ? 'text-black' : 'text-white'
-          : mode === 'light' ? 'text-[#00000088] hover:text-black' : 'text-[#ffffff88] hover:text-white',
+          : mode === 'light' ? 'text-[#000000c4] hover:text-black' : 'text-[#ffffff88] hover:text-white',
       ]"
       @click="emit('update:modelValue', tab.value)"
     >

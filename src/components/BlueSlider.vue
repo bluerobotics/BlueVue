@@ -101,13 +101,13 @@
         >
         <p
           class="absolute left-[5px] top-1/2 -translate-y-1/2 min-w-[30px] text-[12px] font-medium text-center whitespace-nowrap z-10 pointer-events-none"
-          :class="mode === 'dark' ? 'text-[#ffffff44]' : 'text-[#00000066]'"
+          :class="mode === 'dark' ? 'text-[#ffffff44]' : 'text-[#000000b3]'"
         >
           {{ labelMinDisplay }}
         </p>
         <p
           class="absolute right-[5px] top-1/2 -translate-y-1/2 min-w-[30px] text-[12px] font-medium text-center whitespace-nowrap z-10 pointer-events-none"
-          :class="mode === 'dark' ? 'text-[#ffffff44]' : 'text-[#00000066]'"
+          :class="mode === 'dark' ? 'text-[#ffffff44]' : 'text-[#000000b3]'"
         >
           {{ labelMaxDisplay }}
         </p>

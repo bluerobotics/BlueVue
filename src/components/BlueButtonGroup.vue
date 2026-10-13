@@ -64,7 +64,7 @@
               // A group given a width shares the surplus between its buttons rather than
               // leaving it as dead track behind them.
               width ? 'grow' : '',
-              selected[idx] ? 'text-white' : mode === 'dark' ? 'text-[#ffffff99]' : 'text-[#00000066]',
+              selected[idx] ? 'text-white' : mode === 'dark' ? 'text-[#ffffff99]' : 'text-[#000000b3]',
               selected[idx] && type === 'switch' ? 'bluevue-elevation-5' : '',
               disabled || btn.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
               // Only the button's own state fades it: a disabled group is faded whole by the

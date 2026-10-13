@@ -91,7 +91,7 @@
           v-if="suffix"
           class="shrink-0 pr-4 pl-1 text-sm select-none"
           :class="[
-            mode === 'dark' ? 'text-[#ffffff66]' : 'text-[#00000066]',
+            mode === 'dark' ? 'text-[#ffffff66]' : 'text-[#000000b3]',
             suffixRidesHigh ? 'translate-y-[0.22em]' : '',
           ]"
         >

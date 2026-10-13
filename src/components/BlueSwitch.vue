@@ -121,7 +121,7 @@ const modelValue = ref(props.modelValue || false)
 const labelId = nextElementId('switch-label')
 
 const trackLabelClass = computed(() =>
-  mode.value === 'dark' ? 'text-[#ffffff44]' : 'text-[#00000066]'
+  mode.value === 'dark' ? 'text-[#ffffff44]' : 'text-[#000000b3]'
 )
 
 const toggleSwitch = (): void => {
