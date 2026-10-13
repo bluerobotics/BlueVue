@@ -283,3 +283,38 @@
     transform: rotate(1440deg);
   }
 }
+
+/* Cockpit's thin pill scrollbar, tinted for dark surfaces: no track, and a faint thumb that firms
+   up under the pointer. The transparent border keeps the grab area wider than the pill it draws. */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  margin-block: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 100vw;
+  background-color: #ffffff26;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #ffffff4d;
+}
+
+/* Firefox only: Chromium drops every ::-webkit-scrollbar rule once scrollbar-color is set. */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #ffffff26 transparent;
+  }
+}
