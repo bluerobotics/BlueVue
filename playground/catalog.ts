@@ -790,10 +790,15 @@ export const catalog: ComponentDoc[] = [
     ],
     props: [
       { name: 'text', type: 'string', description: 'The label, with its newlines and tabs kept. An empty one shows nothing.' },
-      { name: 'placement', type: 'Placement', default: "'top'", description: 'Which side it hangs off, flipped when there is no room.' },
+      { name: 'placement', type: 'Placement', default: "'top'", description: 'Which side it hangs off, moved to the opposite or a perpendicular side when there is no room.' },
       { name: 'openDelay', type: 'number', default: '300', description: 'How long the pointer rests before it appears, in ms.' },
       { name: 'disabled', type: 'boolean', description: 'Wraps its content and shows nothing.' },
-      THEME_ROW,
+      {
+        name: 'plain',
+        type: 'boolean',
+        description: 'A grey label with no outline or arrow. Without it the tooltip is dark, ringed in the accent, and points an arrow at what it describes.',
+      },
+      { ...THEME_ROW, description: `${THEME_ROW.description} Only read with plain.` },
     ],
     slots: [{ name: 'default', type: '', description: 'What the tooltip describes.' }],
     snippet: `<BlueTooltip text="Reads the vehicle again">

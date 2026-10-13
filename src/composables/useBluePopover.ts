@@ -1,4 +1,15 @@
-import { autoUpdate, flip, offset, type Placement, shift, size, useFloating, type VirtualElement } from '@floating-ui/vue'
+import {
+  arrow,
+  autoUpdate,
+  flip,
+  type MiddlewareData,
+  offset,
+  type Placement,
+  shift,
+  size,
+  useFloating,
+  type VirtualElement,
+} from '@floating-ui/vue'
 import { computed, type CSSProperties, nextTick, ref, type Ref } from 'vue'
 
 interface BluePopoverOptions {
@@ -6,6 +17,10 @@ interface BluePopoverOptions {
   placement?: Placement
   /** Give the menu at least its anchor's width, for a select whose list should line up with it. */
   matchAnchorWidth?: boolean
+  /** An element inside the popover to keep pointed at the anchor, which also pushes it further off. */
+  arrowRef?: Ref<HTMLElement | null>
+  /** Try the two perpendicular sides too when neither end of its own axis has room. */
+  anySide?: boolean
 }
 
 interface BluePopover {
@@ -21,6 +36,10 @@ interface BluePopover {
   /** False until the menu has been placed, so it can be held invisible for that first frame. */
   isPositioned: Readonly<Ref<boolean>>
   floatingStyles: Readonly<Ref<CSSProperties>>
+  /** Where it actually landed, which differs from the asked placement once it has flipped. */
+  placement: Readonly<Ref<Placement>>
+  /** Holds the arrow's position, under `arrow`, when an `arrowRef` was given. */
+  middlewareData: Readonly<Ref<MiddlewareData>>
   /** Opens the menu, at a viewport position when one is given instead of an anchor element. */
   show: (pointerTarget?: [number, number]) => Promise<void>
   hide: () => void
@@ -87,7 +106,7 @@ export function useBluePopover(options: BluePopoverOptions = {}): BluePopover {
   // Null while closed, so scroll and resize are only observed for a menu that is on screen.
   const reference = computed(() => (isOpen.value ? virtualAnchor.value ?? anchorRef.value : null))
 
-  const { floatingStyles, isPositioned } = useFloating(reference, popoverRef, {
+  const { floatingStyles, isPositioned, placement, middlewareData } = useFloating(reference, popoverRef, {
     // Stated so isPositioned drops back to false on close, and a second open is held invisible
     // until it has been placed rather than showing for a frame at wherever it last was.
     open: isOpen,
@@ -95,9 +114,11 @@ export function useBluePopover(options: BluePopoverOptions = {}): BluePopover {
     strategy: 'fixed',
     whileElementsMounted: autoUpdate,
     middleware: [
-      offset(4),
-      flip({ padding: 8 }),
+      offset(options.arrowRef ? 9 : 4),
+      // Spilling along the side it hangs off is shift's to fix, so on its own it does not send the popover sideways.
+      flip(options.anySide ? { padding: 8, fallbackAxisSideDirection: 'end', crossAxis: 'alignment' } : { padding: 8 }),
       shift({ padding: 8 }),
+      ...(options.arrowRef ? [arrow({ element: options.arrowRef, padding: 8 })] : []),
       ...(options.matchAnchorWidth
         ? [size({
           apply: ({ rects, elements }) => {
@@ -146,6 +167,8 @@ export function useBluePopover(options: BluePopoverOptions = {}): BluePopover {
     isOpen,
     isPositioned,
     floatingStyles,
+    placement,
+    middlewareData,
     show,
     hide,
     onToggle,

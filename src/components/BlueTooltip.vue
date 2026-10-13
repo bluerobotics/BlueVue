@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Placement } from '@floating-ui/vue'
-import { onBeforeUnmount } from 'vue'
+import type { Placement, Side } from '@floating-ui/vue'
+import { computed, type CSSProperties, onBeforeUnmount, ref } from 'vue'
 
 import { useBluePopover } from '../composables/useBluePopover'
 
@@ -10,17 +10,40 @@ import { useBluePopover } from '../composables/useBluePopover'
  */
 const props = defineProps<{
   text: string
-  /** Which side it hangs off (default 'top'). */
+  /** Which side it hangs off (default 'top'), moving to another side when that one has no room. */
   placement?: Placement
   /** How long the pointer has to rest before it appears, in ms (default 300). */
   openDelay?: number
   /** Wraps its content and shows nothing, for a hint that only applies sometimes. */
   disabled?: boolean
+  /** Only read by the plain one, since the outlined one is always dark. */
   theme?: 'light' | 'dark'
+  /** A grey label with no outline or arrow, instead of the dark one ringed in the accent. */
+  plain?: boolean
 }>()
 
-const { anchorRef, popoverRef, popoverId, isPositioned, floatingStyles, show, hide, onToggle } = useBluePopover({
-  placement: props.placement ?? 'top',
+const outlined = !props.plain
+const arrowRef = ref<HTMLElement | null>(null)
+
+const { anchorRef, popoverRef, popoverId, isPositioned, floatingStyles, placement, middlewareData, show, hide, onToggle } =
+  useBluePopover({ placement: props.placement ?? 'top', arrowRef: outlined ? arrowRef : undefined, anySide: true })
+
+const OPPOSITE: Record<Side, Side> = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' }
+
+// The two borders that meet at the corner facing the anchor, once the square is turned 45 degrees.
+const ARROW_EDGES: Record<Side, string> = {
+  top: 'border-r-2 border-b-2',
+  bottom: 'border-l-2 border-t-2',
+  left: 'border-t-2 border-r-2',
+  right: 'border-b-2 border-l-2',
+}
+
+const side = computed(() => placement.value.split('-')[0] as Side)
+
+// Centred on the 2px outline, so the arrow's own fill covers that stretch of it.
+const arrowStyle = computed<CSSProperties>(() => {
+  const { x, y } = middlewareData.value.arrow ?? {}
+  return { left: x == null ? undefined : `${x}px`, top: y == null ? undefined : `${y}px`, [OPPOSITE[side.value]]: '-4px' }
 })
 
 // The rest before it appears is what keeps a pointer crossing a row of controls from trailing
@@ -77,14 +100,23 @@ onBeforeUnmount(cancelOpen)
            tab stop, with one string and no markup. Long prose still wraps at the cap. -->
       <div
         role="tooltip"
-        class="bluevue-elevation-5 max-w-[280px] whitespace-pre-wrap rounded-[4px] px-2 py-1 text-xs leading-snug transition-opacity duration-150"
+        class="bluevue-elevation-5 max-w-[280px] whitespace-pre-wrap text-xs leading-snug transition-opacity duration-150"
         :class="[
-          theme === 'light' ? 'bg-white text-black' : 'bg-[#333333f2] text-white',
+          outlined
+            ? 'rounded-md border-2 border-solid border-[var(--bluevue-accent)] bg-[#0d1117] px-2.5 py-1.5 text-white'
+            : ['rounded-[4px] px-2 py-1', theme === 'light' ? 'bg-white text-black' : 'bg-[#333333f2] text-white'],
           isPositioned ? 'opacity-100' : 'opacity-0',
         ]"
       >
         {{ text }}
       </div>
+      <div
+        v-if="outlined"
+        ref="arrowRef"
+        class="absolute box-border size-2.5 rotate-45 border-0 border-solid border-[var(--bluevue-accent)] bg-[#0d1117] transition-opacity duration-150"
+        :class="[ARROW_EDGES[side], isPositioned ? 'opacity-100' : 'opacity-0']"
+        :style="arrowStyle"
+      />
     </div>
   </span>
 </template>
