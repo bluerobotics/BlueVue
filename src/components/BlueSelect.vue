@@ -79,7 +79,7 @@
       <ul
         class="bluevue-elevation-5 max-h-[60vh] overflow-y-auto rounded-[4px] border border-[#FFFFFF22]"
         :class="[
-          theme === 'dark' ? 'bg-[var(--bluevue-surface)]' : 'bg-white',
+          theme === 'dark' ? 'bg-[#000000a6] backdrop-blur-[16px]' : 'bg-white',
           isPositioned ? 'opacity-100' : 'opacity-0',
         ]"
       >

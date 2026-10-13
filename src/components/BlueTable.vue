@@ -84,13 +84,13 @@ const alignment = (column: BlueColumn): string =>
             v-for="column in columns"
             :key="column.key"
             scope="col"
-            class="sticky top-0 z-[1] whitespace-nowrap border-b px-3 py-2 text-[11px] font-medium uppercase tracking-wide backdrop-blur-sm"
+            class="sticky top-0 z-[1] whitespace-nowrap border-b px-3 py-2 text-[11px] font-medium uppercase tracking-wide backdrop-blur-sm first:rounded-tl-[6px] last:rounded-tr-[6px]"
             :class="[
               alignment(column),
               column.sortable ? 'cursor-pointer select-none' : '',
               theme === 'light'
                 ? 'border-[#00000014] bg-[#f5f5f5cc] text-[#00000088]'
-                : 'border-[#ffffff14] bg-[#1e1e1ecc] text-[#ffffff88]',
+                : 'border-[#ffffff14] bg-[#0000004d] text-[#ffffff88]',
             ]"
             :style="{ width: column.width }"
             :aria-sort="sortKey === column.key ? (sortDesc ? 'descending' : 'ascending') : undefined"
