@@ -34,7 +34,10 @@
       />
     </BlueTooltip>
 
-    <div class="flex flex-col items-end min-w-0 shrink-[1000]">
+    <div
+      class="flex flex-col items-end min-w-0 shrink-[1000]"
+      :class="{ grow: width?.endsWith('%') }"
+    >
       <!-- The inset shadow darkens a band along the top edge, which the eye takes for the rim of
            the well rather than part of its floor. That drops the centre the value looks centred
            against by part of that band, which the top padding pushes the content down to meet. It

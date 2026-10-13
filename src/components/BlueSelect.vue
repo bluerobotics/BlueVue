@@ -33,7 +33,10 @@
       />
     </BlueTooltip>
 
-    <div class="flex flex-col items-end min-w-0 shrink-[1000]">
+    <div
+      class="flex flex-col items-end min-w-0 shrink-[1000]"
+      :class="{ grow: width?.endsWith('%') }"
+    >
       <button
         ref="anchorRef"
         v-bind="activatorProps"
