@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 
 import { useBluePopover } from '../composables/useBluePopover'
+import { useBlueMode } from '../utils/theme'
 import BlueIcon from './BlueIcon.vue'
 import BlueInput from './BlueInput.vue'
 
@@ -40,6 +41,8 @@ const props = defineProps<{
   errorMessages?: string[]
 }>()
 
+const mode = useBlueMode(() => props.theme, 'dark')
+
 const emit = defineEmits<{
   (e: 'update:modelValue', value: number): void
 }>()
@@ -70,7 +73,7 @@ const current = computed(() => (typeof props.modelValue === 'number' ? props.mod
 
 const roseDeg = computed(() => ((wrap(current.value) - min.value) / period.value) * 360)
 
-const isDark = computed(() => props.theme !== 'light')
+const isDark = computed(() => mode.value !== 'light')
 
 function wrap(value: number): number {
   return min.value + ((((value - min.value) % period.value) + period.value) % period.value)

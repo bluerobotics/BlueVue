@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useBlueMode } from '../utils/theme'
 import BlueChip from './BlueChip.vue'
 import BlueIcon from './BlueIcon.vue'
 
@@ -18,13 +19,15 @@ export interface BlueTab {
  * nothing else: what each one shows is the consumer's, since a tab that renders its page only
  * when it is current is what keeps the ones behind it from doing work.
  */
-defineProps<{
+const props = defineProps<{
   modelValue: string | number
   tabs: BlueTab[]
   /** Fills the width it is given, each tab taking an equal share. */
   stretch?: boolean
   theme?: 'light' | 'dark'
 }>()
+
+const mode = useBlueMode(() => props.theme)
 
 const emit = defineEmits<{
   (event: 'update:modelValue', value: string | number): void
@@ -34,7 +37,7 @@ const emit = defineEmits<{
 <template>
   <div
     class="flex items-stretch gap-1 border-b"
-    :class="theme === 'light' ? 'border-[#00000014]' : 'border-[#ffffff14]'"
+    :class="mode === 'light' ? 'border-[#00000014]' : 'border-[#ffffff14]'"
     role="tablist"
   >
     <button
@@ -49,8 +52,8 @@ const emit = defineEmits<{
         stretch ? 'flex-1' : '',
         tab.disabled ? 'cursor-not-allowed opacity-30' : 'cursor-pointer',
         modelValue === tab.value
-          ? theme === 'light' ? 'text-black' : 'text-white'
-          : theme === 'light' ? 'text-[#00000088] hover:text-black' : 'text-[#ffffff88] hover:text-white',
+          ? mode === 'light' ? 'text-black' : 'text-white'
+          : mode === 'light' ? 'text-[#00000088] hover:text-black' : 'text-[#ffffff88] hover:text-white',
       ]"
       @click="emit('update:modelValue', tab.value)"
     >

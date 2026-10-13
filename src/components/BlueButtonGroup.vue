@@ -14,7 +14,7 @@
         ref="labelRef"
         class="block truncate text-start mr-6"
         :title="label"
-        :class="[theme === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
+        :class="[mode === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
       >{{ label }}</label>
     </div>
     <div v-else />
@@ -33,13 +33,13 @@
           :size="16"
           :label="infoTooltip"
           class="cursor-help"
-          :class="[disabled ? 'opacity-30' : 'opacity-60', theme === 'dark' ? 'text-white' : 'text-black']"
+          :class="[disabled ? 'opacity-30' : 'opacity-60', mode === 'dark' ? 'text-white' : 'text-black']"
         />
       </BlueTooltip>
       <div
         ref="trackRef"
         class="relative isolate flex min-w-0 justify-end overflow-hidden rounded-[6px] bluevue-elevation-1"
-        :class="[theme === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30 pointer-events-none' : '']"
+        :class="[mode === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30 pointer-events-none' : '']"
         :style="{ height: height || (density === 'compact' ? '24px' : '30px'), width }"
       >
         <div
@@ -64,7 +64,7 @@
               // A group given a width shares the surplus between its buttons rather than
               // leaving it as dead track behind them.
               width ? 'grow' : '',
-              selected[idx] ? 'text-white' : theme === 'dark' ? 'text-[#ffffff99]' : 'text-[#00000066]',
+              selected[idx] ? 'text-white' : mode === 'dark' ? 'text-[#ffffff99]' : 'text-[#00000066]',
               selected[idx] && type === 'switch' ? 'bluevue-elevation-5' : '',
               disabled || btn.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
               // Only the button's own state fades it: a disabled group is faded whole by the
@@ -111,7 +111,7 @@
             type="button"
             title="More options"
             class="shrink-0 px-0 flex items-center justify-center h-full cursor-pointer"
-            :class="theme === 'dark' ? 'text-white' : 'text-black'"
+            :class="mode === 'dark' ? 'text-white' : 'text-black'"
           >
             <span class="self-center mdi mdi-menu-right text-[20px] mr-[2px] opacity-80" />
           </button>
@@ -126,7 +126,7 @@
             <ul
               class="bluevue-elevation-5 max-h-[60vh] overflow-y-auto border-[1px] rounded-[4px] border-[#FFFFFF22]"
               :class="[
-                theme === 'dark' ? 'text-[#FFFFFF99] bg-[var(--bluevue-surface)]' : 'text-black bg-white',
+                mode === 'dark' ? 'text-[#FFFFFF99] bg-[var(--bluevue-surface)]' : 'text-black bg-white',
                 isMenuPositioned ? 'opacity-100' : 'opacity-0',
               ]"
             >
@@ -140,7 +140,7 @@
                   class="block w-full text-left whitespace-nowrap px-4 py-2 text-[14px]"
                   :class="[
                     idx < buttonsMenu.length - 1 ? 'border-b border-white' : '',
-                    theme === 'dark' ? 'hover:bg-[#333333]' : 'hover:bg-gray-100',
+                    mode === 'dark' ? 'hover:bg-[#333333]' : 'hover:bg-gray-100',
                     item.menuItemDisabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer',
                   ]"
                   @click="runMenuItem(item)"
@@ -159,6 +159,7 @@
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import { useBluePopover } from '../composables/useBluePopover'
+import { useBlueMode } from '../utils/theme'
 import BlueIcon from './BlueIcon.vue'
 import BlueTooltip from './BlueTooltip.vue'
 
@@ -224,6 +225,8 @@ const props = defineProps<{
    */
   density?: 'compact' | 'regular' | 'comfortable'
 }>()
+
+const mode = useBlueMode(() => props.theme)
 
 const emit = defineEmits<{
   (e: 'update:selected', value: boolean[]): void

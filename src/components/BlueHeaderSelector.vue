@@ -90,6 +90,7 @@
 import { computed } from 'vue'
 
 import { useBluePopover } from '../composables/useBluePopover'
+import { useBlueMode } from '../utils/theme'
 
 /**
  * One choice in the header selector.
@@ -122,6 +123,8 @@ const props = defineProps<{
   modelValue?: any
 }>()
 
+const mode = useBlueMode(() => props.theme, 'dark')
+
 const emit = defineEmits<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (e: 'update:modelValue', value: any): void
@@ -139,7 +142,7 @@ const {
   onToggle,
 } = useBluePopover({ matchAnchorWidth: true })
 
-const isDark = computed(() => props.theme !== 'light')
+const isDark = computed(() => mode.value !== 'light')
 
 const selectedItem = computed(() =>
   props.items.find((item) => (item.value ?? item.name) === props.modelValue)

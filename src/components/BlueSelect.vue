@@ -10,7 +10,7 @@
       <label
         class="block truncate text-start mr-6"
         :title="label"
-        :class="[theme === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
+        :class="[mode === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
       >
         {{ label }}
       </label>
@@ -29,7 +29,7 @@
         :size="16"
         :label="infoTooltip"
         class="cursor-help"
-        :class="[disabled ? 'opacity-30' : 'opacity-60', theme === 'dark' ? 'text-white' : 'text-black']"
+        :class="[disabled ? 'opacity-30' : 'opacity-60', mode === 'dark' ? 'text-white' : 'text-black']"
       />
     </BlueTooltip>
 
@@ -79,7 +79,7 @@
       <ul
         class="bluevue-elevation-5 max-h-[60vh] overflow-y-auto rounded-[4px] border border-[#FFFFFF22]"
         :class="[
-          theme === 'dark' ? 'bg-[#000000a6] backdrop-blur-[16px]' : 'bg-white',
+          mode === 'dark' ? 'bg-[#000000a6] backdrop-blur-[16px]' : 'bg-white',
           isPositioned ? 'opacity-100' : 'opacity-0',
         ]"
       >
@@ -95,7 +95,7 @@
               itemTextClass(opt),
               disabled || opt.disabled
                 ? 'cursor-not-allowed'
-                : theme === 'dark' ? 'cursor-pointer hover:bg-[#ffffff11]' : 'cursor-pointer hover:bg-gray-100',
+                : mode === 'dark' ? 'cursor-pointer hover:bg-[#ffffff11]' : 'cursor-pointer hover:bg-gray-100',
             ]"
             @click="selectOption(idx)"
           >
@@ -115,6 +115,7 @@
 import { computed, ref, watch } from 'vue'
 
 import { useBluePopover } from '../composables/useBluePopover'
+import { useBlueMode } from '../utils/theme'
 import BlueIcon from './BlueIcon.vue'
 import BlueTooltip from './BlueTooltip.vue'
 
@@ -165,6 +166,8 @@ const props = defineProps<{
   errorMessages?: string[]
 }>()
 
+const mode = useBlueMode(() => props.theme)
+
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string | number | (string | number)[]): void
 }>()
@@ -191,7 +194,7 @@ const hasError = computed(() =>
 // Applied inline because the activator is a <button>, and a host reset that is unlayered, as
 // Vuetify's is, sets button { background-color: transparent } and beats any Tailwind utility
 // for it: utilities sit in a cascade layer, and unlayered rules win over layered ones outright.
-const closedBackground = computed(() => (props.theme === 'dark' ? '#FFFFFF05' : '#00000011'))
+const closedBackground = computed(() => (mode.value === 'dark' ? '#FFFFFF05' : '#00000011'))
 
 const selectOption = (index: number) => {
   if (props.multiSelect) {
@@ -212,8 +215,8 @@ const selectOption = (index: number) => {
   }
 }
 
-const iconClass = computed(() => (props.theme === 'dark' ? 'text-white' : 'text-black'))
-const selectedTextClass = computed(() => (props.theme === 'dark' ? 'text-white' : 'text-black'))
+const iconClass = computed(() => (mode.value === 'dark' ? 'text-white' : 'text-black'))
+const selectedTextClass = computed(() => (mode.value === 'dark' ? 'text-white' : 'text-black'))
 
 /**
  * Returns the class for the item text based on the option and props
@@ -221,7 +224,7 @@ const selectedTextClass = computed(() => (props.theme === 'dark' ? 'text-white' 
  */
 function itemTextClass(opt: OptionItem) {
   if (opt.disabled || props.disabled) return 'text-gray-500'
-  return props.theme === 'dark' ? 'text-white' : 'text-black'
+  return mode.value === 'dark' ? 'text-white' : 'text-black'
 }
 
 watch(

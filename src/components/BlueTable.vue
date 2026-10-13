@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import { useBlueMode } from '../utils/theme'
 import BlueIcon from './BlueIcon.vue'
 
 /** One column of the table. */
@@ -33,6 +34,8 @@ const props = defineProps<{
   emptyText?: string
   theme?: 'light' | 'dark'
 }>()
+
+const mode = useBlueMode(() => props.theme)
 
 defineEmits<{
   (event: 'row-click', row: Record<string, unknown>): void
@@ -74,7 +77,7 @@ const alignment = (column: BlueColumn): string =>
 <template>
   <div
     class="w-full overflow-auto rounded-[6px]"
-    :class="theme === 'light' ? 'bg-[#00000006]' : 'bg-[#ffffff08]'"
+    :class="mode === 'light' ? 'bg-[#00000006]' : 'bg-[#ffffff08]'"
     :style="{ maxHeight }"
   >
     <table class="w-full border-collapse text-[13px]">
@@ -88,7 +91,7 @@ const alignment = (column: BlueColumn): string =>
             :class="[
               alignment(column),
               column.sortable ? 'cursor-pointer select-none' : '',
-              theme === 'light'
+              mode === 'light'
                 ? 'border-[#00000014] bg-[#f5f5f5cc] text-[#00000088]'
                 : 'border-[#ffffff14] bg-[#0000004d] text-[#ffffff88]',
             ]"
@@ -114,7 +117,7 @@ const alignment = (column: BlueColumn): string =>
           v-for="(row, index) in sorted"
           :key="String(rowKey ? row[rowKey] : index)"
           class="transition-colors"
-          :class="theme === 'light' ? 'hover:bg-[#0000000a]' : 'hover:bg-[#ffffff0a]'"
+          :class="mode === 'light' ? 'hover:bg-[#0000000a]' : 'hover:bg-[#ffffff0a]'"
           @click="$emit('row-click', row)"
         >
           <td
@@ -124,7 +127,7 @@ const alignment = (column: BlueColumn): string =>
             :class="[
               alignment(column),
               dense ? 'py-1' : 'py-2',
-              theme === 'light' ? 'border-[#0000000a] text-black' : 'border-[#ffffff0a] text-white',
+              mode === 'light' ? 'border-[#0000000a] text-black' : 'border-[#ffffff0a] text-white',
             ]"
           >
             <slot
@@ -141,7 +144,7 @@ const alignment = (column: BlueColumn): string =>
           <td
             :colspan="columns.length"
             class="px-3 py-6 text-center text-[13px]"
-            :class="theme === 'light' ? 'text-[#00000066]' : 'text-[#ffffff66]'"
+            :class="mode === 'light' ? 'text-[#00000066]' : 'text-[#ffffff66]'"
           >
             <slot name="empty">
               {{ emptyText ?? 'Nothing here yet.' }}

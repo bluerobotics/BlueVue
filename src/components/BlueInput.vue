@@ -11,7 +11,7 @@
         :for="name"
         class="block truncate text-start mr-6"
         :title="label"
-        :class="[theme === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
+        :class="[mode === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
       >
         {{ label }}
       </label>
@@ -30,7 +30,7 @@
         :size="16"
         :label="infoTooltip"
         class="cursor-help"
-        :class="[disabled ? 'opacity-30' : 'opacity-60', theme === 'dark' ? 'text-white' : 'text-black']"
+        :class="[disabled ? 'opacity-30' : 'opacity-60', mode === 'dark' ? 'text-white' : 'text-black']"
       />
     </BlueTooltip>
 
@@ -78,7 +78,7 @@
           :class="[
             $slots.prepend ? 'pl-1' : 'pl-4',
             suffix ? 'pr-1' : 'pr-4',
-            theme === 'dark' ? 'text-white placeholder:text-[#ffffff44]' : 'text-black placeholder:text-[#00000055]',
+            mode === 'dark' ? 'text-white placeholder:text-[#ffffff44]' : 'text-black placeholder:text-[#00000055]',
           ]"
           @input="onInput"
           @keydown.up.prevent="nudge(1)"
@@ -91,7 +91,7 @@
           v-if="suffix"
           class="shrink-0 pr-4 pl-1 text-sm select-none"
           :class="[
-            theme === 'dark' ? 'text-[#ffffff66]' : 'text-[#00000066]',
+            mode === 'dark' ? 'text-[#ffffff66]' : 'text-[#00000066]',
             suffixRidesHigh ? 'translate-y-[0.22em]' : '',
           ]"
         >
@@ -118,6 +118,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 
+import { useBlueMode } from '../utils/theme'
 import BlueIcon from './BlueIcon.vue'
 import BlueTooltip from './BlueTooltip.vue'
 
@@ -160,6 +161,8 @@ const props = defineProps<{
   errorMessages?: string[]
 }>()
 
+const mode = useBlueMode(() => props.theme)
+
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string | number | null): void
 }>()
@@ -174,7 +177,7 @@ const suffixRidesHigh = computed(() => /^[°′″'"]+$/.test(props.suffix ?? ''
 
 // Applied inline so it survives a host stylesheet whose reset is unlayered, as Vuetify's is:
 // utilities sit in a cascade layer, and unlayered rules win over layered ones outright.
-const fieldBackground = computed(() => (props.theme === 'dark' ? '#FFFFFF11' : '#00000011'))
+const fieldBackground = computed(() => (mode.value === 'dark' ? '#FFFFFF11' : '#00000011'))
 
 // Everything a number can look like on the way to being one, including the stages that are
 // not a number yet: '', '-', '-27.'.

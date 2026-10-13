@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { useBlueMode } from '../utils/theme'
 import BlueIcon from './BlueIcon.vue'
 import BlueSpinner from './BlueSpinner.vue'
 
@@ -39,6 +40,8 @@ const props = defineProps<{
   type?: 'button' | 'submit' | 'reset'
 }>()
 
+const mode = useBlueMode(() => props.theme, 'dark')
+
 defineEmits<{
   (event: 'click', value: MouseEvent): void
 }>()
@@ -48,7 +51,7 @@ const PADDING = { compact: 'px-2', regular: 'px-3', comfortable: 'px-4' } as con
 
 const variant = computed(() => props.variant ?? 'tonal')
 const density = computed(() => props.density ?? 'regular')
-const isDark = computed(() => props.theme !== 'light')
+const isDark = computed(() => mode.value !== 'light')
 const height = computed(() => HEIGHT[density.value])
 const glyphSize = computed(() => (density.value === 'compact' ? 14 : 16))
 

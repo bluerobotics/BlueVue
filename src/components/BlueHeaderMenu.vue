@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import { useBlueMode } from '../utils/theme'
 import BlueMenu, { type BlueMenuItem } from './BlueMenu.vue'
 
 /**
@@ -47,7 +48,9 @@ const props = defineProps<{
   theme?: 'light' | 'dark'
 }>()
 
+const mode = useBlueMode(() => props.theme, 'dark')
+
 const isOpen = ref(false)
-const isDark = computed(() => props.theme !== 'light')
+const isDark = computed(() => mode.value !== 'light')
 const size = computed(() => props.iconSize ?? 24)
 </script>

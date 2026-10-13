@@ -11,24 +11,24 @@
         <div
           v-if="props.headerAlign !== 'end'"
           class="flex-1 h-px"
-          :class="props.theme === 'dark' ? 'bg-[#ffffff22]' : 'bg-[#00000033]'"
+          :class="mode === 'dark' ? 'bg-[#ffffff22]' : 'bg-[#00000033]'"
         />
         <span
           class="mx-3 min-w-0 truncate text-base font-normal opacity-60"
           :title="title"
-          :class="props.theme === 'dark' ? 'text-white' : 'text-black'"
+          :class="mode === 'dark' ? 'text-white' : 'text-black'"
         >{{ title }}</span>
         <div
           v-if="props.headerAlign !== 'end'"
           class="flex-1 h-px"
-          :class="props.theme === 'dark' ? 'bg-[#ffffff11]' : 'bg-[#00000033]'"
+          :class="mode === 'dark' ? 'bg-[#ffffff11]' : 'bg-[#00000033]'"
         />
       </div>
       <span
         class="mdi ml-3 text-[24px] leading-none opacity-40"
         :class="[
           isOpen ? 'mdi-menu-up' : 'mdi-menu-down',
-          props.theme === 'dark' ? 'text-white' : 'text-black',
+          mode === 'dark' ? 'text-white' : 'text-black',
         ]"
       />
     </div>
@@ -49,7 +49,7 @@
           :class="[
             'flex flex-col gap-[15px]',
             props.bodyClass || 'px-13 pt-4 pb-8',
-            props.theme === 'dark' ? 'border-[#555555]' : 'border-[#dddddd]',
+            mode === 'dark' ? 'border-[#555555]' : 'border-[#dddddd]',
           ]"
         >
           <slot />
@@ -61,6 +61,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { useBlueMode } from '../utils/theme'
 
 const props = defineProps<{
   /** Panel title */
@@ -81,6 +82,8 @@ const props = defineProps<{
   /** 'light' or 'dark' theme */
   theme?: 'light' | 'dark'
 }>()
+
+const mode = useBlueMode(() => props.theme)
 
 const emit = defineEmits<{
   (e: 'update:expanded', value: boolean): void

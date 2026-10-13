@@ -9,7 +9,7 @@
   >
     <div
       class="absolute inset-x-0 top-1/2 h-2 -translate-y-1/2 rounded-full"
-      :class="theme === 'dark' ? 'bg-[#ffffff14]' : 'bg-[#00000014]'"
+      :class="mode === 'dark' ? 'bg-[#ffffff14]' : 'bg-[#00000014]'"
     >
       <div
         class="absolute inset-y-0 rounded-full"
@@ -52,7 +52,7 @@
         v-else
         class="h-4 rounded-full transition-[width,box-shadow] duration-150"
         :class="[
-          theme === 'dark' ? 'bg-white' : 'bg-black',
+          mode === 'dark' ? 'bg-white' : 'bg-black',
           active === index ? 'w-1 shadow-[var(--bluevue-elevation-3)]' : 'w-0.5',
         ]"
       />
@@ -67,7 +67,7 @@
       <div
         role="tooltip"
         class="whitespace-nowrap rounded-[4px] px-2 py-1 text-xs leading-snug bluevue-elevation-5"
-        :class="theme === 'dark' ? 'bg-[#333333f2] text-white' : 'bg-white text-black'"
+        :class="mode === 'dark' ? 'bg-[#333333f2] text-white' : 'bg-white text-black'"
       >
         {{ active === null ? '' : formatValue(modelValue[active]) }}
       </div>
@@ -77,6 +77,7 @@
 
 <script setup lang="ts">
 import { computed, type CSSProperties, ref, watch } from 'vue'
+import { useBlueMode } from '../utils/theme'
 
 /**
  * Two or three values on one track: the ends of a range, and optionally a point inside it such as
@@ -96,9 +97,11 @@ const props = defineProps<{
   format?: (value: number) => string
   /** The fill and knobs, in place of the primary token. */
   color?: string
-  /** 'light' or 'dark' theme (default 'light'). */
+  /** 'light' or 'dark' theme (default the app's, or 'light'). */
   theme?: 'light' | 'dark'
 }>()
+
+const mode = useBlueMode(() => props.theme)
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: number[]): void

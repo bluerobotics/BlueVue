@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+import { useBlueMode } from '../utils/theme'
 import BlueIcon from './BlueIcon.vue'
 
 /**
@@ -20,6 +21,8 @@ const props = defineProps<{
   disabled?: boolean
   theme?: 'light' | 'dark'
 }>()
+
+const mode = useBlueMode(() => props.theme)
 
 const emit = defineEmits<{
   (event: 'files', files: File[]): void
@@ -61,8 +64,8 @@ const onPick = (event: Event): void => {
       :class="[
         hovering
           ? 'border-[var(--bluevue-accent)] bg-[var(--bluevue-accent)]/10'
-          : theme === 'light' ? 'border-[#00000033] hover:bg-[#00000006]' : 'border-[#ffffff33] hover:bg-[#ffffff08]',
-        theme === 'light' ? 'text-black' : 'text-white',
+          : mode === 'light' ? 'border-[#00000033] hover:bg-[#00000006]' : 'border-[#ffffff33] hover:bg-[#ffffff08]',
+        mode === 'light' ? 'text-black' : 'text-white',
       ]"
       @click="input?.click()"
       @dragenter.prevent="depth += 1; hovering = true"

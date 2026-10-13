@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useBlueMode } from '../utils/theme'
 import BlueIcon from './BlueIcon.vue'
 import BlueTooltip from './BlueTooltip.vue'
 
@@ -16,7 +17,7 @@ export interface BlueRadioItem {
  * track, this gives every one of them a line of its own, which is what a choice needing an
  * explanation apiece wants.
  */
-defineProps<{
+const props = defineProps<{
   modelValue: string | number | null
   items: BlueRadioItem[]
   /** Name of the group, which is what makes the choices exclusive. */
@@ -28,6 +29,8 @@ defineProps<{
   disabled?: boolean
   theme?: 'light' | 'dark'
 }>()
+
+const mode = useBlueMode(() => props.theme)
 
 const emit = defineEmits<{
   (event: 'update:modelValue', value: string | number): void
@@ -42,7 +45,7 @@ const emit = defineEmits<{
     <legend
       v-if="label"
       class="mb-2 text-[13px]"
-      :class="theme === 'dark' ? 'text-white' : 'text-black'"
+      :class="mode === 'dark' ? 'text-white' : 'text-black'"
     >
       {{ label }}
     </legend>
@@ -57,7 +60,7 @@ const emit = defineEmits<{
         class="flex items-center gap-2"
         :class="[
           disabled || item.disabled ? 'cursor-not-allowed opacity-30' : 'cursor-pointer',
-          theme === 'dark' ? 'text-white' : 'text-black',
+          mode === 'dark' ? 'text-white' : 'text-black',
         ]"
       >
         <input
@@ -75,7 +78,7 @@ const emit = defineEmits<{
           class="flex h-[16px] w-[16px] shrink-0 items-center justify-center rounded-full border transition-colors peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--bluevue-accent)]"
           :class="modelValue === item.value
             ? 'border-[var(--bluevue-primary)]'
-            : theme === 'dark' ? 'border-[#ffffff44]' : 'border-[#00000044]'"
+            : mode === 'dark' ? 'border-[#ffffff44]' : 'border-[#00000044]'"
         >
           <span
             v-if="modelValue === item.value"
