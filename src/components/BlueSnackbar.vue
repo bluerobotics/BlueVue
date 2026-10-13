@@ -17,10 +17,10 @@ const props = defineProps<{
 const { notices, dismiss } = useBlueSnackbar()
 
 const LOOK: Record<BlueNoticeSeverity, { icon: string; color: string }> = {
-  success: { icon: 'mdi-check-circle-outline', color: '#66BB6A' },
+  success: { icon: 'mdi-check-circle-outline', color: 'var(--bluevue-status-success)' },
   error: { icon: 'mdi-alert-circle-outline', color: 'var(--bluevue-error)' },
-  warning: { icon: 'mdi-alert-outline', color: '#FFB74D' },
-  info: { icon: 'mdi-information-outline', color: '#42A5F5' },
+  warning: { icon: 'mdi-alert-outline', color: 'var(--bluevue-status-warning)' },
+  info: { icon: 'mdi-information-outline', color: 'var(--bluevue-status-info)' },
 }
 
 const corner = computed(() => {
@@ -52,7 +52,7 @@ const stacked = computed(() => (props.position?.startsWith('top') ? [...notices.
       <div
         v-for="notice in stacked"
         :key="notice.id"
-        class="bluevue-panel pointer-events-auto flex items-center gap-3 rounded-[6px] py-2 pl-3 pr-2 text-white"
+        class="bluevue-panel pointer-events-auto flex items-center gap-3 rounded-[6px] py-2 pl-3 pr-2 text-[var(--bluevue-ink)]"
       >
         <BlueIcon
           :name="LOOK[notice.severity].icon"
@@ -63,7 +63,7 @@ const stacked = computed(() => (props.position?.startsWith('top') ? [...notices.
           {{ notice.text }}
           <span
             v-if="notice.repeats > 1"
-            class="text-[#ffffff88]"
+            class="text-[var(--bluevue-ink-muted)]"
           >(×{{ notice.repeats }})</span>
         </span>
         <BlueButton

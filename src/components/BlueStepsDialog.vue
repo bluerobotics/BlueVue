@@ -47,17 +47,17 @@ const slots = useSlots()
 const STEP_ICON_SIZE = 22
 
 const STEP_STYLE = {
-  pending: { icon: 'mdi-circle-outline', color: '#ffffff44' },
-  running: { icon: 'mdi-progress-clock', color: '#42A5F5' },
-  done: { icon: 'mdi-check-circle', color: '#66BB6A' },
-  failed: { icon: 'mdi-alert-circle', color: '#EF5350' },
-  skipped: { icon: 'mdi-minus-circle-outline', color: '#ffffff44' },
+  pending: { icon: 'mdi-circle-outline', color: 'var(--bluevue-ink-dim)' },
+  running: { icon: 'mdi-progress-clock', color: 'var(--bluevue-status-info)' },
+  done: { icon: 'mdi-check-circle', color: 'var(--bluevue-status-success)' },
+  failed: { icon: 'mdi-alert-circle', color: 'var(--bluevue-status-error)' },
+  skipped: { icon: 'mdi-minus-circle-outline', color: 'var(--bluevue-ink-dim)' },
 } as const
 
 const HEAD = {
-  running: { icon: 'mdi-cog-sync', color: '#42A5F5' },
-  failed: { icon: 'mdi-alert-circle', color: '#EF5350' },
-  done: { icon: 'mdi-check-circle', color: '#66BB6A' },
+  running: { icon: 'mdi-cog-sync', color: 'var(--bluevue-status-info)' },
+  failed: { icon: 'mdi-alert-circle', color: 'var(--bluevue-status-error)' },
+  done: { icon: 'mdi-check-circle', color: 'var(--bluevue-status-success)' },
 } as const
 
 const head = computed(() => HEAD[props.state])
@@ -146,7 +146,7 @@ onBeforeUnmount(() => {
         >
           <div
             ref="subtitleRef"
-            class="min-w-0 truncate text-xs text-[#ffffff88]"
+            class="min-w-0 truncate text-xs text-[var(--bluevue-ink-muted)]"
           >
             {{ subtitle }}
           </div>
@@ -164,7 +164,7 @@ onBeforeUnmount(() => {
           class="flex flex-1 items-center"
           :style="{ height: `${STEP_ICON_SIZE}px` }"
         >
-          <div class="h-px w-full bg-[#ffffff1a]" />
+          <div class="h-px w-full bg-[var(--bluevue-edge)]" />
         </div>
         <!-- Wide enough for the longest step title to stay on one line before the ellipsis. -->
         <div class="flex w-[84px] shrink-0 flex-col items-center gap-1">
@@ -176,7 +176,7 @@ onBeforeUnmount(() => {
           <span
             class="w-full truncate text-center text-[10px] leading-tight"
             :title="step.detail || step.title"
-            :class="step.state === 'running' ? 'text-white' : 'text-[#ffffff77]'"
+            :class="step.state === 'running' ? 'text-[var(--bluevue-ink)]' : 'text-[var(--bluevue-ink-muted)]'"
           >
             {{ step.title }}
           </span>
@@ -186,10 +186,10 @@ onBeforeUnmount(() => {
 
     <div
       v-if="hasProgress"
-      class="mt-4 border-t border-[#ffffff0d] pt-4"
+      class="mt-4 border-t border-[var(--bluevue-divider)] pt-4"
     >
       <div class="mb-2 flex items-baseline justify-between">
-        <span class="truncate text-xs text-[#ffffffcc]">{{ progressLabel }}</span>
+        <span class="truncate text-xs text-[var(--bluevue-ink-strong)]">{{ progressLabel }}</span>
         <div class="flex shrink-0 gap-2 pl-3">
           <slot name="badges" />
         </div>

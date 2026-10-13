@@ -46,7 +46,7 @@ function confirm(): void {
   >
     <p
       v-if="message"
-      class="text-sm leading-relaxed text-[#ffffffcc]"
+      class="text-sm leading-relaxed text-[var(--bluevue-ink-strong)]"
     >
       {{ message }}
     </p>

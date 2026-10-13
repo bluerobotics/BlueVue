@@ -47,7 +47,9 @@ export function applyBlueTheme(theme: BlueTheme, target: HTMLElement = document.
     const value = theme[key]
     if (value) target.style.setProperty(variable, value)
   }
-  if (theme.mode) appMode.value = theme.mode
+  if (!theme.mode) return
+  appMode.value = theme.mode
+  document.documentElement.dataset.bluevueMode = theme.mode
 }
 
 /**

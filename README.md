@@ -103,7 +103,12 @@ dark throughout sets that once instead of at each call site:
 applyBlueTheme({ mode: 'dark' })
 ```
 
-A component's own `theme` prop still wins where one surface differs from the rest of the app.
+A component's own `theme` prop still wins where one surface differs from the rest of the app. The
+cards, dialogs, menus and snackbars have no `theme` prop, since they are the app's own surfaces:
+they follow `mode` through the `--bluevue-ink*`, `--bluevue-divider`, `--bluevue-wash` and
+`--bluevue-edge` tokens, which flip as a set. The meanings a chip, a snackbar or a step can carry
+(`--bluevue-status-success`, `-error`, `-warning`, `-info`, `-neutral`) flip with them, darker on
+the light surface so they keep their contrast.
 
 ## What is in it
 

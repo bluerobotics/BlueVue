@@ -26,11 +26,11 @@ defineEmits<{
 }>()
 
 const MEANING: Record<string, string> = {
-  success: '#66BB6A',
-  error: '#EF5350',
-  warning: '#FFB74D',
-  info: '#42A5F5',
-  neutral: '#90A4AE',
+  success: 'var(--bluevue-status-success)',
+  error: 'var(--bluevue-status-error)',
+  warning: 'var(--bluevue-status-warning)',
+  info: 'var(--bluevue-status-info)',
+  neutral: 'var(--bluevue-status-neutral)',
 }
 
 const tone = computed(() => MEANING[props.color ?? 'neutral'] ?? props.color ?? MEANING.neutral)

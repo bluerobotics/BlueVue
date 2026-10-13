@@ -80,7 +80,7 @@ function runItem(item: BlueMenuItem): void {
     @toggle="onToggle"
   >
     <ul
-      class="bluevue-elevation-5 min-w-[220px] max-h-[60vh] overflow-y-auto rounded-[4px] border border-[#ffffff1a] bg-[#2d2d2d]"
+      class="bluevue-elevation-5 min-w-[220px] max-h-[60vh] overflow-y-auto rounded-[4px] border border-[var(--bluevue-edge)] bg-[var(--bluevue-menu-bg)]"
       :class="isPositioned ? 'opacity-100' : 'opacity-0'"
     >
       <li
@@ -89,15 +89,15 @@ function runItem(item: BlueMenuItem): void {
       >
         <div
           v-if="index"
-          class="h-px bg-[#ffffff0d]"
+          class="h-px bg-[var(--bluevue-divider)]"
         />
         <button
           type="button"
           :disabled="item.disabled"
           class="flex w-full items-start gap-3 px-4 py-2 text-left"
           :class="[
-            item.danger ? 'text-[#ff6b6b]' : 'text-white',
-            item.disabled ? 'cursor-not-allowed opacity-30' : 'cursor-pointer hover:bg-[#ffffff11]',
+            item.danger ? 'text-[#ff6b6b]' : 'text-[var(--bluevue-ink)]',
+            item.disabled ? 'cursor-not-allowed opacity-30' : 'cursor-pointer hover:bg-[var(--bluevue-wash)]',
           ]"
           @click="runItem(item)"
         >
@@ -109,7 +109,7 @@ function runItem(item: BlueMenuItem): void {
             <span class="block text-[13px] leading-snug">{{ item.title }}</span>
             <span
               v-if="item.hint"
-              class="block text-[10px] text-[#ffffff66]"
+              class="block text-[10px] text-[var(--bluevue-ink-faint)]"
             >{{ item.hint }}</span>
           </span>
         </button>
