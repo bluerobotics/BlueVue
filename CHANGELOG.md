@@ -2,6 +2,39 @@
 
 One entry per release, newest first.
 
+## 0.3.0: one light or dark default for the whole app
+
+An app can now say once whether it is light or dark, instead of passing `theme` to every control,
+and the surfaces that never had a `theme` prop follow it too. An app that sets nothing draws as it
+did on 0.2.4, apart from the light theme's quieter text, which is darker now.
+
+---
+
+### `applyBlueTheme({ mode })`
+
+`mode: 'light'` or `mode: 'dark'` sets what every component draws on when its own `theme` prop is
+left out. The order is the component's prop, then the app's mode, then the component's own default,
+so a single surface can still differ from the rest of the app. `useBlueMode` resolves that same
+order for an app's own components, and `BlueMode` and `BlueColors` are exported alongside it.
+
+### Cards, dialogs, menus and snackbars follow the mode
+
+These have no `theme` prop, since they are the app's own surfaces, so a light app used to get them
+dark. They now read their ink, dividers, washes and edges from a set of tokens (`--bluevue-ink*`,
+`--bluevue-divider`, `--bluevue-wash`, `--bluevue-edge`) that `mode: 'light'` flips together. The
+colours a chip, a snackbar or a step uses for success, error, warning, info and neutral are tokens
+as well (`--bluevue-status-*`), and turn darker on the light surface so they keep their contrast.
+`BluePromptDialog`'s fields follow the dialog rather than being pinned dark.
+
+### The light theme's quiet text is darker
+
+Labels, suffixes, hints, unselected tabs and button-group segments on the light theme were drawn at
+40 to 60% black and washed out on white. They are around 70 to 80% now, a disabled button keeps a
+readable grey, and a light `BlueTable` sits on white under a solid grey header. This reaches any
+control given `theme="light"`, whether or not the app sets a mode. The dark theme is unchanged.
+
+---
+
 ## 0.2.4: a range control, an outlined tooltip, and dark surfaces that let the panel through
 
 One new component, two new props, and a set of visual changes. Three of those reach an app that
