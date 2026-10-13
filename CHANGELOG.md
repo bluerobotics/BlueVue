@@ -2,6 +2,52 @@
 
 One entry per release, newest first.
 
+## 0.2.4: a range control, an outlined tooltip, and dark surfaces that let the panel through
+
+One new component, two new props, and a set of visual changes. Three of those reach an app that
+upgrades without touching its own code: the tooltip's default look, the primary colour, and the
+scrollbars.
+
+---
+
+### BlueRange
+
+Two or three values on one track: the ends of a span, such as a PWM output's limits, and optionally
+a point between them, such as its trim. The ends grow knobs under the pointer while the middle value
+stays a bar, each handle shows its value while it is hovered, dragged or focused from the keyboard,
+and none can be pulled past its neighbours. A press anywhere on the track takes the nearest handle
+there. The arrow keys, Page Up and Down, Home and End all work, and `format` decides how a value
+reads in its tooltip.
+
+### BlueTooltip is outlined, with an arrow
+
+A tooltip is now dark, ringed in the accent, and points an arrow at what it describes. The old grey
+label is still there behind `plain`, which is also the only variant that reads `theme`. With no room
+on its own side a tooltip now tries the perpendicular sides as well, instead of spilling off an edge
+it could not flip away from.
+
+### Smaller fixes
+
+- `BlueStepsDialog` shows a subtitle that does not fit its line in full on hover, so the end of a
+  failure's reason is readable.
+- `BlueSlider`'s value pill stays 5px inside the track at both ends however wide its text, where a
+  long value such as one with a unit used to run past the right end.
+- `BlueInput` and `BlueSelect` honour a percentage `width` as a share of the row. It used to resolve
+  against a column only as wide as the value.
+- `BlueSlider` and `BlueSwitch` take a `background` for the track, in place of the theme's grey.
+
+### Dark surfaces, the primary and the scrollbars
+
+- The dark `BlueSelect` list is translucent black with its own blur, and the dark `BlueTable` header
+  a light black wash, instead of opaque greys that read as patches on a frosted panel.
+- `--bluevue-primary` is `#1F7AA8`, lighter than the old `#0B5087` and clearer on a dark surface. An
+  app that wants the old one back can restate it.
+- The stylesheet now draws a thin pill scrollbar, with no track, on every scrolling element. These
+  rules are global, so they restyle the scrollbars of the whole app that loads it, not only the ones
+  inside BlueVue components.
+
+---
+
 ## 0.2.3: the frosting comes back, and two things the 4K Cam Manager had to work around
 
 Three fixes found while the 4K Cam Manager was being built on 0.2.2. All are behaviour changes
