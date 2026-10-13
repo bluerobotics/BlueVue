@@ -78,7 +78,11 @@ onBeforeUnmount(stop)
     <BlueStepsDialog
       v-model="open"
       title="Applying BlueBoat"
-      :subtitle="failed ? 'The autopilot did not come back' : 'Working…'"
+      :subtitle="
+        failed
+          ? 'The autopilot did not come back after its restart, so the parameters written before it are unconfirmed'
+          : 'Working…'
+      "
       :state="state"
       :steps="steps"
       :progress="(written / 8) * 100"

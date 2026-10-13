@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, useSlots, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, useSlots, watch } from 'vue'
 
 import BlueDialog from './BlueDialog.vue'
 import BlueIcon from './BlueIcon.vue'
 import BlueProgressBar from './BlueProgressBar.vue'
+import BlueTooltip from './BlueTooltip.vue'
 
 /** One stage of the work, in the order it runs. */
 export interface BlueStep {
@@ -82,7 +83,37 @@ watch(logRef, (el) => {
   logObserver.observe(el, { childList: true, subtree: true, characterData: true })
 })
 
-onBeforeUnmount(() => logObserver?.disconnect())
+const subtitleRef = ref<HTMLElement | null>(null)
+const subtitleClipped = ref(false)
+let subtitleObserver: ResizeObserver | null = null
+
+const measureSubtitle = (): void => {
+  const el = subtitleRef.value
+  subtitleClipped.value = Boolean(el && el.scrollWidth > el.clientWidth)
+}
+
+// Observed rather than measured once: the line has no width at all until the dialog is shown, and
+// a failure's reason arrives long after that.
+watch(subtitleRef, (el) => {
+  subtitleObserver?.disconnect()
+  subtitleObserver = null
+  if (!el) return
+  subtitleObserver = new ResizeObserver(measureSubtitle)
+  subtitleObserver.observe(el)
+})
+
+watch(
+  () => props.subtitle,
+  async () => {
+    await nextTick()
+    measureSubtitle()
+  }
+)
+
+onBeforeUnmount(() => {
+  logObserver?.disconnect()
+  subtitleObserver?.disconnect()
+})
 </script>
 
 <template>
@@ -104,12 +135,22 @@ onBeforeUnmount(() => logObserver?.disconnect())
         <div class="truncate text-base leading-tight">
           {{ title }}
         </div>
-        <div
+        <!-- A failure's reason is longer than the line it gets here, so what does not fit is on
+             hover. Nothing is offered while the whole line is readable. -->
+        <BlueTooltip
           v-if="subtitle"
-          class="mt-1 truncate text-xs text-[#ffffff88]"
+          :text="subtitle"
+          :disabled="!subtitleClipped"
+          placement="bottom-start"
+          class="mt-1 max-w-full"
         >
-          {{ subtitle }}
-        </div>
+          <div
+            ref="subtitleRef"
+            class="min-w-0 truncate text-xs text-[#ffffff88]"
+          >
+            {{ subtitle }}
+          </div>
+        </BlueTooltip>
       </div>
     </template>
 
