@@ -41,11 +41,11 @@
           />
         </div>
         <div
-          class="absolute translate-y-1/2 bottom-1/2 flex items-center justify-center text-white text-center text-[14px] whitespace-nowrap min-w-[60px] rounded-[6px] bluevue-elevation-1 z-50 h-3/4"
+          class="absolute translate-y-1/2 bottom-1/2 flex items-center justify-center px-[5px] text-white text-center text-[14px] whitespace-nowrap min-w-[60px] rounded-[6px] bluevue-elevation-1 z-50 h-3/4"
           :class="isEditingCurrentSliderValue ? 'pointer-events-auto' : 'pointer-events-none select-none'"
           :style="{
-            left: pillLeft,
-            marginLeft: '5px',
+            left: `calc(5px + (100% - 10px) * ${pillFraction})`,
+            transform: `translateX(${-pillFraction * 100}%)`,
             backgroundColor: color || 'var(--bluevue-primary)',
           }"
         >
@@ -285,11 +285,10 @@ const fillWidth = computed(() => {
 })
 const staticFillWidth = ref<number>(0)
 
-const pillLeft = computed(() =>
-  `calc((100% - 70px) * ${
-    (isEditingCurrentSliderValue.value
-      ? staticFillWidth.value
-      : fillWidth.value) / 100})`
+// The pill is as wide as its text, so it is shifted back by that same fraction of its own width to
+// stay 5px inside the track at either end.
+const pillFraction = computed(() =>
+  (isEditingCurrentSliderValue.value ? staticFillWidth.value : fillWidth.value) / 100
 )
 
 const skipEditCommit = ref(false)
