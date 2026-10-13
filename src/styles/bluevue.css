@@ -3,7 +3,7 @@
    it folded into dist/style.css when it does not. */
 
 :root {
-  --bluevue-primary: #0B5087;
+  --bluevue-primary: #1F7AA8;
   --bluevue-error: #CF6679;
   --bluevue-surface: #363636;
   --bluevue-accent: #6699CC;
