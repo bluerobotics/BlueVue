@@ -27,7 +27,12 @@
         name="slider-track"
         class="relative isolate w-full overflow-visible rounded-[6px] bluevue-elevation-1 min-w-[140px]"
         :class="[theme === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30' : '']"
-        :style="{ maxWidth: width || '100%', height: height || '30px', cursor: disabled ? 'not-allowed' : 'pointer' }"
+        :style="{
+          maxWidth: width || '100%',
+          height: height || '30px',
+          cursor: disabled ? 'not-allowed' : 'pointer',
+          backgroundColor: background,
+        }"
       >
         <div class="absolute inset-x-[18%] top-1/2 -translate-y-1/2 flex justify-between pointer-events-none">
           <div
@@ -122,6 +127,8 @@ import { ref, watch, onBeforeUnmount, computed } from 'vue'
 import { nextElementId } from '../utils/id'
 
 const props = defineProps<{
+  /** Track background, in place of the theme's. */
+  background?: string
   /** Pill color override. */
   color?: string
   /** Disable user interaction. Add disabled visual feedback */
