@@ -24,6 +24,7 @@ export { default as BlueMenu, type BlueMenuItem } from './components/BlueMenu.vu
 export { default as BlueProgressBar } from './components/BlueProgressBar.vue'
 export { default as BluePromptDialog } from './components/BluePromptDialog.vue'
 export { default as BlueRadioGroup, type BlueRadioItem } from './components/BlueRadioGroup.vue'
+export { default as BlueRange } from './components/BlueRange.vue'
 export { default as BlueSection } from './components/BlueSection.vue'
 export { default as BlueSelect } from './components/BlueSelect.vue'
 export { default as BlueSlider } from './components/BlueSlider.vue'

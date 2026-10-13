@@ -118,6 +118,7 @@ through `applyBlueTheme({ primary: '#1F7AA8' })`:
 | `BlueInput` | Text or number field, with a suffix, bounds and validation messages |
 | `BlueWindRose` | A heading, typed or pointed on a compass rose |
 | `BlueRadioGroup` | One choice out of a few, each spelled out |
+| `BlueRange` | The two ends of a range, with an optional point between them |
 | `BlueSelect` | Single or multiple selection from a list |
 | `BlueSlider` | Range with a value pill, editable on double-click |
 | `BlueSwitch` | Two-state switch with its own labels |
