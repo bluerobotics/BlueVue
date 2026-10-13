@@ -40,7 +40,7 @@
         :tabindex="disabled ? -1 : 0"
         class="relative inline-grid shrink-0 grid-cols-[1fr_1fr] rounded-[8px] bluevue-elevation-1 cursor-pointer overflow-hidden"
         :class="[theme === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30 cursor-not-allowed' : '']"
-        :style="{ height: height || '30px' }"
+        :style="{ height: height || '30px', backgroundColor: background }"
         @click="toggleSwitch"
         @keydown="onSwitchKeydown"
       >
@@ -86,6 +86,8 @@ import BlueIcon from './BlueIcon.vue'
 import BlueTooltip from './BlueTooltip.vue'
 
 const props = defineProps<{
+  /** Track background, in place of the theme's. */
+  background?: string
   /** Color of the switch's knob when it is on. */
   color?: string
   /** The current value of the switch. */

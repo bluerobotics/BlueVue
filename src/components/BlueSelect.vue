@@ -33,7 +33,10 @@
       />
     </BlueTooltip>
 
-    <div class="flex flex-col items-end min-w-0 shrink-[1000]">
+    <div
+      class="flex flex-col items-end min-w-0 shrink-[1000]"
+      :class="{ grow: width?.endsWith('%') }"
+    >
       <button
         ref="anchorRef"
         v-bind="activatorProps"
@@ -76,7 +79,7 @@
       <ul
         class="bluevue-elevation-5 max-h-[60vh] overflow-y-auto rounded-[4px] border border-[#FFFFFF22]"
         :class="[
-          theme === 'dark' ? 'bg-[var(--bluevue-surface)]' : 'bg-white',
+          theme === 'dark' ? 'bg-[#000000a6] backdrop-blur-[16px]' : 'bg-white',
           isPositioned ? 'opacity-100' : 'opacity-0',
         ]"
       >

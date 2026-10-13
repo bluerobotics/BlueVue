@@ -85,11 +85,11 @@ Doing both works and costs only the duplicated utility bytes.
 ### Theming
 
 The colours and shadows are CSS custom properties, so an app can restate them, either in CSS or
-through `applyBlueTheme({ primary: '#0B5087' })`:
+through `applyBlueTheme({ primary: '#1F7AA8' })`:
 
 ```css
 :root {
-  --bluevue-primary: #0B5087;
+  --bluevue-primary: #1F7AA8;
   --bluevue-error: #CF6679;
   --bluevue-surface: #363636;
   --bluevue-accent: #6699CC;
@@ -118,6 +118,7 @@ through `applyBlueTheme({ primary: '#0B5087' })`:
 | `BlueInput` | Text or number field, with a suffix, bounds and validation messages |
 | `BlueWindRose` | A heading, typed or pointed on a compass rose |
 | `BlueRadioGroup` | One choice out of a few, each spelled out |
+| `BlueRange` | The two ends of a range, with an optional point between them |
 | `BlueSelect` | Single or multiple selection from a list |
 | `BlueSlider` | Range with a value pill, editable on double-click |
 | `BlueSwitch` | Two-state switch with its own labels |

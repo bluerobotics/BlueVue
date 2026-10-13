@@ -21,6 +21,7 @@ import BlueOsDemo from './demos/BlueOsDemo.vue'
 import BlueProgressBarDemo from './demos/BlueProgressBarDemo.vue'
 import BluePromptDialogDemo from './demos/BluePromptDialogDemo.vue'
 import BlueRadioGroupDemo from './demos/BlueRadioGroupDemo.vue'
+import BlueRangeDemo from './demos/BlueRangeDemo.vue'
 import BlueSectionDemo from './demos/BlueSectionDemo.vue'
 import BlueSelectDemo from './demos/BlueSelectDemo.vue'
 import BlueSliderDemo from './demos/BlueSliderDemo.vue'
@@ -476,6 +477,37 @@ export const catalog: ComponentDoc[] = [
     demo: BlueSliderDemo,
   },
   {
+    name: 'BlueRange',
+    slug: 'blue-range',
+    group: 'Controls',
+    blurb: 'Where a range starts and stops, and a point inside it.',
+    about:
+      'The fill runs between the two ends, which grow knobs when the pointer is over the track. A third value sits between them as a bar, for something like a servo\'s trim, and widens with a shadow on hover. Each handle shows its value above it while it is hovered, dragged or focused from the keyboard, and none can be pulled past its neighbours. A press anywhere on the track moves the nearest handle there.',
+    when: [
+      'Reach for it for a span with a low and a high end, such as a PWM output\'s limits.',
+      'Use a BlueSlider instead when there is only one value.',
+    ],
+    props: [
+      { name: 'modelValue', type: 'number[]', description: 'Two or three values in ascending order, through v-model.' },
+      { name: 'min / max', type: 'number', description: 'The ends of the track.' },
+      { name: 'step', type: 'number', default: '1', description: 'Increment.' },
+      { name: 'handleLabels', type: 'string[]', description: 'What a screen reader calls each handle.' },
+      { name: 'format', type: '(value: number) => string', description: 'How a value reads in its tooltip.' },
+      { name: 'color', type: 'string', description: 'The fill, in place of the primary token. The knobs take a darker shade of it.' },
+      THEME_ROW,
+    ],
+    events: [{ name: 'update:modelValue', type: '(value: number[])', description: 'A handle was moved.' }],
+    snippet: `<BlueRange
+  v-model="output"
+  theme="dark"
+  :min="500"
+  :max="2200"
+  :step="10"
+  :format="(value) => \`\${value} µs\`"
+/>`,
+    demo: BlueRangeDemo,
+  },
+  {
     name: 'BlueSwitch',
     slug: 'blue-switch',
     group: 'Controls',
@@ -790,10 +822,15 @@ export const catalog: ComponentDoc[] = [
     ],
     props: [
       { name: 'text', type: 'string', description: 'The label, with its newlines and tabs kept. An empty one shows nothing.' },
-      { name: 'placement', type: 'Placement', default: "'top'", description: 'Which side it hangs off, flipped when there is no room.' },
+      { name: 'placement', type: 'Placement', default: "'top'", description: 'Which side it hangs off, moved to the opposite or a perpendicular side when there is no room.' },
       { name: 'openDelay', type: 'number', default: '300', description: 'How long the pointer rests before it appears, in ms.' },
       { name: 'disabled', type: 'boolean', description: 'Wraps its content and shows nothing.' },
-      THEME_ROW,
+      {
+        name: 'plain',
+        type: 'boolean',
+        description: 'A grey label with no outline or arrow. Without it the tooltip is dark, ringed in the accent, and points an arrow at what it describes.',
+      },
+      { ...THEME_ROW, description: `${THEME_ROW.description} Only read with plain.` },
     ],
     slots: [{ name: 'default', type: '', description: 'What the tooltip describes.' }],
     snippet: `<BlueTooltip text="Reads the vehicle again">
