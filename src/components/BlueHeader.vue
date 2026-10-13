@@ -21,6 +21,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useBlueMode } from '../utils/theme'
 
 /**
  * The bar a panel opens with: what the panel is about on the left, and the controls that act on it
@@ -37,6 +38,8 @@ const props = defineProps<{
   theme?: 'light' | 'dark'
 }>()
 
-const isDark = computed(() => props.theme !== 'light')
+const mode = useBlueMode(() => props.theme, 'dark')
+
+const isDark = computed(() => mode.value !== 'light')
 const defaultBackground = computed(() => (isDark.value ? '#15151577' : '#00000008'))
 </script>

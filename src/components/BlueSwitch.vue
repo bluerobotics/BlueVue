@@ -10,7 +10,7 @@
         :id="labelId"
         class="block truncate text-start mr-6"
         :title="label"
-        :class="[theme === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
+        :class="[mode === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
       >{{ label }}</label>
     </div>
     <div class="flex items-center min-w-0 shrink-[1000]">
@@ -25,7 +25,7 @@
           :size="16"
           :label="infoTooltip"
           class="cursor-help"
-          :class="[disabled ? 'opacity-30' : 'opacity-60', theme === 'dark' ? 'text-white' : 'text-black']"
+          :class="[disabled ? 'opacity-30' : 'opacity-60', mode === 'dark' ? 'text-white' : 'text-black']"
         />
       </BlueTooltip>
       <!-- The knob carries the state's own name and slides over a track that only says what the
@@ -39,7 +39,7 @@
         :aria-disabled="disabled === true"
         :tabindex="disabled ? -1 : 0"
         class="relative inline-grid shrink-0 grid-cols-[1fr_1fr] rounded-[8px] bluevue-elevation-1 cursor-pointer overflow-hidden"
-        :class="[theme === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30 cursor-not-allowed' : '']"
+        :class="[mode === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30 cursor-not-allowed' : '']"
         :style="{ height: height || '30px', backgroundColor: background }"
         @click="toggleSwitch"
         @keydown="onSwitchKeydown"
@@ -82,6 +82,7 @@
 import { computed, ref, watch } from 'vue'
 
 import { nextElementId } from '../utils/id'
+import { useBlueMode } from '../utils/theme'
 import BlueIcon from './BlueIcon.vue'
 import BlueTooltip from './BlueTooltip.vue'
 
@@ -110,6 +111,8 @@ const props = defineProps<{
   theme?: 'light' | 'dark'
 }>()
 
+const mode = useBlueMode(() => props.theme)
+
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
 }>()
@@ -118,7 +121,7 @@ const modelValue = ref(props.modelValue || false)
 const labelId = nextElementId('switch-label')
 
 const trackLabelClass = computed(() =>
-  props.theme === 'dark' ? 'text-[#ffffff44]' : 'text-[#00000066]'
+  mode.value === 'dark' ? 'text-[#ffffff44]' : 'text-[#000000b3]'
 )
 
 const toggleSwitch = (): void => {

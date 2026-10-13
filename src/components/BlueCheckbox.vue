@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { useBlueMode } from '../utils/theme'
 import BlueIcon from './BlueIcon.vue'
 import BlueTooltip from './BlueTooltip.vue'
 
@@ -24,6 +25,8 @@ const props = defineProps<{
   theme?: 'light' | 'dark'
 }>()
 
+const mode = useBlueMode(() => props.theme)
+
 const emit = defineEmits<{
   (event: 'update:modelValue', value: boolean): void
 }>()
@@ -44,7 +47,7 @@ const toggle = (): void => {
       :for="name"
       class="min-w-0 max-w-[45%] shrink-0 truncate text-start mr-6"
       :title="label"
-      :class="[theme === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : 'cursor-pointer']"
+      :class="[mode === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : 'cursor-pointer']"
     >{{ label }}</label>
     <div v-else />
 
@@ -60,7 +63,7 @@ const toggle = (): void => {
           :size="16"
           :label="infoTooltip"
           class="cursor-help"
-          :class="[disabled ? 'opacity-30' : 'opacity-60', theme === 'dark' ? 'text-white' : 'text-black']"
+          :class="[disabled ? 'opacity-30' : 'opacity-60', mode === 'dark' ? 'text-white' : 'text-black']"
         />
       </BlueTooltip>
 
@@ -83,7 +86,7 @@ const toggle = (): void => {
         <span
           class="bluevue-elevation-1 flex h-[18px] w-[18px] items-center justify-center rounded-[4px] border transition-colors peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--bluevue-accent)]"
           :class="[
-            checked || indeterminate ? 'border-transparent' : theme === 'dark' ? 'border-[#ffffff44] bg-[#00000022]' : 'border-[#00000044] bg-white',
+            checked || indeterminate ? 'border-transparent' : mode === 'dark' ? 'border-[#ffffff44] bg-[#00000022]' : 'border-[#00000044] bg-white',
           ]"
           :style="{ backgroundColor: checked || indeterminate ? color || 'var(--bluevue-primary)' : undefined }"
         >

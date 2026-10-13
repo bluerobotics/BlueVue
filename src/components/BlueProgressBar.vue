@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useBlueMode } from '../utils/theme'
 
 /**
  * How far along something is. Give it a value for work whose size is known, and set
@@ -19,6 +20,8 @@ const props = defineProps<{
   label?: string
 }>()
 
+const mode = useBlueMode(() => props.theme)
+
 // A value outside the range is a caller's arithmetic, not a bar that should paint past its track.
 const percent = computed(() => Math.min(100, Math.max(0, props.modelValue ?? 0)))
 </script>
@@ -26,7 +29,7 @@ const percent = computed(() => Math.min(100, Math.max(0, props.modelValue ?? 0))
 <template>
   <div
     class="bluevue-progress w-full overflow-hidden rounded-full"
-    :class="theme === 'light' ? 'bg-[#00000022]' : 'bg-[#ffffff1a]'"
+    :class="mode === 'light' ? 'bg-[#00000022]' : 'bg-[#ffffff1a]'"
     :style="{ height: `${height ?? 4}px` }"
     role="progressbar"
     :aria-label="label"

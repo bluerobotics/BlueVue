@@ -12,7 +12,7 @@
         :for="sliderId"
         class="block truncate text-start mr-6"
         :title="label"
-        :class="[theme === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
+        :class="[mode === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
       >{{ label }}</label>
     </div>
     <!-- Half the row, so a column of sliders reads as one block against the panel's midline, until
@@ -26,7 +26,7 @@
       <div
         name="slider-track"
         class="relative isolate w-full overflow-visible rounded-[6px] bluevue-elevation-1 min-w-[140px]"
-        :class="[theme === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30' : '']"
+        :class="[mode === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30' : '']"
         :style="{
           maxWidth: width || '100%',
           height: height || '30px',
@@ -41,7 +41,7 @@
             class="mdi mdi-circle w-2 h-2"
             :style="{
               fontSize: '6px',
-              color: theme === 'dark' ? '#ffffff11' : '#00000011',
+              color: mode === 'dark' ? '#ffffff11' : '#00000011',
             }"
           />
         </div>
@@ -101,13 +101,13 @@
         >
         <p
           class="absolute left-[5px] top-1/2 -translate-y-1/2 min-w-[30px] text-[12px] font-medium text-center whitespace-nowrap z-10 pointer-events-none"
-          :class="theme === 'dark' ? 'text-[#ffffff44]' : 'text-[#00000066]'"
+          :class="mode === 'dark' ? 'text-[#ffffff44]' : 'text-[#000000b3]'"
         >
           {{ labelMinDisplay }}
         </p>
         <p
           class="absolute right-[5px] top-1/2 -translate-y-1/2 min-w-[30px] text-[12px] font-medium text-center whitespace-nowrap z-10 pointer-events-none"
-          :class="theme === 'dark' ? 'text-[#ffffff44]' : 'text-[#00000066]'"
+          :class="mode === 'dark' ? 'text-[#ffffff44]' : 'text-[#000000b3]'"
         >
           {{ labelMaxDisplay }}
         </p>
@@ -125,6 +125,7 @@
 import { ref, watch, onBeforeUnmount, computed } from 'vue'
 
 import { nextElementId } from '../utils/id'
+import { useBlueMode } from '../utils/theme'
 
 const props = defineProps<{
   /** Track background, in place of the theme's. */
@@ -153,7 +154,7 @@ const props = defineProps<{
   step?: number
   /** Keyboard arrow step multiplier (default 3). */
   keyboardStepMultiplierLimit?: number
-  /** 'light' or 'dark' theme. (default 'light')*/
+  /** 'light' or 'dark' theme (default the app's, or 'light'). */
   theme?: 'light' | 'dark' | 'transparent'
   /** Weight of the value in the pill (default 'bold'). */
   valueWeight?: 'regular' | 'bold'
@@ -168,6 +169,8 @@ const props = defineProps<{
   /** Function format scaled values, converting them to strings */
   formatDisplay?: (scaled: number) => string
 }>()
+
+const mode = useBlueMode(() => props.theme)
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: number | null): void

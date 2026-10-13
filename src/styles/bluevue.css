@@ -9,6 +9,24 @@
   --bluevue-accent: #6699CC;
   --bluevue-panel-bg: rgba(30, 30, 30, 0.96);
   --bluevue-hairline: rgba(255, 255, 255, 0.08);
+  --bluevue-menu-bg: #2d2d2d;
+  --bluevue-titlebar: #15151577;
+  /* The ink the panels write with, and the washes drawn from the same side as the ink. A surface
+     that cannot take a `theme` prop reads these, so one `mode` flips the whole set. */
+  --bluevue-ink: #ffffff;
+  --bluevue-ink-strong: #ffffffcc;
+  --bluevue-ink-muted: #ffffff88;
+  --bluevue-ink-faint: #ffffff66;
+  --bluevue-ink-dim: #ffffff44;
+  --bluevue-divider: #ffffff0d;
+  --bluevue-wash: #ffffff11;
+  --bluevue-edge: #ffffff1a;
+  /* What a state means, drawn light enough to read on the dark surface. */
+  --bluevue-status-success: #66BB6A;
+  --bluevue-status-error: #EF5350;
+  --bluevue-status-warning: #FFB74D;
+  --bluevue-status-info: #42A5F5;
+  --bluevue-status-neutral: #90A4AE;
   /* Material's three-part shadow, across the five depths a control can rest at: 1 sits a hair off
      the surface, 5 floats above its neighbours (a selected segment, an open menu). */
   --bluevue-elevation-1: 0 2px 1px -1px #0003, 0 1px 1px 0 #00000024, 0 1px 3px 0 #0000001f;
@@ -23,6 +41,28 @@
   /* The elevation the buttons rest at, with each of its three shadows at half the alpha: a note is
      raised off the surface less than something meant to be pressed. */
   --bluevue-elevation-1-soft: 0 2px 1px -1px #0000001a, 0 1px 1px 0 #00000012, 0 1px 3px 0 #0000000f;
+}
+
+/* Set by applyBlueTheme({ mode: 'light' }), for the surfaces that have no `theme` prop of their own. */
+:root[data-bluevue-mode='light'] {
+  --bluevue-surface: #ebebeb;
+  --bluevue-panel-bg: rgba(255, 255, 255, 0.97);
+  --bluevue-hairline: rgba(15, 23, 42, 0.12);
+  --bluevue-menu-bg: #ffffff;
+  --bluevue-titlebar: #e0e0e0;
+  --bluevue-ink: #0f172a;
+  --bluevue-ink-strong: #0f172acc;
+  --bluevue-ink-muted: #0f172acc;
+  --bluevue-ink-faint: #0f172abb;
+  --bluevue-ink-dim: #0f172aaa;
+  --bluevue-divider: #0f172a14;
+  --bluevue-wash: #0f172a0f;
+  --bluevue-edge: #0f172a1f;
+  --bluevue-status-success: #2E7D32;
+  --bluevue-status-error: #C62828;
+  --bluevue-status-warning: #E65100;
+  --bluevue-status-info: #1565C0;
+  --bluevue-status-neutral: #546E7A;
 }
 
 .bluevue-elevation-1 {

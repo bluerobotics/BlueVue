@@ -105,7 +105,7 @@ defineExpose({ close })
     @click="onBackdropClick"
   >
     <div
-      class="bluevue-panel relative flex min-h-0 max-w-full flex-col rounded-lg text-white"
+      class="bluevue-panel relative flex min-h-0 max-w-full flex-col rounded-lg text-[var(--bluevue-ink)]"
       :style="{ width: width || '624px' }"
     >
       <header
@@ -127,7 +127,7 @@ defineExpose({ close })
             </div>
             <div
               v-if="subtitle"
-              class="mt-1 text-xs leading-relaxed text-[#ffffff88]"
+              class="mt-1 text-xs leading-relaxed text-[var(--bluevue-ink-muted)]"
             >
               {{ subtitle }}
             </div>

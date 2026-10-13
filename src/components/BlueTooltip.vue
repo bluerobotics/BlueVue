@@ -3,6 +3,7 @@ import type { Placement, Side } from '@floating-ui/vue'
 import { computed, type CSSProperties, onBeforeUnmount, ref } from 'vue'
 
 import { useBluePopover } from '../composables/useBluePopover'
+import { useBlueMode } from '../utils/theme'
 
 /**
  * A label for whatever it wraps, shown on hover and on keyboard focus. It opens in the top layer,
@@ -21,6 +22,8 @@ const props = defineProps<{
   /** A grey label with no outline or arrow, instead of the dark one ringed in the accent. */
   plain?: boolean
 }>()
+
+const mode = useBlueMode(() => props.theme)
 
 const outlined = !props.plain
 const arrowRef = ref<HTMLElement | null>(null)
@@ -104,7 +107,7 @@ onBeforeUnmount(cancelOpen)
         :class="[
           outlined
             ? 'rounded-md border-2 border-solid border-[var(--bluevue-accent)] bg-[#0d1117] px-2.5 py-1.5 text-white'
-            : ['rounded-[4px] px-2 py-1', theme === 'light' ? 'bg-white text-black' : 'bg-[#333333f2] text-white'],
+            : ['rounded-[4px] px-2 py-1', mode === 'light' ? 'bg-white text-black' : 'bg-[#333333f2] text-white'],
           isPositioned ? 'opacity-100' : 'opacity-0',
         ]"
       >

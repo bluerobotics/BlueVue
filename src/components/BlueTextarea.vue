@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { useBlueMode } from '../utils/theme'
 import BlueIcon from './BlueIcon.vue'
 import BlueTooltip from './BlueTooltip.vue'
 
@@ -30,6 +31,8 @@ const props = defineProps<{
   theme?: 'light' | 'dark'
 }>()
 
+const mode = useBlueMode(() => props.theme)
+
 const emit = defineEmits<{
   (event: 'update:modelValue', value: string): void
 }>()
@@ -57,7 +60,7 @@ const rows = computed(() => {
       <label
         :for="name"
         class="min-w-0 truncate text-[13px]"
-        :class="[theme === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
+        :class="[mode === 'dark' ? 'text-white' : 'text-black', disabled ? 'opacity-30' : '']"
       >{{ label }}</label>
       <BlueTooltip
         v-if="infoTooltip"
@@ -84,7 +87,7 @@ const rows = computed(() => {
       :disabled="disabled"
       class="bluevue-inset-1 w-full resize-y rounded-[6px] px-3 py-2 text-sm outline-none transition-colors focus:outline focus:outline-2 focus:outline-offset-0 focus:outline-[var(--bluevue-accent)]"
       :class="[
-        theme === 'dark' ? 'bg-[#ffffff11] text-white placeholder:text-[#ffffff55]' : 'bg-[#00000008] text-black placeholder:text-[#00000055]',
+        mode === 'dark' ? 'bg-[#ffffff11] text-white placeholder:text-[#ffffff55]' : 'bg-[#00000008] text-black placeholder:text-[#00000055]',
         disabled ? 'pointer-events-none opacity-30' : '',
         hasError ? 'outline outline-2 outline-[var(--bluevue-error)]' : '',
       ]"

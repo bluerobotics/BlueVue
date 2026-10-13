@@ -55,4 +55,4 @@ export {
 } from './services/blueos'
 
 export { downloadJson, pickJsonFile } from './utils/files'
-export { applyBlueTheme, type BlueTheme } from './utils/theme'
+export { applyBlueTheme, type BlueColors, type BlueMode, type BlueTheme, useBlueMode } from './utils/theme'

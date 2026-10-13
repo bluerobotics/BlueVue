@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { useBlueMode } from '../utils/theme'
 import BlueIcon from './BlueIcon.vue'
 import BlueSpinner from './BlueSpinner.vue'
 
@@ -39,6 +40,8 @@ const props = defineProps<{
   type?: 'button' | 'submit' | 'reset'
 }>()
 
+const mode = useBlueMode(() => props.theme, 'dark')
+
 defineEmits<{
   (event: 'click', value: MouseEvent): void
 }>()
@@ -48,7 +51,7 @@ const PADDING = { compact: 'px-2', regular: 'px-3', comfortable: 'px-4' } as con
 
 const variant = computed(() => props.variant ?? 'tonal')
 const density = computed(() => props.density ?? 'regular')
-const isDark = computed(() => props.theme !== 'light')
+const isDark = computed(() => mode.value !== 'light')
 const height = computed(() => HEIGHT[density.value])
 const glyphSize = computed(() => (density.value === 'compact' ? 14 : 16))
 
@@ -58,7 +61,7 @@ const look = computed(() => {
   if (props.disabled) {
     return variant.value === 'text' || variant.value === 'icon'
       ? 'opacity-30 cursor-not-allowed'
-      : 'opacity-30 cursor-not-allowed bg-[#9e9e9e80] text-[#afafaf]'
+      : `opacity-30 cursor-not-allowed bg-[#9e9e9e80] ${isDark.value ? 'text-[#afafaf]' : 'text-[#626262]'}`
   }
   switch (variant.value) {
     case 'filled':
@@ -70,7 +73,7 @@ const look = computed(() => {
     case 'icon':
       return isDark.value
         ? 'cursor-pointer text-[#ffffffaa] hover:text-white'
-        : 'cursor-pointer text-[#00000099] hover:text-black'
+        : 'cursor-pointer text-[#000000cc] hover:text-black'
     default:
       return isDark.value
         ? 'cursor-pointer bg-[#ffffff11] text-white hover:bg-[#ffffff22]'

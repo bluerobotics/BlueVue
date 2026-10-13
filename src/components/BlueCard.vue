@@ -21,13 +21,13 @@ defineProps<{
 
 <template>
   <section
-    class="bluevue-elevation-5 mx-auto w-full rounded-[8px] bg-[var(--bluevue-surface)] text-white"
+    class="bluevue-elevation-5 mx-auto w-full rounded-[8px] bg-[var(--bluevue-surface)] text-[var(--bluevue-ink)]"
     :style="{ maxWidth: width || '615px' }"
   >
     <!-- Relative, so the bar's own shadow paints over the body below it rather than under it. -->
     <header
       v-if="title || $slots.header || $slots.actions"
-      class="bluevue-elevation-1 relative flex items-center gap-5 rounded-t-[8px] bg-[#15151577] px-5 py-3"
+      class="bluevue-elevation-1 relative flex items-center gap-5 rounded-t-[8px] bg-[var(--bluevue-titlebar)] px-5 py-3"
     >
       <slot name="header">
         <img
@@ -54,7 +54,7 @@ defineProps<{
 
     <footer
       v-if="$slots.footer"
-      class="flex items-center justify-between gap-3 border-t border-[#ffffff0d] px-5 py-3"
+      class="flex items-center justify-between gap-3 border-t border-[var(--bluevue-divider)] px-5 py-3"
     >
       <slot name="footer" />
     </footer>

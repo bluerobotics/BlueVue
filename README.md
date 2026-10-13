@@ -96,6 +96,20 @@ through `applyBlueTheme({ primary: '#1F7AA8' })`:
 }
 ```
 
+Every component also draws on a light or a dark surface, through its `theme` prop. An app that is
+dark throughout sets that once instead of at each call site:
+
+```ts
+applyBlueTheme({ mode: 'dark' })
+```
+
+A component's own `theme` prop still wins where one surface differs from the rest of the app. The
+cards, dialogs, menus and snackbars have no `theme` prop, since they are the app's own surfaces:
+they follow `mode` through the `--bluevue-ink*`, `--bluevue-divider`, `--bluevue-wash` and
+`--bluevue-edge` tokens, which flip as a set. The meanings a chip, a snackbar or a step can carry
+(`--bluevue-status-success`, `-error`, `-warning`, `-info`, `-neutral`) flip with them, darker on
+the light surface so they keep their contrast.
+
 ## What is in it
 
 **The page**
@@ -165,7 +179,7 @@ through `applyBlueTheme({ primary: '#1F7AA8' })`:
 | `useBlueOsSetting` | A value kept on the vehicle rather than in this browser |
 | `blueOsService` | Any BlueOS service by name, with JSON and errors handled |
 | `useBluePopover` | The top-layer placement the menus and tooltips are built on |
-| `applyBlueTheme` | Restates the tokens at runtime |
+| `applyBlueTheme` | Restates the tokens and the light or dark default at runtime |
 | `downloadJson` / `pickJsonFile` | Saves a profile to disk, and reads one back |
 
 ## Browser support

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
+import { type BlueMode, useBlueMode } from '../utils/theme'
 import BlueButton from './BlueButton.vue'
 import BlueDialog from './BlueDialog.vue'
 import BlueInput from './BlueInput.vue'
@@ -34,6 +35,7 @@ const emit = defineEmits<{
 const name = ref(props.initial ?? '')
 const notes = ref(props.notesInitial ?? '')
 const dialogRef = ref<InstanceType<typeof BlueDialog> | null>(null)
+const mode = useBlueMode<BlueMode>(() => undefined, 'dark')
 
 // Reset on open rather than on close, so the fields are right before the dialog animates in.
 watch(
@@ -67,7 +69,7 @@ function confirm(): void {
       v-model="name"
       name="bluevue-prompt-name"
       :label="label"
-      theme="dark"
+      :theme="mode"
       width="380px"
       autofocus
       @keydown.enter="confirm"
@@ -77,7 +79,7 @@ function confirm(): void {
       v-model="notes"
       name="bluevue-prompt-notes"
       :label="notesLabel"
-      theme="dark"
+      :theme="mode"
       width="380px"
       @keydown.enter="confirm"
     />
@@ -89,7 +91,7 @@ function confirm(): void {
       >
         Cancel
       </BlueButton>
-      <span class="flex-1 text-center text-xs text-[#ffffff88]">{{ hint }}</span>
+      <span class="flex-1 text-center text-xs text-[var(--bluevue-ink-muted)]">{{ hint }}</span>
       <BlueButton
         variant="filled"
         density="compact"
