@@ -53,7 +53,7 @@ async function copySnippet(): Promise<void> {
 
     <section
       v-if="entry.when?.length"
-      class="mb-8 rounded-[6px] border border-[#ffffff14] bg-[#ffffff08] px-5 py-4"
+      class="bluevue-frost-bright mb-8 rounded-[6px] border border-[#ffffff14] bg-[#ffffff08] px-5 py-4"
     >
       <h2 class="mb-3 text-xs font-medium uppercase tracking-wide text-[#ffffff66]">
         When to reach for it
@@ -91,7 +91,7 @@ async function copySnippet(): Promise<void> {
           {{ copied ? 'Copied' : 'Copy' }}
         </button>
       </div>
-      <pre class="overflow-x-auto rounded-[6px] border border-[#ffffff14] bg-[#00000044] px-4 py-3 text-[13px] leading-relaxed text-[#D6E9F5]"><code>{{ entry.snippet }}</code></pre>
+      <pre class="bluevue-frost-smoke overflow-x-auto rounded-[6px] border border-[#ffffff14] bg-[#00000044] px-4 py-3 text-[13px] leading-relaxed text-[#D6E9F5]"><code>{{ entry.snippet }}</code></pre>
     </section>
 
     <ApiTable

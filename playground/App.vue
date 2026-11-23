@@ -1,19 +1,30 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
-import { BlueSnackbar } from '../src'
+import { type BlueMode, BlueSnackbar } from '../src'
 import logo from '../src/assets/br-logo-white.svg'
 import { catalog } from './catalog'
+import ThemePicker from './components/ThemePicker.vue'
 import { currentSlug } from './route'
+import { SCENERY } from './scenery'
 import DocView from './views/DocView.vue'
 import GalleryView from './views/GalleryView.vue'
 
 const entry = computed(() => catalog.find((component) => component.slug === currentSlug.value) ?? null)
+const mode = ref<BlueMode>('dark')
+const scenery = ref(0)
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#0C577B] bg-gradient-to-b from-[#0C577B] to-[#07293C] text-white">
-    <header class="border-b border-[#ffffff1a] bg-[#00000033]">
+  <div
+    class="min-h-screen text-white"
+    :class="mode === 'glass' ? 'playground-scenery' : 'bg-[#0C577B] bg-gradient-to-b from-[#0C577B] to-[#07293C]'"
+    :style="mode === 'glass' ? { backgroundImage: `url(${SCENERY[scenery].url})` } : undefined"
+  >
+    <header
+      class="bluevue-elevation-5 relative z-10 border-b border-[#ffffff1a]"
+      :class="mode === 'glass' ? 'playground-glass-header' : 'bg-[#00000033]'"
+    >
       <!-- Equal flanks centre the tagline on the row itself, rather than on whatever room the mark
            and the links happen to leave it. Baselines rather than boxes, too: both are smaller than
            the wordmark, so centring their boxes leaves their text riding above it. The mark has no
@@ -47,6 +58,13 @@ const entry = computed(() => catalog.find((component) => component.slug === curr
             npm
           </a>
         </div>
+      </div>
+      <div class="mx-auto mb-[12px] mt-[2px] h-px max-w-[900px] bg-[#ffffff1a]" />
+      <div class="mx-auto max-w-[900px] px-6 pb-3">
+        <ThemePicker
+          v-model="mode"
+          v-model:scenery="scenery"
+        />
       </div>
     </header>
 

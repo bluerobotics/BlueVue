@@ -19,3 +19,18 @@ body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color-scheme: dark;
 }
+
+/* The backdrop behind the glass theme. The image is picked in the header, and each one mixes
+   bright and dark ground, so glass shows both what it lets through and what it darkens. */
+.playground-scenery {
+  background: #0f6f6a center / cover fixed no-repeat;
+}
+
+/* The header is the playground's own glass sheet, so it follows the tint, opacity and blur the
+   glass controls set. */
+.playground-glass-header {
+  background-color: var(--bluevue-glass-bg);
+  -webkit-backdrop-filter: blur(var(--bluevue-glass-blur)) var(--bluevue-glass-tone);
+  backdrop-filter: blur(var(--bluevue-glass-blur)) var(--bluevue-glass-tone);
+  box-shadow: 0 4px 4px #00000033, 0 8px 12px 6px #00000016;
+}
