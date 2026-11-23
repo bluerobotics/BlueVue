@@ -44,6 +44,7 @@ const look = computed(() => ({
   color: filled.value ? '#ffffff' : tone.value,
   backgroundColor: filled.value ? tone.value : props.variant === 'outlined' ? 'transparent' : `color-mix(in srgb, ${tone.value} 18%, transparent)`,
   borderColor: props.variant === 'outlined' ? tone.value : 'transparent',
+  '--bluevue-tint': filled.value ? tone.value : undefined,
 }))
 </script>
 

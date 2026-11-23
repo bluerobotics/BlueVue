@@ -32,6 +32,7 @@ const emit = defineEmits<{
 }>()
 
 const checked = computed(() => props.modelValue === true)
+const boxColor = computed(() => (checked.value || props.indeterminate ? props.color || 'var(--bluevue-primary)' : undefined))
 
 const toggle = (): void => {
   if (props.disabled) return
@@ -86,9 +87,9 @@ const toggle = (): void => {
         <span
           class="bluevue-elevation-1 flex h-[18px] w-[18px] items-center justify-center rounded-[4px] border transition-colors peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--bluevue-accent)]"
           :class="[
-            checked || indeterminate ? 'border-transparent' : mode === 'dark' ? 'border-[#ffffff44] bg-[#00000022]' : 'border-[#00000044] bg-white',
+            checked || indeterminate ? 'border-transparent' : mode === 'dark' ? 'bluevue-frost-smoke border-[#ffffff44] bg-[#00000022]' : 'border-[#00000044] bg-white',
           ]"
-          :style="{ backgroundColor: checked || indeterminate ? color || 'var(--bluevue-primary)' : undefined }"
+          :style="{ backgroundColor: boxColor, '--bluevue-tint': boxColor }"
         >
           <BlueIcon
             v-if="checked || indeterminate"

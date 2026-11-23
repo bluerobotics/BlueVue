@@ -1,7 +1,7 @@
 <template>
   <header
     class="flex w-full items-center justify-between rounded-t-[8px]"
-    :class="isDark ? 'text-white' : 'text-black'"
+    :class="[isDark ? 'text-white' : 'text-black', isDark && !background ? 'bluevue-frost-bright' : '']"
     :style="{ minHeight: height || '56px', backgroundColor: background || defaultBackground }"
   >
     <!-- The rule runs under the whole cluster rather than under the selector alone, so the subject

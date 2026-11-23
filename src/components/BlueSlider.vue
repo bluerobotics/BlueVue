@@ -26,7 +26,7 @@
       <div
         name="slider-track"
         class="relative isolate w-full overflow-visible rounded-[6px] bluevue-elevation-1 min-w-[140px]"
-        :class="[mode === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30' : '']"
+        :class="[mode === 'dark' ? 'bluevue-frost-bright bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30' : '']"
         :style="{
           maxWidth: width || '100%',
           height: height || '30px',
@@ -51,7 +51,8 @@
           :style="{
             left: `calc(5px + (100% - 10px) * ${pillFraction})`,
             transform: `translateX(${-pillFraction * 100}%)`,
-            backgroundColor: color || 'var(--bluevue-primary)',
+            backgroundColor: pillColor,
+            '--bluevue-tint': pillColor,
           }"
         >
           <div v-if="!isEditingCurrentSliderValue">
@@ -170,6 +171,7 @@ const props = defineProps<{
   formatDisplay?: (scaled: number) => string
 }>()
 
+const pillColor = computed(() => props.color || 'var(--bluevue-primary)')
 const mode = useBlueMode(() => props.theme)
 
 const emit = defineEmits<{

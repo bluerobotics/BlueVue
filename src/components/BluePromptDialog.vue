@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-import { type BlueMode, useBlueMode } from '../utils/theme'
+import { useBlueMode } from '../utils/theme'
 import BlueButton from './BlueButton.vue'
 import BlueDialog from './BlueDialog.vue'
 import BlueInput from './BlueInput.vue'
@@ -35,7 +35,7 @@ const emit = defineEmits<{
 const name = ref(props.initial ?? '')
 const notes = ref(props.notesInitial ?? '')
 const dialogRef = ref<InstanceType<typeof BlueDialog> | null>(null)
-const mode = useBlueMode<BlueMode>(() => undefined, 'dark')
+const mode = useBlueMode<'light' | 'dark'>(() => undefined, 'dark')
 
 // Reset on open rather than on close, so the fields are right before the dialog animates in.
 watch(

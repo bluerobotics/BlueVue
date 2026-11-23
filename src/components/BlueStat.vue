@@ -18,7 +18,7 @@ const mode = useBlueMode(() => undefined, 'dark')
 <template>
   <div
     class="bluevue-elevation-1 min-w-[120px] flex-1 rounded-[6px] px-3 py-2"
-    :class="mode === 'light' ? 'bg-[#0f172a0d]' : 'bg-[#00000022]'"
+    :class="mode === 'light' ? 'bg-[#0f172a0d]' : 'bluevue-frost-smoke bg-[#00000022]'"
   >
     <div class="truncate text-[11px] uppercase tracking-wide text-[var(--bluevue-ink-faint)]">
       {{ label }}

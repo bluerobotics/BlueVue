@@ -46,6 +46,7 @@
       <div
         class="relative flex items-center rounded-[6px] bluevue-inset-1 min-w-[90px] max-w-full"
         :class="[
+          mode === 'dark' ? 'bluevue-frost-smoke' : '',
           disabled ? 'opacity-30 pointer-events-none' : '',
           hasError ? 'border-2 border-solid border-[var(--bluevue-error)]' : '',
         ]"

@@ -110,6 +110,21 @@ they follow `mode` through the `--bluevue-ink*`, `--bluevue-divider`, `--bluevue
 (`--bluevue-status-success`, `-error`, `-warning`, `-info`, `-neutral`) flip with them, darker on
 the light surface so they keep their contrast.
 
+A third mode, `glass`, draws the controls as on dark, but turns the cards, dialogs, menus,
+snackbars and tooltips into translucent, blurred sheets, so the video or map behind the app stays in
+view. Glass is adaptive by default: bright scenery behind a sheet is darkened while dark scenery
+stays see-through, tuned by `level` and `sensitivity` (0 to 1):
+
+```ts
+applyBlueTheme({ mode: 'glass', glass: { adaptive: true, level: 0.6, sensitivity: 0.5 } })
+```
+
+The sheets' tint, its `opacity` (0 to 1, used while adaptive is off) and the `blur` in px are
+set the same way: `applyBlueTheme({ glass: { color: '#636363', opacity: 0.05, blur: 22 } })`.
+
+Adaptive glass needs a Chromium-based browser. Elsewhere glass keeps its plain tint, and
+`isAdaptiveGlassSupported()` says which case applies, so a settings switch can say why it is off.
+
 ## What is in it
 
 **The page**
@@ -136,6 +151,7 @@ the light surface so they keep their contrast.
 | `BlueSelect` | Single or multiple selection from a list |
 | `BlueSlider` | Range with a value pill, editable on double-click |
 | `BlueSwitch` | Two-state switch with its own labels |
+| `BlueColorPicker` | A colour, picked from a swatch chip |
 | `BlueTabs` | The strip that switches between the pages of a view |
 | `BlueTextarea` | A `BlueInput` with room for several lines |
 
@@ -179,7 +195,8 @@ the light surface so they keep their contrast.
 | `useBlueOsSetting` | A value kept on the vehicle rather than in this browser |
 | `blueOsService` | Any BlueOS service by name, with JSON and errors handled |
 | `useBluePopover` | The top-layer placement the menus and tooltips are built on |
-| `applyBlueTheme` | Restates the tokens and the light or dark default at runtime |
+| `applyBlueTheme` | Restates the tokens and the light, dark or glass default at runtime |
+| `isAdaptiveGlassSupported` | Whether this browser can draw adaptive glass |
 | `downloadJson` / `pickJsonFile` | Saves a profile to disk, and reads one back |
 
 ## Browser support

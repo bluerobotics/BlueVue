@@ -45,8 +45,8 @@ watch(
 
 <template>
   <div
-    class="min-h-screen w-full px-4 py-6"
-    :style="{ backgroundColor: backdrop || '#0C577B' }"
+    class="bluevue-frost-backdrop min-h-screen w-full px-4 py-6"
+    :style="{ backgroundColor: backdrop || '#0C577B', '--bluevue-app-backdrop': backdrop || '#0C577B' }"
   >
     <BlueCard
       :title="title"

@@ -8,6 +8,7 @@ import BlueButtonGroupDemo from './demos/BlueButtonGroupDemo.vue'
 import BlueCardDemo from './demos/BlueCardDemo.vue'
 import BlueCheckboxDemo from './demos/BlueCheckboxDemo.vue'
 import BlueChipDemo from './demos/BlueChipDemo.vue'
+import BlueColorPickerDemo from './demos/BlueColorPickerDemo.vue'
 import BlueConfirmDialogDemo from './demos/BlueConfirmDialogDemo.vue'
 import BlueDialogDemo from './demos/BlueDialogDemo.vue'
 import BlueExpansiblePanelDemo from './demos/BlueExpansiblePanelDemo.vue'
@@ -602,6 +603,35 @@ export const catalog: ComponentDoc[] = [
   theme="dark"
 />`,
     demo: BlueRadioGroupDemo,
+  },
+  {
+    name: 'BlueColorPicker',
+    slug: 'blue-color-picker',
+    group: 'Controls',
+    blurb: 'A colour, picked from a swatch.',
+    about:
+      'A chip showing the swatch and its hex code, which opens a panel beside it: a square for saturation and brightness, a hue bar, and hex and RGB fields that take a typed colour. The square and the hue bar follow a drag and the arrow keys, Shift for bigger steps. There is no alpha, so a colour arrives as #rrggbb, and a trailing alpha pair on the model is ignored.',
+    when: [
+      'Reach for it when the colour itself is the setting, such as a track or a fence on the map.',
+      'Pair it with a BlueSlider when the colour also needs an opacity.',
+    ],
+    props: [
+      { name: 'modelValue', type: 'string | null', description: 'The colour as #rrggbb, through v-model.' },
+      { name: 'name', type: 'string', description: 'Name of the control.' },
+      { name: 'label', type: 'string', description: 'Label on the left of the row.' },
+      { name: 'infoTooltip', type: 'string', description: 'A hint behind an info icon beside the control.' },
+      { name: 'resetValue', type: 'string', description: 'A colour to go back to, offered by a reset button beside the chip.' },
+      { name: 'disabled', type: 'boolean', description: 'Fades and takes the picker out of reach.' },
+      THEME_ROW,
+    ],
+    events: [{ name: 'update:modelValue', type: '(value: string)', description: 'A colour was picked, live while the picker is open.' }],
+    snippet: `<BlueColorPicker
+  v-model="trackColor"
+  name="track-color"
+  label="Track color"
+  theme="dark"
+/>`,
+    demo: BlueColorPickerDemo,
   },
   {
     name: 'BlueTextarea',

@@ -6,6 +6,7 @@ export { default as BlueButtonGroup } from './components/BlueButtonGroup.vue'
 export { default as BlueCard } from './components/BlueCard.vue'
 export { default as BlueCheckbox } from './components/BlueCheckbox.vue'
 export { default as BlueChip } from './components/BlueChip.vue'
+export { default as BlueColorPicker } from './components/BlueColorPicker.vue'
 export { default as BlueConfirmDialog } from './components/BlueConfirmDialog.vue'
 export { default as BlueDialog } from './components/BlueDialog.vue'
 export { default as BlueExpansiblePanel } from './components/BlueExpansiblePanel.vue'
@@ -55,4 +56,12 @@ export {
 } from './services/blueos'
 
 export { downloadJson, pickJsonFile } from './utils/files'
-export { applyBlueTheme, type BlueColors, type BlueMode, type BlueTheme, useBlueMode } from './utils/theme'
+export {
+  applyBlueTheme,
+  type BlueColors,
+  type BlueGlass,
+  type BlueMode,
+  type BlueTheme,
+  isAdaptiveGlassSupported,
+  useBlueMode,
+} from './utils/theme'

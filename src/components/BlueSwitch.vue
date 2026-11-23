@@ -39,7 +39,7 @@
         :aria-disabled="disabled === true"
         :tabindex="disabled ? -1 : 0"
         class="relative inline-grid shrink-0 grid-cols-[1fr_1fr] rounded-[8px] bluevue-elevation-1 cursor-pointer overflow-hidden"
-        :class="[mode === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30 cursor-not-allowed' : '']"
+        :class="[mode === 'dark' ? 'bluevue-frost-bright bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30 cursor-not-allowed' : '']"
         :style="{ height: height || '30px', backgroundColor: background }"
         @click="toggleSwitch"
         @keydown="onSwitchKeydown"
@@ -68,7 +68,8 @@
           :style="{
             width: 'calc(50% - 4px)',
             transform: modelValue ? 'translateX(100%)' : 'none',
-            backgroundColor: modelValue ? color || 'var(--bluevue-primary)' : '#777777',
+            backgroundColor: knobColor,
+            '--bluevue-tint': knobColor,
           }"
         >
           {{ modelValue ? labelOn || 'On' : labelOff || 'Off' }}
@@ -119,6 +120,8 @@ const emit = defineEmits<{
 
 const modelValue = ref(props.modelValue || false)
 const labelId = nextElementId('switch-label')
+
+const knobColor = computed(() => (modelValue.value ? props.color || 'var(--bluevue-primary)' : '#777777'))
 
 const trackLabelClass = computed(() =>
   mode.value === 'dark' ? 'text-[#ffffff44]' : 'text-[#000000b3]'

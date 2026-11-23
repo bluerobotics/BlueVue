@@ -205,7 +205,7 @@ onBeforeUnmount(() => {
       <div
         v-if="slots.log"
         ref="logRef"
-        class="mt-3 max-h-[220px] overflow-y-auto rounded-[6px] bg-[#00000033] px-3 py-2 font-mono text-[11px]"
+        class="bluevue-frost-smoke mt-3 max-h-[220px] overflow-y-auto rounded-[6px] bg-[#00000033] px-3 py-2 font-mono text-[11px]"
       >
         <slot name="log" />
       </div>

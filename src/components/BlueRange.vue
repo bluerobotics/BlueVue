@@ -66,7 +66,7 @@
     >
       <div
         role="tooltip"
-        class="whitespace-nowrap rounded-[4px] px-2 py-1 text-xs leading-snug bluevue-elevation-5"
+        class="bluevue-glass whitespace-nowrap rounded-[4px] px-2 py-1 text-xs leading-snug bluevue-elevation-5"
         :class="mode === 'dark' ? 'bg-[#333333f2] text-white' : 'bg-white text-black'"
       >
         {{ active === null ? '' : formatValue(modelValue[active]) }}
