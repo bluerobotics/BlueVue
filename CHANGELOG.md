@@ -2,7 +2,7 @@
 
 One entry per release, newest first.
 
-## Unreleased: a glass mode, with adaptive glass
+## 0.4.0: a glass mode, with adaptive glass, and a colour picker
 
 An app that sets nothing, or sets `dark` or `light`, draws exactly as it did on 0.3.0.
 
