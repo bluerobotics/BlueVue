@@ -151,6 +151,7 @@ Adaptive glass needs a Chromium-based browser. Elsewhere glass keeps its plain t
 | `BlueSelect` | Single or multiple selection from a list |
 | `BlueSlider` | Range with a value pill, editable on double-click |
 | `BlueSwitch` | Two-state switch with its own labels |
+| `BlueColorPicker` | A colour, picked from a swatch chip |
 | `BlueTabs` | The strip that switches between the pages of a view |
 | `BlueTextarea` | A `BlueInput` with room for several lines |
 

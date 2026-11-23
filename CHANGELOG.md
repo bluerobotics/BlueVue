@@ -27,6 +27,11 @@ Adaptive glass needs a Chromium-based browser; elsewhere glass keeps its plain t
 `glass` also takes the sheets' `color`, the `opacity` of that tint while adaptive glass is off, and
 the `blur` in px, which the frosted parts inside a sheet and the dialog scrims scale with.
 
+### BlueColorPicker
+
+A colour picked from a chip showing the swatch and its hex code, in a panel of its own with a
+saturation and brightness square, a hue bar, and hex and RGB fields.
+
 ## 0.3.0: one light or dark default for the whole app
 
 An app can now say once whether it is light or dark, instead of passing `theme` to every control,
