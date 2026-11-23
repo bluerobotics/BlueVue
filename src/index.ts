@@ -55,4 +55,12 @@ export {
 } from './services/blueos'
 
 export { downloadJson, pickJsonFile } from './utils/files'
-export { applyBlueTheme, type BlueColors, type BlueMode, type BlueTheme, useBlueMode } from './utils/theme'
+export {
+  applyBlueTheme,
+  type BlueColors,
+  type BlueGlass,
+  type BlueMode,
+  type BlueTheme,
+  isAdaptiveGlassSupported,
+  useBlueMode,
+} from './utils/theme'

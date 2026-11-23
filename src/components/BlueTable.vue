@@ -93,7 +93,7 @@ const alignment = (column: BlueColumn): string =>
               column.sortable ? 'cursor-pointer select-none' : '',
               mode === 'light'
                 ? 'border-[#00000014] bg-[#e0e0e0] text-[#000000cc]'
-                : 'border-[#ffffff14] bg-[#0000004d] text-[#ffffff88]',
+                : 'bluevue-frost-smoke border-[#ffffff14] bg-[#0000004d] text-[#ffffff88]',
             ]"
             :style="{ width: column.width }"
             :aria-sort="sortKey === column.key ? (sortDesc ? 'descending' : 'ascending') : undefined"

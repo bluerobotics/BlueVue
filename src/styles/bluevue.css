@@ -41,6 +41,28 @@
   /* The elevation the buttons rest at, with each of its three shadows at half the alpha: a note is
      raised off the surface less than something meant to be pressed. */
   --bluevue-elevation-1-soft: 0 2px 1px -1px #0000001a, 0 1px 1px 0 #00000012, 0 1px 3px 0 #0000000f;
+  /* An identity filter, so a glass backdrop-filter stays valid while adaptive glass is off.
+     applyBlueTheme points it at the tone curve when adaptive glass is on. */
+  --bluevue-glass-tone: brightness(1);
+}
+
+/* Set by applyBlueTheme({ mode: 'glass' }): every sheet a translucent, blurred tint, so the video
+   or map behind the app stays in view. Ink and washes are the dark ones. */
+:root[data-bluevue-mode='glass'] {
+  --bluevue-glass-color: #636363;
+  --bluevue-glass-opacity: 0.05;
+  --bluevue-glass-blur: 22px;
+  --bluevue-glass-bg: color-mix(in srgb, var(--bluevue-glass-color) calc(var(--bluevue-glass-opacity) * 100%), transparent);
+  --bluevue-surface: var(--bluevue-glass-bg);
+  --bluevue-panel-bg: var(--bluevue-glass-bg);
+  --bluevue-menu-bg: var(--bluevue-glass-bg);
+  --bluevue-titlebar: #ffffff0d;
+  --bluevue-hairline: rgba(255, 255, 255, 0.08);
+}
+
+/* Adaptive glass darkens bright scenery itself, so the tint drops to a light veil. */
+:root[data-bluevue-mode='glass'][data-bluevue-glass='adaptive'] {
+  --bluevue-glass-bg: color-mix(in srgb, var(--bluevue-glass-color) 8%, transparent);
 }
 
 /* Set by applyBlueTheme({ mode: 'light' }), for the surfaces that have no `theme` prop of their own. */
@@ -159,6 +181,62 @@
   background: rgba(0, 0, 0, 0.44);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
+}
+
+/* The sheets of a glass app: cards, panels, menus and tooltips. The class is inert on dark and
+   light, where each surface keeps its own fill. */
+:root[data-bluevue-mode='glass'] .bluevue-panel,
+:root[data-bluevue-mode='glass'] .bluevue-glass {
+  background-color: var(--bluevue-glass-bg);
+  -webkit-backdrop-filter: blur(var(--bluevue-glass-blur)) var(--bluevue-glass-tone);
+  backdrop-filter: blur(var(--bluevue-glass-blur)) var(--bluevue-glass-tone);
+  border: 1px solid var(--bluevue-hairline);
+  box-shadow: 0 4px 4px #00000033, 0 8px 12px 6px #00000016;
+}
+
+/* Lighter than the dark scrims, so a glass dialog still floats over the scenery rather than over a
+   black page. */
+:root[data-bluevue-mode='glass'] .bluevue-dialog::backdrop,
+:root[data-bluevue-mode='glass'] .bluevue-popover--dimmed::backdrop {
+  background: #00000077;
+  -webkit-backdrop-filter: blur(calc(var(--bluevue-glass-blur) * 0.32)) var(--bluevue-glass-tone);
+  backdrop-filter: blur(calc(var(--bluevue-glass-blur) * 0.32)) var(--bluevue-glass-tone);
+}
+
+:root[data-bluevue-mode='glass'] .bluevue-popover--dimmed::backdrop {
+  background: #0000003b;
+}
+
+/* Frosted parts inside a glass sheet, each kind its own tint: bars and tracks a bright frost, fields
+   and readouts a smoked one, the app's backdrop its own colour. Layers stacked on each other build
+   up into a denser material. Fields, headers and the backdrop take their fill from a prop inline,
+   so the tint has to win over it. Inert on dark and light. */
+:root[data-bluevue-mode='glass'] .bluevue-frost-bright,
+:root[data-bluevue-mode='glass'] .bluevue-frost-smoke {
+  -webkit-backdrop-filter: blur(calc(var(--bluevue-glass-blur) * 0.48));
+  backdrop-filter: blur(calc(var(--bluevue-glass-blur) * 0.48));
+}
+
+:root[data-bluevue-mode='glass'] .bluevue-frost-bright {
+  background-color: #ffffff1a !important;
+}
+
+:root[data-bluevue-mode='glass'] .bluevue-frost-smoke {
+  background-color: #00000029 !important;
+}
+
+/* A coloured fill (a filled button, a knob, a value pill, a selected segment) states its colour as
+   --bluevue-tint beside its inline background, and glass frosts it in that same colour. */
+:root[data-bluevue-mode='glass'] [style*='--bluevue-tint'] {
+  background-color: color-mix(in srgb, var(--bluevue-tint) 60%, transparent) !important;
+  -webkit-backdrop-filter: blur(calc(var(--bluevue-glass-blur) * 0.48));
+  backdrop-filter: blur(calc(var(--bluevue-glass-blur) * 0.48));
+}
+
+:root[data-bluevue-mode='glass'] .bluevue-frost-backdrop {
+  background-color: color-mix(in srgb, var(--bluevue-app-backdrop) 40%, transparent) !important;
+  -webkit-backdrop-filter: blur(var(--bluevue-glass-blur)) var(--bluevue-glass-tone);
+  backdrop-filter: blur(var(--bluevue-glass-blur)) var(--bluevue-glass-tone);
 }
 
 /* An icon is a box the size of its em, not of however wide its glyph advances, so a row of them

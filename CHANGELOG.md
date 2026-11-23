@@ -2,6 +2,31 @@
 
 One entry per release, newest first.
 
+## Unreleased: a glass mode, with adaptive glass
+
+An app that sets nothing, or sets `dark` or `light`, draws exactly as it did on 0.3.0.
+
+---
+
+### `applyBlueTheme({ mode: 'glass' })`
+
+A third app mode, in the look of Cockpit: cards, dialogs, snackbars, menus, selects and plain
+tooltips become translucent sheets with a 22px blur, a hairline edge and a soft shadow, so the video
+or map behind the app stays in view. Controls draw as they do on dark, and `useBlueMode` resolves
+`glass` to `dark` for them, so a component's `theme` prop stays `'light' | 'dark'`. The outlined
+tooltip keeps its own look.
+
+### Adaptive glass
+
+On by default in glass mode. A tone curve in the backdrop filter darkens bright scenery behind a
+sheet, per pixel on the GPU, while dark scenery stays see-through, and the tint drops to a light
+veil while it is on. `applyBlueTheme({ glass: { adaptive, level, sensitivity } })` tunes it.
+Adaptive glass needs a Chromium-based browser; elsewhere glass keeps its plain tint, and
+`isAdaptiveGlassSupported()` reports which case applies.
+
+`glass` also takes the sheets' `color`, the `opacity` of that tint while adaptive glass is off, and
+the `blur` in px, which the frosted parts inside a sheet and the dialog scrims scale with.
+
 ## 0.3.0: one light or dark default for the whole app
 
 An app can now say once whether it is light or dark, instead of passing `theme` to every control,

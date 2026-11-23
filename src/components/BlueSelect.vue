@@ -77,7 +77,7 @@
       @toggle="onToggle"
     >
       <ul
-        class="bluevue-elevation-5 max-h-[60vh] overflow-y-auto rounded-[4px] border border-[#FFFFFF22]"
+        class="bluevue-glass bluevue-elevation-5 max-h-[60vh] overflow-y-auto rounded-[4px] border border-[#FFFFFF22]"
         :class="[
           mode === 'dark' ? 'bg-[#000000a6] backdrop-blur-[16px]' : 'bg-white',
           isPositioned ? 'opacity-100' : 'opacity-0',

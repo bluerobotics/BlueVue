@@ -107,7 +107,7 @@ onBeforeUnmount(cancelOpen)
         :class="[
           outlined
             ? 'rounded-md border-2 border-solid border-[var(--bluevue-accent)] bg-[#0d1117] px-2.5 py-1.5 text-white'
-            : ['rounded-[4px] px-2 py-1', mode === 'light' ? 'bg-white text-black' : 'bg-[#333333f2] text-white'],
+            : ['bluevue-glass rounded-[4px] px-2 py-1', mode === 'light' ? 'bg-white text-black' : 'bg-[#333333f2] text-white'],
           isPositioned ? 'opacity-100' : 'opacity-0',
         ]"
       >

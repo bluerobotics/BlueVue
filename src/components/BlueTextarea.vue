@@ -87,7 +87,7 @@ const rows = computed(() => {
       :disabled="disabled"
       class="bluevue-inset-1 w-full resize-y rounded-[6px] px-3 py-2 text-sm outline-none transition-colors focus:outline focus:outline-2 focus:outline-offset-0 focus:outline-[var(--bluevue-accent)]"
       :class="[
-        mode === 'dark' ? 'bg-[#ffffff11] text-white placeholder:text-[#ffffff55]' : 'bg-[#00000008] text-black placeholder:text-[#00000055]',
+        mode === 'dark' ? 'bluevue-frost-smoke bg-[#ffffff11] text-white placeholder:text-[#ffffff55]' : 'bg-[#00000008] text-black placeholder:text-[#00000055]',
         disabled ? 'pointer-events-none opacity-30' : '',
         hasError ? 'outline outline-2 outline-[var(--bluevue-error)]' : '',
       ]"

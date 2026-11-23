@@ -82,6 +82,11 @@ const look = computed(() => {
 })
 
 const fill = computed(() => (variant.value === 'filled' && !props.disabled ? props.color || 'var(--bluevue-primary)' : undefined))
+// The colour a glass app frosts the chip in: the fill, or the flat grey of a disabled chip.
+const tint = computed(() => {
+  if (props.disabled && (variant.value === 'filled' || variant.value === 'tonal')) return '#9e9e9e'
+  return fill.value
+})
 
 const ELEVATION = {
   1: 'bluevue-elevation-1',
@@ -127,6 +132,7 @@ const glyphColor = computed(() =>
       height: `${height}px`,
       width: variant === 'icon' ? `${height}px` : undefined,
       backgroundColor: fill,
+      '--bluevue-tint': tint,
     }"
     @click="$emit('click', $event)"
   >

@@ -80,7 +80,7 @@ function runItem(item: BlueMenuItem): void {
     @toggle="onToggle"
   >
     <ul
-      class="bluevue-elevation-5 min-w-[220px] max-h-[60vh] overflow-y-auto rounded-[4px] border border-[var(--bluevue-edge)] bg-[var(--bluevue-menu-bg)]"
+      class="bluevue-glass bluevue-elevation-5 min-w-[220px] max-h-[60vh] overflow-y-auto rounded-[4px] border border-[var(--bluevue-edge)] bg-[var(--bluevue-menu-bg)]"
       :class="isPositioned ? 'opacity-100' : 'opacity-0'"
     >
       <li

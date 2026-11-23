@@ -39,7 +39,7 @@
       <div
         ref="trackRef"
         class="relative isolate flex min-w-0 justify-end overflow-hidden rounded-[6px] bluevue-elevation-1"
-        :class="[mode === 'dark' ? 'bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30 pointer-events-none' : '']"
+        :class="[mode === 'dark' ? 'bluevue-frost-bright bg-[#464646AA]' : 'bg-[#00000011]', disabled ? 'opacity-30 pointer-events-none' : '']"
         :style="{ height: height || (density === 'compact' ? '24px' : '30px'), width }"
       >
         <div
@@ -71,7 +71,7 @@
               // track below, and dimming twice over would leave the names unreadable.
               btn.disabled ? 'opacity-30' : '',
             ]"
-            :style="{ backgroundColor: selected[idx] ? btn.activeColor || 'var(--bluevue-primary)' : undefined }"
+            :style="{ backgroundColor: segmentColor(idx), '--bluevue-tint': segmentColor(idx) }"
             @click="onButtonClick(idx)"
             @contextmenu.prevent="requestContextMenu(idx, $event)"
             @pointerdown="startLongPress(idx, $event)"
@@ -124,7 +124,7 @@
             @toggle="onMenuToggle"
           >
             <ul
-              class="bluevue-elevation-5 max-h-[60vh] overflow-y-auto border-[1px] rounded-[4px] border-[#FFFFFF22]"
+              class="bluevue-glass bluevue-elevation-5 max-h-[60vh] overflow-y-auto border-[1px] rounded-[4px] border-[#FFFFFF22]"
               :class="[
                 mode === 'dark' ? 'text-[#FFFFFF99] bg-[var(--bluevue-surface)]' : 'text-black bg-white',
                 isMenuPositioned ? 'opacity-100' : 'opacity-0',
@@ -227,6 +227,8 @@ const props = defineProps<{
 }>()
 
 const mode = useBlueMode(() => props.theme)
+const segmentColor = (idx: number): string | undefined =>
+  selected.value[idx] ? props.buttonItems[idx].activeColor || 'var(--bluevue-primary)' : undefined
 
 const emit = defineEmits<{
   (e: 'update:selected', value: boolean[]): void
